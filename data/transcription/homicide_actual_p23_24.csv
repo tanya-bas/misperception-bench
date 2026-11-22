@@ -1,0 +1,31 @@
+country,actual_direction,approx_change_per_100k_from_chart,chart_page,note
+Mexico,higher,17,23,only country Ipsos says is higher (p11); value read from scatter
+Colombia,lower,-40,23,read from p23 scatter
+South Africa,lower,-4.6,24,read from p24 scatter
+Argentina,lower,-3.7,24,read from p24 scatter
+Brazil,lower,-3.4,24,read from p24 scatter
+Malaysia,lower,-1.7,24,read from p24 scatter
+India,lower,-1.6,24,read from p24 scatter
+Poland,lower,-1.5,24,read from p24 scatter
+Hungary,lower,-1.3,24,read from p24 scatter
+Italy,lower,-1.2,24,read from p24 scatter
+Germany,lower,-1.1,24,read from p24 scatter
+Belgium,lower,-0.9,24,read from p24 scatter
+Singapore,lower,-0.9,24,read from p24 scatter
+Australia,lower,-0.8,24,read from p24 scatter
+Spain,lower,-0.7,24,read from p24 scatter
+France,lower,-0.6,24,read from p24 scatter
+Ireland,lower,-0.4,24,read from p24 scatter
+Great Britain,lower,-0.4,24,read from p24 scatter
+Netherlands,lower,-0.3,24,read from p24 scatter
+South Korea,lower,-0.3,24,read from p24 scatter
+Japan,lower,-0.2,24,read from p24 scatter
+Sweden,same,0.0,24,read from p24 scatter (approximately zero)
+Canada,same,0.3,24,read from p24 scatter; Ipsos classes as about the same
+United States,same,1.3,24,read from p24 scatter; Ipsos classes as about the same (p11)
+Chile,same_or_lower,,,not labelled on p23-24; direction from Ipsos text p11 only
+Türkiye,same_or_lower,,,not labelled on p23-24; direction from Ipsos text p11 only
+Peru,same_or_lower,,,not labelled on p23-24; direction from Ipsos text p11 only
+Thailand,same_or_lower,,,not labelled on p23-24; direction from Ipsos text p11 only
+New Zealand,same_or_lower,,,not labelled on p23-24; direction from Ipsos text p11 only
+Indonesia,same_or_lower,,,not labelled on p23-24; direction from Ipsos text p11 only

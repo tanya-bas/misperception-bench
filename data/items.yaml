@@ -1,0 +1,59 @@
+# Item dictionary for the v0 dataset (Ipsos Perils of Perception 2024 only).
+# scale:      percent = a 0-100 share; categorical = fixed answer options
+# transform:  logit = analyse on the log-odds scale (H2b compression, H1a variance ratio);
+#             none  = categorical, analysed as agreement with public majority vs truth
+# wording is verbatim from the 2024 report page cited. The report prints each wording once per item.
+items:
+  - item_id: wealth_top1
+    name: Share of total household wealth owned by the richest 1% of households
+    scale: percent
+    transform: logit
+    wording_2024: "What percentage of your country's total household wealth do you think is owned by the top 1% of richest households?"
+    report_page: 13
+    t_source: World Inequality Database
+    t_definition_note: >
+      Ipsos cites the World Inequality Database top-1% wealth share. WID measures adults
+      (equal-split), the question says households. Treated as an approximate definitional
+      match; flagged in pairs.csv (definition_match = approximate).
+    salience_apriori: medium
+  - item_id: immigrant_share
+    name: Share of the population born in another country
+    scale: percent
+    transform: logit
+    wording_2024: "What percentage of your country's population do you think immigrants (i.e., people born in another country) represent?"
+    report_page: 16
+    t_source: World Bank WDI SM.POP.TOTL.ZS (UN DESA International Migrant Stock)
+    t_source_cited_by_ipsos: UN International Migrant Stock
+    t_definition_note: >
+      Question defines immigrants as people born in another country (foreign-born).
+      UN DESA International Migrant Stock is foreign-born (foreign citizens where birth
+      data is unavailable). Definitional match = yes. Not the Eurobarometer non-EU-born quantity.
+      Decision 2026-11-22: T for every country is the World Bank WDI copy of the UN DESA series
+      (SM.POP.TOTL.ZS, 2024, unrounded; t_flag = world_bank), so India and Indonesia are no longer
+      0%. The figure Ipsos printed is kept in t_value_ipsos for comparison.
+    salience_apriori: high
+  - item_id: muslim_share
+    name: Share of the population that is Muslim
+    scale: percent
+    transform: logit
+    wording_2024: "In your country, out of 100 people, how many do you think are Muslim?"
+    report_page: 20
+    t_source: Pew Research
+    t_definition_note: >
+      Pew Research Center share of population identifying as Muslim. Definitional match = yes.
+      Ipsos prints "<1%" for ten countries; t_value for those rows is Pew's unrounded 2020 share
+      (t_flag = source_unrounded), never 0.5.
+    salience_apriori: high
+  - item_id: homicide_trend
+    name: Whether the homicide rate is higher, lower or about the same as in 2000
+    scale: categorical
+    transform: none
+    wording_2024: "Do you think the homicide rate in your country is higher, lower, or about the same as in 2000?"
+    report_page: 22
+    t_source: UN Office on Drugs and Crime
+    t_definition_note: >
+      Ipsos's text (p11): majorities in 25 of 30 countries say higher; "it is actually about the
+      same or lower in all countries except Mexico". Stored in pairs_categorical.csv with the
+      public's answer distribution and the actual direction; approximate per-100k change read
+      from the p23-24 scatter is included only as a flagged convenience column.
+    salience_apriori: high

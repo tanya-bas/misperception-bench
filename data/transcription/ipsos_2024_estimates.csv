@@ -1,0 +1,91 @@
+item_id,country,h_mean,t_raw,page,pass_note
+wealth_top1,United States,60,35,13,from p13 table
+wealth_top1,Hungary,53,33,13,from p13 table
+wealth_top1,Great Britain,53,21,13,from p13 table
+wealth_top1,Italy,51,22,13,from p13 table
+wealth_top1,Canada,51,25,13,from p13 table
+wealth_top1,Sweden,50,28,13,from p13 table
+wealth_top1,South Africa,49,55,13,from p13 table
+wealth_top1,Brazil,48,49,13,from p13 table
+wealth_top1,New Zealand,48,23,13,from p13 table
+wealth_top1,Australia,48,24,13,from p13 table
+wealth_top1,Ireland,46,23,13,from p13 table
+wealth_top1,South Korea,46,26,13,from p13 table
+wealth_top1,Spain,44,23,13,from p13 table
+wealth_top1,Japan,43,25,13,from p13 table
+wealth_top1,Chile,43,50,13,from p13 table
+wealth_top1,Türkiye,42,37,13,from p13 table
+wealth_top1,Germany,42,26,13,from p13 table
+wealth_top1,France,42,24,13,from p13 table
+wealth_top1,Colombia,41,33,13,from p13 table
+wealth_top1,Belgium,41,15,13,from p13 table
+wealth_top1,Netherlands,40,13,13,from p13 table
+wealth_top1,Poland,39,30,13,from p13 table
+wealth_top1,Singapore,39,31,13,from p13 table
+wealth_top1,Mexico,37,48,13,from p13 table
+wealth_top1,Thailand,37,48,13,from p13 table
+wealth_top1,Peru,35,No data available,13,from p13 table
+wealth_top1,Argentina,35,26,13,from p13 table
+wealth_top1,Malaysia,30,31,13,from p13 table
+wealth_top1,Indonesia,29,30,13,from p13 table
+wealth_top1,India,16,33,13,from p13 table
+immigrant_share,Canada,39,21,16,from p16 table
+immigrant_share,Australia,38,30,16,from p16 table
+immigrant_share,Singapore,37,43,16,from p16 table
+immigrant_share,New Zealand,32,29,16,from p16 table
+immigrant_share,United States,30,15,16,from p16 table
+immigrant_share,South Africa,30,5,16,from p16 table
+immigrant_share,Germany,29,19,16,from p16 table
+immigrant_share,Belgium,29,17,16,from p16 table
+immigrant_share,Malaysia,28,11,16,from p16 table
+immigrant_share,Argentina,28,5,16,from p16 table
+immigrant_share,Chile,27,9,16,from p16 table
+immigrant_share,Great Britain,26,14,16,from p16 table
+immigrant_share,France,25,13,16,from p16 table
+immigrant_share,Sweden,25,20,16,from p16 table
+immigrant_share,Ireland,25,18,16,from p16 table
+immigrant_share,Spain,24,15,16,from p16 table
+immigrant_share,Brazil,24,1,16,from p16 table
+immigrant_share,Colombia,23,4,16,from p16 table
+immigrant_share,Netherlands,23,14,16,from p16 table
+immigrant_share,Peru,22,4,16,from p16 table
+immigrant_share,Türkiye,22,7,16,from p16 table
+immigrant_share,Thailand,22,5,16,from p16 table
+immigrant_share,Italy,21,11,16,from p16 table
+immigrant_share,Indonesia,20,0,16,from p16 table
+immigrant_share,Mexico,20,1,16,from p16 table
+immigrant_share,Hungary,13,6,16,from p16 table
+immigrant_share,Poland,13,2,16,from p16 table
+immigrant_share,South Korea,12,3,16,from p16 table
+immigrant_share,Japan,9,2,16,from p16 table
+immigrant_share,India,9,0,16,from p16 table
+muslim_share,Indonesia,83,87,20,from p20 table
+muslim_share,Türkiye,71,98,20,from p20 table
+muslim_share,Malaysia,70,66,20,from p20 table
+muslim_share,Belgium,28,8,20,from p20 table
+muslim_share,France,28,8,20,from p20 table
+muslim_share,Singapore,27,16,20,from p20 table
+muslim_share,Thailand,25,6,20,from p20 table
+muslim_share,South Africa,25,2,20,from p20 table
+muslim_share,Germany,24,7,20,from p20 table
+muslim_share,Canada,23,3,20,from p20 table
+muslim_share,Australia,22,3,20,from p20 table
+muslim_share,Great Britain,21,6,20,from p20 table
+muslim_share,Sweden,21,7,20,from p20 table
+muslim_share,Netherlands,20,7,20,from p20 table
+muslim_share,Italy,19,5,20,from p20 table
+muslim_share,Ireland,18,2,20,from p20 table
+muslim_share,Spain,18,3,20,from p20 table
+muslim_share,United States,15,1,20,from p20 table
+muslim_share,India,14,15,20,from p20 table
+muslim_share,Brazil,12,<1,20,from p20 table
+muslim_share,New Zealand,11,2,20,from p20 table
+muslim_share,Argentina,8,<1,20,from p20 table
+muslim_share,Peru,8,<1,20,from p20 table
+muslim_share,Chile,7,<1,20,from p20 table
+muslim_share,Hungary,6,<1,20,from p20 table
+muslim_share,Mexico,6,<1,20,from p20 table
+muslim_share,Colombia,6,<1,20,from p20 table
+muslim_share,South Korea,6,<1,20,from p20 table
+muslim_share,Poland,6,<1,20,from p20 table
+muslim_share,Japan,4,<1,20,from p20 table
