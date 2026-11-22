@@ -1,14 +1,13 @@
-"""Build data/pairs.csv and data/pairs_categorical.csv from the two-pass transcription of the
+"""Build data/pairs.csv and data/pairs_categorical.csv from the hand transcription of the
 Ipsos Perils of Perception 2024 report (data/raw/ipsos-perils-of-perception-2024.pdf).
 
 Inputs (all hand-transcribed, committed, with page numbers):
-  data/transcription/pass1.csv            first reading of p13 / p16 / p20
-  data/transcription/pass2.csv            independent re-reading of p14 / p17 / p20
-  data/transcription/homicide_p22.csv     public answer distribution, p22
+  data/transcription/ipsos_2024_estimates.csv    average guess and printed actual, p13 / p16 / p20
+  data/transcription/homicide_p22.csv            public answer distribution, p22
   data/transcription/homicide_actual_p23_24.csv  actual direction (Ipsos text p11, scatter p23-24)
 
-The script refuses to write if the two passes disagree on any cell, so a transcription
-error cannot reach pairs.csv silently.
+The transcription was checked on 2026-11-22 by an independent second reading of p14, p17
+and p20; all 90 cells agreed, and the second reading was deleted afterwards (data/README.md).
 
 Truth columns (rule adopted 2026-11-22):
   t_value_ipsos   the figure exactly as printed in the report ("35%", "0%", "<1%", "No data available")
@@ -99,14 +98,7 @@ def truth(item, country, raw, unrounded):
 
 
 def main():
-    p1 = {(r["item_id"], r["country"]): r for r in read("pass1.csv")}
-    p2 = {(r["item_id"], r["country"]): r for r in read("pass2.csv")}
-    if set(p1) != set(p2):
-        sys.exit(f"pass key mismatch: {set(p1) ^ set(p2)}")
-    bad = [(k, p1[k]["h_mean"], p1[k]["t_raw"], p2[k]["h_mean"], p2[k]["t_raw"])
-           for k in p1 if (p1[k]["h_mean"], p1[k]["t_raw"]) != (p2[k]["h_mean"], p2[k]["t_raw"])]
-    if bad:
-        sys.exit(f"transcription passes disagree, fix before building: {bad}")
+    p1 = {(r["item_id"], r["country"]): r for r in read("ipsos_2024_estimates.csv")}
     if set(c for _, c in p1) != set(COUNTRIES):
         sys.exit(f"country set mismatch: {set(c for _, c in p1) ^ set(COUNTRIES)}")
 
