@@ -51,7 +51,8 @@ ITEMS = {
 }
 
 # Country metadata from the methodology page (p38). n is "approximately" as Ipsos states it.
-# representative: Ipsos's own statement; 'not_stated' where p38 names the country in neither list.
+# representative: Ipsos's own statement; Ireland and New Zealand are named in neither p38 list and are
+# treated as representative by author decision 2026-11-22.
 COUNTRIES = {
     # name_ipsos: (iso3, n_approx, age_range, representative)
     "Argentina": ("ARG", 500, "16-74", "yes"), "Australia": ("AUS", 1000, "16-74", "yes"),
@@ -60,10 +61,10 @@ COUNTRIES = {
     "Colombia": ("COL", 500, "16-74", "no_urban_educated_affluent"), "France": ("FRA", 1000, "16-74", "yes"),
     "Germany": ("DEU", 1000, "16-74", "yes"), "Great Britain": ("GBR", 1000, "16-74", "yes"),
     "Hungary": ("HUN", 500, "16-74", "yes"), "India": ("IND", 2000, "18+", "no_urban_subset"),
-    "Indonesia": ("IDN", 500, "21-74", "no_urban_educated_affluent"), "Ireland": ("IRL", 500, "16-74", "not_stated"),
+    "Indonesia": ("IDN", 500, "21-74", "no_urban_educated_affluent"), "Ireland": ("IRL", 500, "16-74", "yes"),
     "Italy": ("ITA", 1000, "16-74", "yes"), "Japan": ("JPN", 1000, "16-74", "yes"),
     "Malaysia": ("MYS", 500, "18-74", "no_urban_educated_affluent"), "Mexico": ("MEX", 500, "16-74", "no_urban_educated_affluent"),
-    "Netherlands": ("NLD", 500, "16-74", "yes"), "New Zealand": ("NZL", 1000, "16-74", "not_stated"),
+    "Netherlands": ("NLD", 500, "16-74", "yes"), "New Zealand": ("NZL", 1000, "16-74", "yes"),
     "Peru": ("PER", 500, "16-74", "no_urban_educated_affluent"), "Poland": ("POL", 500, "16-74", "yes"),
     "Singapore": ("SGP", 500, "21-74", "no_urban_educated_affluent"), "South Africa": ("ZAF", 500, "18-74", "no_urban_educated_affluent"),
     "South Korea": ("KOR", 500, "16-74", "yes"), "Spain": ("ESP", 1000, "16-74", "yes"),

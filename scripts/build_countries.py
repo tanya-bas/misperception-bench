@@ -21,7 +21,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "data")
 WB = os.path.join(D, "raw", "worldbank")
 
-# Ipsos name -> (ISO3, World Bank name variant, main language, Ipsos representative flag from p38)
+# Ipsos name -> (ISO3, World Bank name variant, main language, Ipsos representative flag from p38;
+# Ireland and New Zealand are named on neither p38 list and are treated as representative by author decision 2026-11-22)
 COUNTRIES = {
     "Argentina": ("ARG", "Argentina", "Spanish", "yes"), "Australia": ("AUS", "Australia", "English", "yes"),
     "Belgium": ("BEL", "Belgium", "Dutch/French", "yes"), "Brazil": ("BRA", "Brazil", "Portuguese", "no_urban_educated_affluent"),
@@ -29,10 +30,10 @@ COUNTRIES = {
     "Colombia": ("COL", "Colombia", "Spanish", "no_urban_educated_affluent"), "France": ("FRA", "France", "French", "yes"),
     "Germany": ("DEU", "Germany", "German", "yes"), "Great Britain": ("GBR", "United Kingdom", "English", "yes"),
     "Hungary": ("HUN", "Hungary", "Hungarian", "yes"), "India": ("IND", "India", "Hindi/English", "no_urban_subset"),
-    "Indonesia": ("IDN", "Indonesia", "Indonesian", "no_urban_educated_affluent"), "Ireland": ("IRL", "Ireland", "English", "not_stated"),
+    "Indonesia": ("IDN", "Indonesia", "Indonesian", "no_urban_educated_affluent"), "Ireland": ("IRL", "Ireland", "English", "yes"),
     "Italy": ("ITA", "Italy", "Italian", "yes"), "Japan": ("JPN", "Japan", "Japanese", "yes"),
     "Malaysia": ("MYS", "Malaysia", "Malay", "no_urban_educated_affluent"), "Mexico": ("MEX", "Mexico", "Spanish", "no_urban_educated_affluent"),
-    "Netherlands": ("NLD", "Netherlands", "Dutch", "yes"), "New Zealand": ("NZL", "New Zealand", "English", "not_stated"),
+    "Netherlands": ("NLD", "Netherlands", "Dutch", "yes"), "New Zealand": ("NZL", "New Zealand", "English", "yes"),
     "Peru": ("PER", "Peru", "Spanish", "no_urban_educated_affluent"), "Poland": ("POL", "Poland", "Polish", "yes"),
     "Singapore": ("SGP", "Singapore", "English/Mandarin/Malay/Tamil", "no_urban_educated_affluent"), "South Africa": ("ZAF", "South Africa", "English (+10 official)", "no_urban_educated_affluent"),
     "South Korea": ("KOR", "Korea, Rep.", "Korean", "yes"), "Spain": ("ESP", "Spain", "Spanish", "yes"),

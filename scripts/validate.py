@@ -7,7 +7,6 @@ Checks:
   3. question wording in pairs.csv appears verbatim in data/items.yaml
   4. immigrant_share: Ipsos printed figure (t_value_ipsos) vs the World Bank T used (t_value), per country
   5. definition_match summary per item
-  6. 2024 vs comparator-wave immigrant-share averages from report p19 (validation artifact only)
 Run: python3 -I scripts/validate.py
 """
 import csv, os, re
@@ -69,17 +68,11 @@ def main():
     dm = Counter((r["item_id"], r["definition_match"]) for r in pct)
     out.append(f"5. definition_match per item: {dict(dm)}. 'approximate' = wealth_top1 (households in question, adults in WID).")
 
-    # 6. comparator artifact
-    comp = read(os.path.join(D, "validation", "ipsos_comparator_immigrant_share_p19.csv"))
-    diffs = [(r["country"], int(r["avg_guess_2024"]) - int(r["avg_guess_comparator"])) for r in comp]
-    out.append(f"6. 2024 vs comparator wave (report p19) immigrant-share average guess, 13 countries: {diffs}.")
-    out.append("   Caveat: the p19 legend says 2018 but the base note describes the 2014 wave (14 countries, Aug 2014). Stored under data/validation/, not used in pairs.csv.")
-
     # sample total
     n_total = sum(int(r["n_country_approx"]) for r in pct if r["item_id"] == "immigrant_share")
-    out.append(f"7. Sum of Ipsos 'approximately' per-country samples: {n_total} vs 22,989 interviews stated on p38 (Ipsos rounds per-country n).")
+    out.append(f"6. Sum of Ipsos 'approximately' per-country samples: {n_total} vs 22,989 interviews stated on p38 (Ipsos rounds per-country n).")
     wp_missing = [c for c, r in countries.items() if r["enwiki_mentions"] == ""]
-    out.append(f"8. countries.csv: {len(countries)} rows; web_presence missing for: {wp_missing or 'none'}; "
+    out.append(f"7. countries.csv: {len(countries)} rows; web_presence missing for: {wp_missing or 'none'}; "
                f"income groups: {dict(Counter(r['wb_income_group'] for r in countries.values()))}.")
 
     report = "\n".join(out)
