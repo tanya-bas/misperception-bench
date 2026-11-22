@@ -1,0 +1,4 @@
+# Raw downloads (PDFs, API dumps). Re-fetch per data/README.md; sha256 + URL in data/sources.csv.
+data/raw/
+__pycache__/
+.DS_Store
