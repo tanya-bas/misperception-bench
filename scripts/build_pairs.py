@@ -13,6 +13,10 @@ Truth columns (rule adopted 2026-11-22):
   t_value_ipsos   the figure exactly as printed in the report ("35%", "0%", "<1%", "No data available")
   t_value         numeric truth used in analysis
   t_flag          as_printed            t_value is the printed number
+                  world_bank            immigrant_share only (decision 2026-11-22): t_value is the World Bank
+                                        WDI SM.POP.TOTL.ZS value from data/countries.csv (UN DESA series,
+                                        unrounded, year in t_reference_year); the printed figure stays in
+                                        t_value_ipsos
                   source_unrounded      report printed 0% or <1%; t_value is the unrounded value from
                                         the source Ipsos cites (details in t_unrounded_source / _url)
                   source_unrounded_pending  same case but the unrounded value could not be fetched yet;
@@ -38,8 +42,8 @@ ITEMS = {
         definition_note="question says households; WID top-1% wealth share is adult-based (equal-split)"),
     "immigrant_share": dict(
         wording="What percentage of your country's population do you think immigrants (i.e., people born in another country) represent?",
-        t_source="UN International Migrant Stock", definition_match="yes",
-        definition_note="foreign-born in both question and source"),
+        t_source="World Bank WDI SM.POP.TOTL.ZS (UN DESA International Migrant Stock)", definition_match="yes",
+        definition_note="foreign-born in both question and source; Ipsos cites UN International Migrant Stock, T taken from the World Bank copy of the same series (decision 2026-11-22)"),
     "muslim_share": dict(
         wording="In your country, out of 100 people, how many do you think are Muslim?",
         t_source="Pew Research", definition_match="yes",
@@ -79,10 +83,18 @@ def printed(raw):
     return raw if raw.lower() in ("no data available", "n/a") or raw.endswith("%") else raw + "%"
 
 
-def truth(item, country, raw, unrounded):
+def truth(item, country, raw, unrounded, wdi):
     """Return a dict of the truth columns for one pair (see module docstring)."""
     raw = raw.strip()
-    base = {"t_value_ipsos": printed(raw), "t_unrounded_source": "", "t_unrounded_url": "", "t_unrounded_year": ""}
+    base = {"t_value_ipsos": printed(raw), "t_unrounded_source": "", "t_unrounded_url": "", "t_unrounded_year": "",
+            "t_reference_year": ""}
+    if item == "immigrant_share":
+        # World Bank series is T for this item regardless of what Ipsos printed (decision 2026-11-22).
+        w = wdi[COUNTRIES[country][0]]
+        if w["migrant_stock_pct_wdi"] == "":
+            sys.exit(f"no World Bank migrant stock value in countries.csv for {country}")
+        return {**base, "t_value": float(w["migrant_stock_pct_wdi"]), "t_flag": "world_bank",
+                "t_reference_year": w["migrant_stock_pct_year"]}
     if raw.lower() in ("no data available", "n/a", ""):
         return {**base, "t_value": "", "t_flag": "missing"}
     if raw == "<1" or float(raw) == 0:
@@ -103,11 +115,13 @@ def main():
         sys.exit(f"country set mismatch: {set(c for _, c in p1) ^ set(COUNTRIES)}")
 
     unrounded = {(r["item_id"], r["country"]): r for r in read("t_unrounded_sources.csv")}
+    with open(os.path.join(D, "countries.csv"), encoding="utf-8") as f:
+        wdi = {r["country_iso3"]: r for r in csv.DictReader(f)}
     rows = []
     for (item, country), r in sorted(p1.items()):
         iso3, n, age, rep = COUNTRIES[country]
         meta = ITEMS[item]
-        t = truth(item, country, r["t_raw"], unrounded)
+        t = truth(item, country, r["t_raw"], unrounded, wdi)
         rows.append({
             "wave": WAVE, "source_id": SOURCE_ID,
             "country_name_ipsos": country, "country_iso3": iso3, "item_id": item,
@@ -115,7 +129,7 @@ def main():
             "t_value_ipsos": t["t_value_ipsos"], "t_value": t["t_value"], "t_flag": t["t_flag"],
             "t_unrounded_source": t["t_unrounded_source"], "t_unrounded_url": t["t_unrounded_url"],
             "t_unrounded_year": t["t_unrounded_year"],
-            "t_source": meta["t_source"], "t_reference_year": "",
+            "t_source": meta["t_source"], "t_reference_year": t["t_reference_year"],
             "definition_match": meta["definition_match"], "definition_note": meta["definition_note"],
             "question_wording": meta["wording"],
             "source_page": r["page"],  # pass-1 page; the two-pass outcome is reported by validate.py, not per row

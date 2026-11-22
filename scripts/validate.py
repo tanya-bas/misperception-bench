@@ -5,7 +5,7 @@ Checks:
   1. percent items: H and T inside [0, 100]; t_flag summary; any T that is 0 or blank (logit undefined)
   2. 30 countries per item; missing T listed
   3. question wording in pairs.csv appears verbatim in data/items.yaml
-  4. Ipsos immigrant-share T vs World Bank WDI SM.POP.TOTL.ZS (same UN DESA source) per country
+  4. immigrant_share: Ipsos printed figure (t_value_ipsos) vs the World Bank T used (t_value), per country
   5. definition_match summary per item
   6. 2024 vs comparator-wave immigrant-share averages from report p19 (validation artifact only)
 Run: python3 -I scripts/validate.py
@@ -49,22 +49,21 @@ def main():
     nomatch = [i for i, w in wordings.items() if w not in yaml_text]
     out.append(f"3. Question wording present verbatim in items.yaml for all items: {'yes' if not nomatch else 'NO: ' + str(nomatch)}.")
 
-    # 4. Ipsos immigrant T vs WDI migrant stock
+    # 4. immigrant_share: Ipsos printed figure vs the World Bank T actually used
     countries = {r["country_iso3"]: r for r in read(os.path.join(D, "countries.csv"))}
-    out.append("4. Ipsos immigrant-share T vs World Bank WDI SM.POP.TOTL.ZS (both UN DESA):")
-    out.append("   | country | Ipsos T | WDI % (year) | diff |")
+    out.append("4. immigrant_share: Ipsos printed figure (t_value_ipsos) vs World Bank WDI T used (t_value):")
+    out.append("   | country | Ipsos printed | WDI T (year) | printed - T |")
     out.append("   |---|---|---|---|")
     big = 0
     for r in sorted((r for r in pct if r["item_id"] == "immigrant_share"), key=lambda r: r["country_iso3"]):
-        c = countries[r["country_iso3"]]
-        wdi = c["migrant_stock_pct_wdi"]
-        if wdi == "":
-            out.append(f"   | {r['country_name_ipsos']} | {r['t_value']} | n/a | |"); continue
-        diff = float(r["t_value"]) - float(wdi)
+        printed = r["t_value_ipsos"].rstrip("%")
+        if not re.fullmatch(r"\d+(\.\d+)?", printed):
+            out.append(f"   | {r['country_name_ipsos']} | {r['t_value_ipsos']} | {r['t_value']} ({r['t_reference_year']}) | n/a |"); continue
+        diff = float(printed) - float(r["t_value"])
         flag = " **>2pp**" if abs(diff) > 2 else ""
         big += abs(diff) > 2
-        out.append(f"   | {r['country_name_ipsos']} | {float(r['t_value']):.0f} | {float(wdi):.1f} ({c['migrant_stock_pct_year']}) | {diff:+.1f}{flag} |")
-    out.append(f"   Countries where |Ipsos T - WDI| > 2 points: {big}. Differences reflect the WDI vintage vs the UN DESA release Ipsos used; Ipsos rounds to whole percents.")
+        out.append(f"   | {r['country_name_ipsos']} | {r['t_value_ipsos']} | {float(r['t_value']):.1f} ({r['t_reference_year']}) | {diff:+.1f}{flag} |")
+    out.append(f"   Countries where |printed - T| > 2 points: {big}. T is the World Bank series (decision 2026-11-22); differences reflect the UN DESA release Ipsos used and Ipsos rounding to whole percents.")
 
     # 5. definition match
     dm = Counter((r["item_id"], r["definition_match"]) for r in pct)

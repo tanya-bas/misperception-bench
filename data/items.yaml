@@ -22,13 +22,15 @@ items:
     transform: logit
     wording_2024: "What percentage of your country's population do you think immigrants (i.e., people born in another country) represent?"
     report_page: 16
-    t_source: UN International Migrant Stock
+    t_source: World Bank WDI SM.POP.TOTL.ZS (UN DESA International Migrant Stock)
+    t_source_cited_by_ipsos: UN International Migrant Stock
     t_definition_note: >
       Question defines immigrants as people born in another country (foreign-born).
       UN DESA International Migrant Stock is foreign-born (foreign citizens where birth
       data is unavailable). Definitional match = yes. Not the Eurobarometer non-EU-born quantity.
-      Ipsos prints 0% for India and Indonesia; t_value there is the World Bank migrant-stock ratio
-      for 2024 (t_flag = source_unrounded).
+      Decision 2026-11-22: T for every country is the World Bank WDI copy of the UN DESA series
+      (SM.POP.TOTL.ZS, 2024, unrounded; t_flag = world_bank), so India and Indonesia are no longer
+      0%. The figure Ipsos printed is kept in t_value_ipsos for comparison.
     salience_apriori: high
   - item_id: muslim_share
     name: Share of the population that is Muslim
