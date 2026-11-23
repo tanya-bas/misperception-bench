@@ -1,8 +1,6 @@
-# Item dictionary for the dataset: Ipsos Perils of Perception 2024 (four items, also asked with identical
-# wording in the Ipsos survey for the Entretiens de Royaumont, December 2023, wave ipsos_royaumont_2023,
-# 10 countries; that wave reuses the 2024 T values and serves as a replication of H one year earlier, not as
-# an independent truth point), Ipsos Perils of Perception 2020, causes of death (six items; wave ipsos_2020), and
-# Ipsos Earth Day 2022 (one banded degrees-Celsius item in pairs_banded.csv; wave ipsos_earthday_2022).
+# Item dictionary for the dataset: Ipsos Perils of Perception 2024 (four items), Ipsos Perils of
+# Perception 2020, causes of death (six items; wave ipsos_2020), and Ipsos Earth Day 2022 (one banded
+# degrees-Celsius item in pairs_banded.csv; wave ipsos_earthday_2022).
 # scale:      percent = a 0-100 share; categorical = fixed answer options
 # transform:  logit = analyse on the log-odds scale (H2b compression, H1a variance ratio);
 #             none  = categorical, analysed as agreement with public majority vs truth
@@ -14,9 +12,7 @@ items:
     scale: percent
     transform: logit
     wording_2024: "What percentage of your country's total household wealth do you think is owned by the top 1% of richest households?"
-    wording_2023: "What percentage of your country's total household wealth do you think is owned by the top 1% of richest households?"
     report_page: 13
-    report_page_2023: 3
     t_source: World Inequality Database, top 1% share of net personal wealth, 2024 (WID 2026 release via Our World in Data mirror)
     t_source_cited_by_ipsos: World Inequality Database
     t_definition_note: >
@@ -33,9 +29,7 @@ items:
     scale: percent
     transform: logit
     wording_2024: "What percentage of your country's population do you think immigrants (i.e., people born in another country) represent?"
-    wording_2023: "What percentage of your country's population do you think immigrants (i.e., people born in another country) represent?"
     report_page: 16
-    report_page_2023: 4
     t_source: World Bank WDI SM.POP.TOTL.ZS (UN DESA International Migrant Stock)
     t_source_cited_by_ipsos: UN International Migrant Stock
     t_definition_note: >
@@ -51,9 +45,7 @@ items:
     scale: percent
     transform: logit
     wording_2024: "In your country, out of 100 people, how many do you think are Muslim?"
-    wording_2023: "In your country, out of 100 people, how many do you think are Muslim?"
     report_page: 20
-    report_page_2023: 5
     t_source: Pew Research Center, Religious Composition of the World's Population 2010-2020 (June 2025), 2020 estimate
     t_source_cited_by_ipsos: Pew Research
     t_definition_note: >
@@ -69,9 +61,7 @@ items:
     scale: categorical
     transform: none
     wording_2024: "Do you think the homicide rate in your country is higher, lower, or about the same as in 2000?"
-    wording_2023: "Do you think the homicide rate in your country is higher, lower, or about the same as in 2000?"
     report_page: 22
-    report_page_2023: 6
     t_source: UN Office on Drugs and Crime
     t_definition_note: >
       Ipsos's text (p11): majorities in 25 of 30 countries say higher; "it is actually about the
