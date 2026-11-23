@@ -2,24 +2,29 @@
 
 Human estimates (H), truth values (T) and country covariates for the paper
 *Lost in Average: How LLMs Erase Differences in What the World Believes*.
-Scope: two Ipsos Perils of Perception waves. `ipsos_2024` (30 countries, fieldwork 20 September
-to 4 October 2024; the v0 dataset, unchanged) and `ipsos_2020`, the causes-of-death wave (32
-countries, fieldwork 22 November to 6 December 2019, published February 2020). Every value
-carries the document and page it came from. Inclusion rule: surveys published from 2020 onward.
+Scope: three Ipsos waves. `ipsos_2024` (Perils of Perception 2024, 30 countries, fieldwork 20
+September to 4 October 2024; the v0 dataset, unchanged), `ipsos_2020` (Perils of Perception 2020,
+causes of death, 32 countries, fieldwork 22 November to 6 December 2019, published February 2020)
+and `ipsos_royaumont_2023` (Ipsos for the Entretiens de Royaumont, December 2023, 10 countries,
+fieldwork 22 to 25 November 2023; the 2024 items asked a year earlier, a replication of H that
+reuses the 2024 T). Every value carries the document and page it came from. Inclusion rule:
+surveys published from 2020 onward.
 
 ## Files
 
 | File | One row per | Rows | Built by |
 |---|---|---|---|
 | `items.yaml` | item | 10 (4 from 2024, 6 from 2020) | hand-written |
-| `sources.csv` | document, dataset or API dump | 11 | hand-written |
-| `pairs.csv` | country x percent item | 280 (90 `ipsos_2024` + 190 `ipsos_2020`) | `scripts/build_pairs.py` |
-| `pairs_categorical.csv` | country x homicide-trend item | 30 | `scripts/build_pairs.py` |
+| `sources.csv` | document, dataset or API dump | 12 | hand-written |
+| `pairs.csv` | country x percent item | 309 (90 `ipsos_2024` + 190 `ipsos_2020` + 29 `ipsos_royaumont_2023`) | `scripts/build_pairs.py` |
+| `pairs_categorical.csv` | country x homicide-trend item | 40 (30 `ipsos_2024` + 10 `ipsos_royaumont_2023`) | `scripts/build_pairs.py` |
 | `countries.csv` | country | 36 (30 from 2024 + 6 only in 2020) | `scripts/build_countries.py` |
 | `transcription/ipsos_2024_estimates.csv` | transcribed cell | 90 | hand-transcribed |
 | `transcription/homicide_p22.csv`, `homicide_actual_p23_24.csv` | country | 30 each | hand-transcribed |
 | `transcription/ipsos_2020_estimates.csv` | transcribed cell (six usable cause pages) | 190 | transcribed from the PDF text layer, checked against page images |
 | `transcription/ipsos_2020_defective_pages.csv` | printed row of the three unusable cause pages (p19, p21, p25) | 95 | record only, not built into `pairs.csv` |
+| `transcription/ipsos_royaumont_2023_estimates.csv` | bar-chart label pair (incl. the "Global Average" bars, which are not built) | 32 | transcribed from the PDF text layer, checked against page images |
+| `transcription/ipsos_royaumont_2023_homicide_p6.csv` | country (incl. "Global Average") | 11 | same |
 | `validation/truth_crosscheck.csv` | candidate truth value per (item, country, source) | 227 | sourced from primary databases; feeds the muslim_share T and documents alternatives |
 | `raw/` | downloads, gitignored | | see Re-fetching below |
 
@@ -178,6 +183,38 @@ neither, so `n_country_approx` is `not_stated` for those three (and `age_range` 
 Philippines); the stated n sum to 21,000 against 16,000 interviews, which equals 32 x 500, so
 the lists may be boilerplate. Recorded as printed, not corrected.
 
+**Ipsos for the Entretiens de Royaumont, December 2023** (`ipsos_royaumont_2023_deck` in
+`sources.csv`, wave `ipsos_royaumont_2023`). "Perils of perception, prejudice and conspiracy
+theories", an 18-page public deck; "Survey conducted among 10,000 people on the Ipsos Digital
+platform from 22 to 25 November 2023" (p1), 10 countries (Australia, United Kingdom, Germany,
+Poland, France, Japan, Argentina, Italy, Turkey, United States), so about 1,000 per country. The
+deck does not state age ranges or describe the samples as nationally representative, so
+`age_range` and `representative_sample` are `not_stated` (decision 2026-11-22). Pages 3 to 5
+chart "Actual Data" against "Respondents' Perception" for the three 2024 percent items with
+identical wording (wealth_top1 p3, immigrant_share p4, muslim_share p5, which omits Turkey: 9
+countries), and p6 charts the share answering "higher" to the 2024 homicide question. The "Global
+Average" bars are transcribed but not built. H is the perception bar label (a mean, whole percents;
+the Muslim-share actuals carry a decimal comma, kept as printed in `t_value_ipsos`, e.g. "0,0%").
+
+**Truth, Royaumont 2023.** T, `t_flag`, `t_source`, `t_reference_year` and the definition columns
+are copied from the `ipsos_2024` row of the same country and item (World Bank 2024, Pew 2020, WID
+2024), so each item has one truth vintage across waves; the deck's own printed actuals (World
+Inequality Database, IOM World Migration Report 2022, World Population Review) stay in
+`t_value_ipsos`. The wave therefore serves as a replication of H one year earlier, not as an
+independent truth point (decision 2026-11-22). `validate.py` check 9 enforces the identity. The
+deck's printed wealth actuals (10% to 21%) are far below any WID top-1% wealth share (21% to 35%
+for these countries) and look like WID top-1% income shares printed against the wealth question,
+one more reason not to use them as T; all ten wealth rows are therefore flagged in validation
+check 4. For the homicide item only the "higher" share is printed; `pct_same` and `pct_lower` are blank,
+`public_majority` is "higher" where that share exceeds 50 and blank otherwise (Poland and Japan,
+43%), and `actual_direction` follows the p6 footnote "Homicide rates have gone down significantly
+in all these countries – except the United States" (source: World Bank): `lower` for nine
+countries, `same_or_higher` for the United States.
+
+**Transcription check, Royaumont 2023.** Pass 1 clustered the text layer's percent labels to the
+nearest country label by x-position (`pdftotext -tsv`); pass 2 read the rendered page images. All
+43 label groups (75 values, including the Global Average bars) agreed.
+
 **World Bank** (`countries.csv`): income group and region from the country endpoint;
 GDP per capita PPP (`NY.GDP.PCAP.PP.CD`, latest year <= 2024); international migrant stock
 % (`SM.POP.TOTL.ZS`, UN DESA, 2024), which is T for immigrant_share in `pairs.csv` (decision
@@ -251,6 +288,9 @@ Then rebuild: `python3 -I scripts/build_pairs.py && python3 -I scripts/build_cou
 * 2026-11-22: 2020 sample sizes recorded as the technical note states them; Argentina and Belgium (listed under both ~1000 and ~500) and the Philippines (listed under neither) get `n_country_approx = not_stated`. All 32 countries are named in the representative or urban/affluent list, so no Ireland/New Zealand-style decision was needed.
 * 2026-11-22: the six countries only in the 2020 wave (China, Hong Kong, Philippines, Romania, Russia, Saudi Arabia) are appended to countries.csv from the cached World Bank dumps (which cover all economies) and a web-presence fetch run the same day; the 30 existing rows are unchanged. Their `ipsos_representative_sample` comes from the 2020 technical note.
 * 2026-11-22: 2020 country names in pairs.csv are as printed in that deck (United Kingdom, Turkey, Hong Kong SAR China); countries.csv keeps the 2024 names for the shared countries.
+* 2026-11-22: Ipsos Royaumont December 2023 wave admitted (published December 2023) with the same item_ids as 2024. T is reused from the 2024 rows (one vintage per item across waves); the wave is a replication of H one year earlier, not an independent truth point. The deck does not describe its samples as representative: representative_sample = not_stated, age_range = not_stated, n approximately 1,000 (10,000 respondents, 10 countries).
+* 2026-11-22: Royaumont homicide item stored in pairs_categorical.csv from the "% higher" chart alone; the p6 footnote gives the actual direction (down everywhere except the United States, which is recorded as same_or_higher).
+* 2026-11-22: skip list. ISSP 2019 occupational-earnings items are excluded (truth normalisation cost: earnings questions need country- and occupation-specific wage truths on a common scale). The Fabre, Douenne and Mattauch 2023 foreign-aid item is excluded (figure-only publication: the per-country estimates are printed only as a chart).
 
 ## Follow-ups
 
@@ -258,6 +298,7 @@ Then rebuild: `python3 -I scripts/build_pairs.py && python3 -I scripts/build_cou
 * `wikidata_p17_count` completed for 3 of 36 countries (Argentina, Hungary, China) before the SPARQL time limit; `enwiki_mentions` is the covariate to use.
 * ipsos_2020 T from a current GBD vintage: OWID's API and CSV downloads refuse IHME data (indicator IDs listed under Truth, 2020). Options are the IHME GBD Results Tool (login, non-commercial licence) or the WHO Global Health Estimates (open CSV, different cause taxonomy). Whichever is used, keep one vintage for all 32 countries, record it in t_flag as `owid_gbd_<year>` or equivalent, and fill the six `source_unrounded_pending` HIV/STI rows; Hong Kong is not a GBD location.
 * ipsos_2020 terrorism, substance use and transport items: per-country figures may exist in Ipsos's data tables or at perils.ipsos.com (the deck's stated source page); if found, the printed rows in `transcription/ipsos_2020_defective_pages.csv` can be attributed and the items built.
+* ipsos_royaumont_2023: `t_value_ipsos` carries the deck's printed actuals (e.g. IOM 2022 immigrant shares); they are not cross-checked against the 2024 printed figures beyond the validation table.
 * ipsos_2020 question wording: `run.py` builds plain/official prompts from `PLAIN_QUESTIONS[item]`, which has no entries for the six new items, and the verbatim wording keeps the deck's "[COUNTRY]" placeholder and missing "how"; the prompt layer needs per-item questions before the 2020 wave is run.
 
 ## Validation results
@@ -266,7 +307,7 @@ Generated by `scripts/validate.py`.
 
 <!-- validation:start -->
 ```
-1. Range check: 280 rows (ipsos_2024: 90, ipsos_2020: 190).
+1. Range check: 309 rows (ipsos_2024: 90, ipsos_2020: 190, ipsos_royaumont_2023: 29).
    ipsos_2024: 0 outside [0,100].
    t_flag counts: {('immigrant_share', 'world_bank'): 30, ('muslim_share', 'pew_2020'): 30, ('wealth_top1', 'wid_2024'): 30}
    T zero or blank (logit undefined): none
@@ -275,9 +316,14 @@ Generated by `scripts/validate.py`.
    t_flag counts: {('deaths_cancer', 'ipsos_printed_gbd2017'): 31, ('deaths_cancer', 'ipsos_printed_healthyhk'): 1, ('deaths_cardiovascular', 'ipsos_printed_gbd2017'): 29, ('deaths_cardiovascular', 'ipsos_printed_gbd2017_swap_corrected'): 2, ('deaths_cardiovascular', 'ipsos_printed_healthyhk'): 1, ('deaths_hiv_sti', 'ipsos_printed_gbd2017'): 25, ('deaths_hiv_sti', 'source_unrounded_pending'): 6, ('deaths_neurological', 'ipsos_printed_gbd2017'): 31, ('deaths_neurological', 'ipsos_printed_healthyhk'): 1, ('deaths_suicide', 'ipsos_printed_gbd2017'): 31, ('deaths_suicide', 'ipsos_printed_healthyhk'): 1, ('deaths_violence', 'ipsos_printed_gbd2017'): 30, ('deaths_violence', 'ipsos_printed_healthyhk'): 1}
    T zero or blank (logit undefined): [('deaths_hiv_sti', 'Hong Kong SAR China', '0.0'), ('deaths_hiv_sti', 'Hungary', '0.0'), ('deaths_hiv_sti', 'Japan', '0.0'), ('deaths_hiv_sti', 'Netherlands', '0.0'), ('deaths_hiv_sti', 'Poland', '0.0'), ('deaths_hiv_sti', 'Sweden', '0.0')]
    T below 1 percent (printed figure, T used): [('deaths_hiv_sti', 'Argentina', '0.6', '0.6'), ('deaths_hiv_sti', 'Australia', '0.1', '0.1'), ('deaths_hiv_sti', 'Belgium', '0.1', '0.1'), ('deaths_hiv_sti', 'Canada', '0.1', '0.1'), ('deaths_hiv_sti', 'Chile', '0.5', '0.5'), ('deaths_hiv_sti', 'China', '0.4', '0.4'), ('deaths_hiv_sti', 'France', '0.1', '0.1'), ('deaths_hiv_sti', 'Germany', '0.1', '0.1'), ('deaths_hiv_sti', 'India', '0.7', '0.7'), ('deaths_hiv_sti', 'Italy', '0.1', '0.1'), ('deaths_hiv_sti', 'Mexico', '0.9', '0.9'), ('deaths_hiv_sti', 'Philippines', '0.9', '0.9'), ('deaths_hiv_sti', 'Romania', '0.1', '0.1'), ('deaths_hiv_sti', 'Singapore', '0.2', '0.2'), ('deaths_hiv_sti', 'South Korea', '0.1', '0.1'), ('deaths_hiv_sti', 'Spain', '0.2', '0.2'), ('deaths_hiv_sti', 'Turkey', '0.1', '0.1'), ('deaths_hiv_sti', 'United Kingdom', '0.1', '0.1'), ('deaths_hiv_sti', 'United States', '0.3', '0.3'), ('deaths_suicide', 'Italy', '0.7', '0.7'), ('deaths_suicide', 'Peru', '0.7', '0.7'), ('deaths_suicide', 'Philippines', '0.8', '0.8'), ('deaths_suicide', 'Romania', '0.9', '0.9'), ('deaths_suicide', 'Spain', '0.9', '0.9'), ('deaths_suicide', 'Turkey', '0.7', '0.7'), ('deaths_violence', 'Argentina', '0.8', '0.8'), ('deaths_violence', 'Australia', '0.2', '0.2'), ('deaths_violence', 'Belgium', '0.1', '0.1'), ('deaths_violence', 'Canada', '0.2', '0.2'), ('deaths_violence', 'Chile', '0.7', '0.7'), ('deaths_violence', 'China', '0.1', '0.1'), ('deaths_violence', 'France', '0.1', '0.1'), ('deaths_violence', 'Germany', '0.1', '0.1'), ('deaths_violence', 'Hong Kong SAR China', '0.1', '0.1'), ('deaths_violence', 'Hungary', '0.1', '0.1'), ('deaths_violence', 'India', '0.4', '0.4'), ('deaths_violence', 'Italy', '0.1', '0.1'), ('deaths_violence', 'Japan', '0.1', '0.1'), ('deaths_violence', 'Malaysia', '0.4', '0.4'), ('deaths_violence', 'Netherlands', '0.1', '0.1'), ('deaths_violence', 'Peru', '0.8', '0.8'), ('deaths_violence', 'Poland', '0.2', '0.2'), ('deaths_violence', 'Romania', '0.2', '0.2'), ('deaths_violence', 'Singapore', '0.1', '0.1'), ('deaths_violence', 'South Korea', '0.2', '0.2'), ('deaths_violence', 'Spain', '0.1', '0.1'), ('deaths_violence', 'Sweden', '0.1', '0.1'), ('deaths_violence', 'Turkey', '0.4', '0.4'), ('deaths_violence', 'United Kingdom', '0.1', '0.1'), ('deaths_violence', 'United States', '0.7', '0.7')]
+   ipsos_royaumont_2023: 0 outside [0,100].
+   t_flag counts: {('immigrant_share', 'world_bank'): 10, ('muslim_share', 'pew_2020'): 9, ('wealth_top1', 'wid_2024'): 10}
+   T zero or blank (logit undefined): none
+   T below 1 percent (printed figure, T used): [('muslim_share', 'Argentina', '0,9%', '0.9292'), ('muslim_share', 'Japan', '0,2%', '0.16997'), ('muslim_share', 'Poland', '0,0%', '0.00732')]
 2. Countries per item:
    ipsos_2024: {'immigrant_share': 30, 'muslim_share': 30, 'wealth_top1': 30}. Rows without usable T: none
    ipsos_2020: {'deaths_cancer': 32, 'deaths_cardiovascular': 32, 'deaths_hiv_sti': 31, 'deaths_neurological': 32, 'deaths_suicide': 32, 'deaths_violence': 31}. Rows without usable T: [('deaths_hiv_sti', 'Hong Kong SAR China', '0.0'), ('deaths_hiv_sti', 'Hungary', '0.0'), ('deaths_hiv_sti', 'Japan', '0.0'), ('deaths_hiv_sti', 'Netherlands', '0.0'), ('deaths_hiv_sti', 'Poland', '0.0'), ('deaths_hiv_sti', 'Sweden', '0.0')]
+   ipsos_royaumont_2023: {'immigrant_share': 10, 'muslim_share': 9, 'wealth_top1': 10}. Rows without usable T: none
 3. Question wording present verbatim in items.yaml for all 9 items: yes.
 4. Ipsos printed figure (t_value_ipsos) vs T used (t_value), per item; rows where |printed - T| > 2 points are flagged:
    wave ipsos_2024
@@ -600,10 +646,56 @@ Generated by `scripts/validate.py`.
    | South Africa | 3.3 | 3.30 (2017) | +0.00 |
    deaths_violence: countries where |printed - T| > 2 points: 0 
    T is the printed GBD 2017 figure itself (fallback after the Our World in Data pull was refused, decision 2026-11-22), so printed and used differ only where the printed actual is swapped between two adjacent rows (cardiovascular, Saudi Arabia and Germany) or is a rounded 0.0 left blank.
-5. definition_match per item: {('immigrant_share', 'yes'): 28, ('immigrant_share', 'approximate'): 2, ('muslim_share', 'yes'): 30, ('wealth_top1', 'approximate'): 30, ('deaths_cancer', 'yes'): 31, ('deaths_cancer', 'approximate'): 1, ('deaths_cardiovascular', 'yes'): 31, ('deaths_cardiovascular', 'approximate'): 1, ('deaths_hiv_sti', 'yes'): 30, ('deaths_hiv_sti', 'approximate'): 1, ('deaths_neurological', 'yes'): 31, ('deaths_neurological', 'approximate'): 1, ('deaths_suicide', 'yes'): 31, ('deaths_suicide', 'approximate'): 1, ('deaths_violence', 'yes'): 30, ('deaths_violence', 'approximate'): 1}. 'approximate' = wealth_top1 (households in question, adults in WID), immigrant_share India/Indonesia (citizenship-based stock), and every Hong Kong row of ipsos_2020 (actual from healthyhk.gov.hk, not GBD).
+   wave ipsos_royaumont_2023
+   wealth_top1 (T source: World Inequality Database, top 1% share of net personal wealth, 2024 (WID 2026 release via Our World in Data mirror))
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | 13% | 25.78 (2024) | -12.78 **>2pp** |
+   | Australia | 10% | 23.67 (2024) | -13.67 **>2pp** |
+   | Germany | 10% | 27.85 (2024) | -17.85 **>2pp** |
+   | France | 13% | 27.68 (2024) | -14.68 **>2pp** |
+   | United Kingdom | 10% | 21.30 (2024) | -11.30 **>2pp** |
+   | Italy | 14% | 22.03 (2024) | -8.03 **>2pp** |
+   | Japan | 13% | 24.62 (2024) | -11.62 **>2pp** |
+   | Poland | 10% | 29.92 (2024) | -19.92 **>2pp** |
+   | Turkey | 19% | 31.74 (2024) | -12.74 **>2pp** |
+   | United States | 21% | 34.78 (2024) | -13.78 **>2pp** |
+   wealth_top1: countries where |printed - T| > 2 points: 10 ['Argentina', 'Australia', 'Germany', 'France', 'United Kingdom', 'Italy', 'Japan', 'Poland', 'Turkey', 'United States']
+   immigrant_share (T source: World Bank WDI SM.POP.TOTL.ZS (UN DESA International Migrant Stock))
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | 5% | 4.30 (2024) | +0.70 |
+   | Australia | 30% | 30.40 (2024) | -0.40 |
+   | Germany | 19% | 19.80 (2024) | -0.80 |
+   | France | 13% | 13.80 (2024) | -0.80 |
+   | United Kingdom | 14% | 17.10 (2024) | -3.10 **>2pp** |
+   | Italy | 11% | 11.00 (2024) | +0.00 |
+   | Japan | 2% | 2.80 (2024) | -0.80 |
+   | Poland | 2% | 4.50 (2024) | -2.50 **>2pp** |
+   | Turkey | 7% | 8.10 (2024) | -1.10 |
+   | United States | 15% | 15.20 (2024) | -0.20 |
+   immigrant_share: countries where |printed - T| > 2 points: 2 ['United Kingdom', 'Poland']
+   muslim_share (T source: Pew Research Center, Religious Composition of the World's Population 2010-2020 (June 2025), 2020 estimate)
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | 0,9% | 0.93 (2020) | -0.03 |
+   | Australia | 3,2% | 3.50 (2020) | -0.30 |
+   | Germany | 5,5% | 6.55 (2020) | -1.05 |
+   | France | 8,5% | 9.10 (2020) | -0.60 |
+   | United Kingdom | 3,2% | 6.37 (2020) | -3.17 **>2pp** |
+   | Italy | 4,8% | 4.42 (2020) | +0.38 |
+   | Japan | 0,2% | 0.17 (2020) | +0.03 |
+   | Poland | 0,0% | 0.01 (2020) | -0.01 |
+   | United States | 1,0% | 1.19 (2020) | -0.19 |
+   muslim_share: countries where |printed - T| > 2 points: 1 ['United Kingdom']
+   T is copied from the ipsos_2024 row of the same country (one vintage per item across waves, decision 2026-11-22); the deck's printed actual (WID, IOM World Migration Report 2022, World Population Review) is kept in t_value_ipsos only.
+5. definition_match per item: {('immigrant_share', 'yes'): 38, ('immigrant_share', 'approximate'): 2, ('muslim_share', 'yes'): 39, ('wealth_top1', 'approximate'): 40, ('deaths_cancer', 'yes'): 31, ('deaths_cancer', 'approximate'): 1, ('deaths_cardiovascular', 'yes'): 31, ('deaths_cardiovascular', 'approximate'): 1, ('deaths_hiv_sti', 'yes'): 30, ('deaths_hiv_sti', 'approximate'): 1, ('deaths_neurological', 'yes'): 31, ('deaths_neurological', 'approximate'): 1, ('deaths_suicide', 'yes'): 31, ('deaths_suicide', 'approximate'): 1, ('deaths_violence', 'yes'): 30, ('deaths_violence', 'approximate'): 1}. 'approximate' = wealth_top1 (households in question, adults in WID), immigrant_share India/Indonesia (citizenship-based stock), and every Hong Kong row of ipsos_2020 (actual from healthyhk.gov.hk, not GBD).
 6. Sum of Ipsos 'approximately' per-country samples (one item per wave; Ipsos rounds per-country n):
    ipsos_2024 (immigrant_share, 30 countries): 22000 from 30 stated n (0 not_stated) vs 22,989 interviews stated on p38.
    ipsos_2020 (deaths_cancer, 32 countries): 21000 from 29 stated n (3 not_stated) vs 16,000 interviews stated on p53.
+   ipsos_royaumont_2023 (wealth_top1, 10 countries): 10000 from 10 stated n (0 not_stated) vs 10,000 interviews stated on p1.
 7. countries.csv: 36 rows; web_presence missing for: none; income groups: {'Upper middle income': 12, 'High income': 23, 'Lower middle income': 1}; pairs.csv countries without a countries.csv row: none.
+8. pairs_categorical.csv: 40 rows; per wave: {'ipsos_2024': 30, 'ipsos_royaumont_2023': 10}; rows with a determinable public majority: 38; actual_direction counts: {'same_or_lower': 6, 'lower': 29, 'higher': 1, 'same': 3, 'same_or_higher': 1}.
+9. ipsos_royaumont_2023 T identical to the ipsos_2024 T of the same country for all 29 rows: yes.
 ```
 <!-- validation:end -->

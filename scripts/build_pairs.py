@@ -16,6 +16,13 @@ Wave ipsos_2020 (data/raw/ipsos-perils-of-perception-2020-causes-of-death.pdf), 
   data/transcription/ipsos_2020_defective_pages.csv  p19, p21 and p25 as printed, not used (README)
   Pass 1 read the PDF text layer by word coordinates, pass 2 re-read the page images; all 190 cells agreed.
 
+Wave ipsos_royaumont_2023 (data/raw/ipsos-perils-perception-prejudice-conspiracy-theories-december-2023.pdf), transcribed 2026-11-22:
+  data/transcription/ipsos_royaumont_2023_estimates.csv   bar labels of p3 (wealth_top1), p4 (immigrant_share), p5 (muslim_share)
+  data/transcription/ipsos_royaumont_2023_homicide_p6.csv  share answering "higher" on p6
+  Same item_ids as ipsos_2024; T, t_flag and the definition columns are copied from the ipsos_2024 row of the same
+  country (one vintage per item across waves, decision 2026-11-22); the deck's printed actual stays in t_value_ipsos.
+  Pass 1 clustered the text-layer labels to the nearest country label by x, pass 2 re-read the page images; all agreed.
+
 Truth columns (rule adopted 2026-11-22):
   t_value_ipsos   the figure exactly as printed in the report ("35%", "0%", "<1%", "No data available"; the
                   2020 deck prints one-decimal numbers without a percent sign, e.g. "31.5", "0.0")
@@ -180,6 +187,26 @@ COUNTRIES_2020 = {
 EXPECTED_2020 = {"deaths_cancer": 32, "deaths_cardiovascular": 32, "deaths_neurological": 32,
                  "deaths_hiv_sti": 31, "deaths_violence": 31, "deaths_suicide": 32}
 
+# ---------------------------------------------------------------------------------------------------
+# Wave ipsos_royaumont_2023: Ipsos for the Entretiens de Royaumont, "Perils of perception, prejudice and conspiracy
+# theories", December 2023. "Survey conducted among 10,000 people on the Ipsos Digital platform from 22 to 25 November
+# 2023" (p1); 10 countries, so approximately 1,000 per country; age range and representativeness are not described.
+WAVE_ROY = "ipsos_royaumont_2023"
+SOURCE_ID_ROY = "ipsos_royaumont_2023_deck"
+FIELDWORK_ROY = ("2023-11-22", "2023-11-25")
+H_STAT_ROY = "mean (Ipsos 'Respondents' Perception')"
+COUNTRIES_ROY = {  # name as printed -> (iso3, n_approx, age_range, representative)
+    "Argentina": ("ARG", 1000, "not_stated", "not_stated"), "Australia": ("AUS", 1000, "not_stated", "not_stated"),
+    "France": ("FRA", 1000, "not_stated", "not_stated"), "Germany": ("DEU", 1000, "not_stated", "not_stated"),
+    "Italy": ("ITA", 1000, "not_stated", "not_stated"), "Japan": ("JPN", 1000, "not_stated", "not_stated"),
+    "Poland": ("POL", 1000, "not_stated", "not_stated"), "Turkey": ("TUR", 1000, "not_stated", "not_stated"),
+    "United Kingdom": ("GBR", 1000, "not_stated", "not_stated"), "United States": ("USA", 1000, "not_stated", "not_stated"),
+}
+EXPECTED_ROY = {"wealth_top1": 10, "immigrant_share": 10, "muslim_share": 9}  # the Muslim-share chart omits Turkey
+REUSE_NOTE = "; same T as the ipsos_2024 row of this country (one vintage per item across waves, decision 2026-11-22)"
+# p6 footnote: "* Homicide rates have gone down significantly in all these countries – except the United States"
+HOMICIDE_SOURCE_ROY = "Ipsos footnote p6 ('Homicide rates have gone down significantly in all these countries – except the United States'); underlying source World Bank"
+
 FIELDS = ["wave", "source_id", "country_name_ipsos", "country_iso3", "item_id", "h_mean", "h_stat", "t_value_ipsos",
           "t_value", "t_flag", "t_unrounded_source", "t_unrounded_url", "t_unrounded_year", "t_source",
           "t_reference_year", "definition_match", "definition_note", "question_wording", "source_page",
@@ -316,16 +343,73 @@ def rows_2020(wdi):
     return rows
 
 
+def rows_royaumont(rows_24):
+    """ipsos_royaumont_2023 percent items: H from the deck, T copied from the ipsos_2024 row of the same country."""
+    t24 = {(r["item_id"], r["country_iso3"]): r for r in rows_24}
+    p1 = [r for r in read("ipsos_royaumont_2023_estimates.csv") if r["country"] != "Global Average"]
+    cnt = {}
+    for r in p1:
+        cnt[r["item_id"]] = cnt.get(r["item_id"], 0) + 1
+    if cnt != EXPECTED_ROY:
+        sys.exit(f"royaumont counts {cnt} != {EXPECTED_ROY}")
+    rows = []
+    for r in sorted(p1, key=lambda r: (r["item_id"], r["country"])):
+        iso3, n, age, rep = COUNTRIES_ROY[r["country"]]
+        t = t24[(r["item_id"], iso3)]
+        rows.append({
+            "wave": WAVE_ROY, "source_id": SOURCE_ID_ROY,
+            "country_name_ipsos": r["country"], "country_iso3": iso3, "item_id": r["item_id"],
+            "h_mean": float(r["h_mean"]), "h_stat": H_STAT_ROY,
+            "t_value_ipsos": printed(r["t_raw"]), "t_value": t["t_value"], "t_flag": t["t_flag"],
+            "t_unrounded_source": t["t_unrounded_source"], "t_unrounded_url": t["t_unrounded_url"],
+            "t_unrounded_year": t["t_unrounded_year"],
+            "t_source": t["t_source"], "t_reference_year": t["t_reference_year"],
+            "definition_match": t["definition_match"], "definition_note": t["definition_note"] + REUSE_NOTE,
+            "question_wording": t["question_wording"],  # identical text on the deck pages
+            "source_page": r["page"],
+            "fieldwork_start": FIELDWORK_ROY[0], "fieldwork_end": FIELDWORK_ROY[1],
+            "n_country_approx": n, "age_range": age, "representative_sample": rep,
+        })
+    return rows
+
+
+def homicide_royaumont():
+    """ipsos_royaumont_2023 homicide-trend rows: only the share answering 'higher' is printed."""
+    out = []
+    for r in read("ipsos_royaumont_2023_homicide_p6.csv"):
+        c = r["country"]
+        if c == "Global Average":
+            continue
+        iso3, n, age, rep = COUNTRIES_ROY[c]
+        hi = int(r["pct_higher"])
+        out.append({
+            "wave": WAVE_ROY, "source_id": SOURCE_ID_ROY, "country_name_ipsos": c, "country_iso3": iso3,
+            "item_id": "homicide_trend",
+            "question_wording": "Do you think the homicide rate in your country is higher, lower, or about the same as in 2000?",
+            "pct_higher": hi, "pct_same": "", "pct_lower": "",
+            "public_majority": "higher" if hi > 50 else "", "public_plurality": "higher" if hi > 50 else "",
+            "actual_direction": "same_or_higher" if iso3 == "USA" else "lower",
+            "approx_change_per_100k_from_chart": "",
+            "actual_direction_source": HOMICIDE_SOURCE_ROY,
+            "chart_page": "", "source_page": r["page"],
+            "note": "only the share answering 'higher' is printed; same/lower split and majority not determinable when 'higher' <= 50" + ("; footnote excepts the United States from the decline without stating its direction" if iso3 == "USA" else ""),
+            "fieldwork_start": FIELDWORK_ROY[0], "fieldwork_end": FIELDWORK_ROY[1],
+            "n_country_approx": n, "age_range": age, "representative_sample": rep,
+        })
+    return sorted(out, key=lambda r: r["country_name_ipsos"])
+
+
 def main():
     with open(os.path.join(D, "countries.csv"), encoding="utf-8") as f:
         wdi = {r["country_iso3"]: r for r in csv.DictReader(f)}
-    rows = rows_2024(wdi) + rows_2020(wdi)
+    r24 = rows_2024(wdi)
+    rows = r24 + rows_2020(wdi) + rows_royaumont(r24)
     out = os.path.join(D, "pairs.csv")
     with open(out, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS); w.writeheader(); w.writerows(rows)
-    print("wrote", out, len(rows), "rows", {wv: sum(1 for r in rows if r["wave"] == wv) for wv in (WAVE, WAVE_2020)})
+    print("wrote", out, len(rows), "rows", {wv: sum(1 for r in rows if r["wave"] == wv) for wv in (WAVE, WAVE_2020, WAVE_ROY)})
 
-    # Categorical side table: homicide trend (2024 wave only).
+    # Categorical side table: homicide trend (2024 wave, then the Royaumont 2023 rows).
     actual = {r["country"]: r for r in read("homicide_actual_p23_24.csv")}
     crow = []
     for r in read("homicide_p22.csv"):
@@ -347,6 +431,7 @@ def main():
             "fieldwork_start": FIELDWORK[0], "fieldwork_end": FIELDWORK[1],
             "n_country_approx": n, "age_range": age, "representative_sample": rep,
         })
+    crow += homicide_royaumont()
     out2 = os.path.join(D, "pairs_categorical.csv")
     with open(out2, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(crow[0].keys())); w.writeheader(); w.writerows(crow)

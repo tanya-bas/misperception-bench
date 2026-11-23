@@ -16,11 +16,14 @@ from collections import Counter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "data")
-WAVES = ("ipsos_2024", "ipsos_2020")
-STATED_INTERVIEWS = {"ipsos_2024": "22,989 interviews stated on p38", "ipsos_2020": "16,000 interviews stated on p53"}
-ITEM_ORDER = {"ipsos_2024": ("wealth_top1", "immigrant_share", "muslim_share")}  # report order of the v0 README; other waves in pairs.csv order
+WAVES = ("ipsos_2024", "ipsos_2020", "ipsos_royaumont_2023")
+STATED_INTERVIEWS = {"ipsos_2024": "22,989 interviews stated on p38", "ipsos_2020": "16,000 interviews stated on p53",
+                     "ipsos_royaumont_2023": "10,000 interviews stated on p1"}
+SAMPLE_ITEM = {"ipsos_2024": "immigrant_share", "ipsos_2020": "deaths_cancer", "ipsos_royaumont_2023": "wealth_top1"}
+ITEM_ORDER = {"ipsos_2024": ("wealth_top1", "immigrant_share", "muslim_share"), "ipsos_royaumont_2023": ("wealth_top1", "immigrant_share", "muslim_share")}  # report order of the v0 README; other waves in pairs.csv order
 T_NOTE = {
     "ipsos_2024": "T is the World Bank WDI 2024 series (immigrant_share), Pew's 2020 estimate (muslim_share) and WID 2024 (wealth_top1), decisions 2026-11-22; differences reflect the older source vintages Ipsos used and Ipsos rounding to whole percents.",
+    "ipsos_royaumont_2023": "T is copied from the ipsos_2024 row of the same country (one vintage per item across waves, decision 2026-11-22); the deck's printed actual (WID, IOM World Migration Report 2022, World Population Review) is kept in t_value_ipsos only.",
     "ipsos_2020": "T is the printed GBD 2017 figure itself (fallback after the Our World in Data pull was refused, decision 2026-11-22), so printed and used differ only where the printed actual is swapped between two adjacent rows (cardiovascular, Saudi Arabia and Germany) or is a rounded 0.0 left blank.",
 }
 
@@ -86,7 +89,7 @@ def main():
             out.append("   |---|---|---|---|")
             big = []
             for r in sorted((r for r in rows if r["item_id"] == item), key=lambda r: r["country_iso3"]):
-                printed = r["t_value_ipsos"].rstrip("%")
+                printed = r["t_value_ipsos"].rstrip("%").replace(",", ".")  # the Royaumont deck prints a decimal comma
                 if r["t_value"] == "" or not re.fullmatch(r"\d+(\.\d+)?", printed):
                     out.append(f"   | {r['country_name_ipsos']} | {r['t_value_ipsos']} | {r['t_value'] or 'missing'} ({r['t_reference_year']}) | n/a |"); continue
                 diff = float(printed) - float(r["t_value"])
@@ -105,7 +108,7 @@ def main():
     out.append("6. Sum of Ipsos 'approximately' per-country samples (one item per wave; Ipsos rounds per-country n):")
     for w in WAVES:
         rows = by_wave[w]
-        item = items_in(rows)[0] if w == "ipsos_2020" else "immigrant_share"
+        item = SAMPLE_ITEM[w]
         ns = [r["n_country_approx"] for r in rows if r["item_id"] == item]
         numeric = [int(n) for n in ns if re.fullmatch(r"\d+", n)]
         out.append(f"   {w} ({item}, {len(ns)} countries): {sum(numeric)} from {len(numeric)} stated n ({len(ns) - len(numeric)} not_stated) vs {STATED_INTERVIEWS[w]}.")
@@ -116,6 +119,16 @@ def main():
     out.append(f"7. countries.csv: {len(countries)} rows; web_presence missing for: {wp_missing or 'none'}; "
                f"income groups: {dict(Counter(r['wb_income_group'] for r in countries.values()))}; "
                f"pairs.csv countries without a countries.csv row: {sorted(used - set(countries)) or 'none'}.")
+
+    # 8. categorical table per wave
+    cat = read(os.path.join(D, "pairs_categorical.csv"))
+    out.append(f"8. pairs_categorical.csv: {len(cat)} rows; per wave: {dict(Counter(r['wave'] for r in cat))}; "
+               f"rows with a determinable public majority: {sum(1 for r in cat if r['public_majority'])}; actual_direction counts: {dict(Counter(r['actual_direction'] for r in cat))}.")
+
+    # 9. cross-wave truth consistency: Royaumont rows must carry the 2024 T of the same country
+    t24 = {(r["item_id"], r["country_iso3"]): (r["t_value"], r["t_flag"]) for r in by_wave["ipsos_2024"]}
+    mism = [(r["item_id"], r["country_name_ipsos"]) for r in by_wave["ipsos_royaumont_2023"] if t24.get((r["item_id"], r["country_iso3"])) != (r["t_value"], r["t_flag"])]
+    out.append(f"9. ipsos_royaumont_2023 T identical to the ipsos_2024 T of the same country for all {len(by_wave['ipsos_royaumont_2023'])} rows: {'yes' if not mism else 'NO: ' + str(mism)}.")
 
     report = "\n".join(out)
     print(report)
