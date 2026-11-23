@@ -78,8 +78,9 @@ WHO_AMR = "WHO fact sheet 'Antimicrobial resistance' (antibiotics act on bacteri
 # One entry per statement sheet. truth_option is 'True'/'False' as the respondent would answer, or '' when no
 # truth is assigned. Wording is read verbatim from the workbook (sheet row 3 = stem, row 4 = statement).
 EB_ITEMS = [
-    # Special EB 516, QA20.1-11. The brief numbered 'equally scientific' as QA20.9; in the workbook it is QA20.7
-    # (QA20.9 is the climate statement), so the flag is applied by content (decision 2026-11-22).
+    # Special EB 516, QA20.1-11 except QA20.7 ('methods of the natural and social sciences are equally scientific'),
+    # removed 2026-11-22: no factual truth value, and no row is committed without one (data/README.md, Removed or
+    # excluded data). The brief had numbered that statement QA20.9, which in the workbook is the climate statement.
     dict(source_id="eb516_volume_a", sheet="QA20_1", item_id="eb516_q01_humans_dinosaurs", truth="False",
          truth_source="Non-avian dinosaurs went extinct about 66 million years ago (Renne et al. 2013, Science 339:684); the genus Homo appears about 2.8 million years ago (Villmoare et al. 2015, Science 347:1352)",
          note="", main=True),
@@ -94,9 +95,6 @@ EB_ITEMS = [
          truth_source="Lasers amplify light by stimulated emission (Maiman 1960, Nature 187:493)", note="", main=True),
     dict(source_id="eb516_volume_a", sheet="QA20_6", item_id="eb516_q06_population_over_10bn", truth="False",
          truth_source="UN DESA World Population Prospects 2022: 7.9 billion people in 2021", note="", main=True),
-    dict(source_id="eb516_volume_a", sheet="QA20_7", item_id="eb516_q07_methods_equally_scientific", truth="",
-         truth_source="", note="contestable (philosophy of science); no truth assigned; excluded from the main set and kept in the file with include_in_main = false",
-         main=False),
     dict(source_id="eb516_volume_a", sheet="QA20_8", item_id="eb516_q08_humans_evolved", truth="True",
          truth_source="National Academies of Sciences (2008), Science, Evolution, and Creationism", note="", main=True),
     dict(source_id="eb516_volume_a", sheet="QA20_9", item_id="eb516_q09_climate_natural_cycles", truth="False",

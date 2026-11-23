@@ -257,6 +257,7 @@ Then rebuild: `python3 -I scripts/build_pairs.py && python3 -I scripts/build_cou
 * 2026-11-22: 2020 country names in pairs.csv are as printed in that deck (United Kingdom, Turkey, Hong Kong SAR China); countries.csv keeps the 2024 names for the shared countries.
 * 2026-11-22: Ipsos Royaumont December 2023 wave added (commit 36e054d) and removed the same day; see Removed or excluded data.
 * 2026-11-22: Ipsos Earth Day 2022 warming item added (commit ef1f896) and removed the same day; see Removed or excluded data.
+* 2026-11-22: rule: no row is committed to any table without a truth value. Applied first to the categorical track (Eurobarometer 516 QA20.7 removed). Open under this rule: the six `ipsos_2020` deaths_hiv_sti rows whose printed actual is 0.0 are still present with a blank `t_value` and `t_flag = source_unrounded_pending`; they must be sourced or removed.
 * 2026-11-22: skip list. ISSP 2019 occupational-earnings items are excluded (truth normalisation cost: earnings questions need country- and occupation-specific wage truths on a common scale). The Fabre, Douenne and Mattauch 2023 foreign-aid item is excluded (figure-only publication: the per-country estimates are printed only as a chart).
 
 ## Removed or excluded data
@@ -293,6 +294,11 @@ downloads named here stay under `raw/` (gitignored) unless stated otherwise.
   in degrees, not a share, so it sits outside the log-odds analyses and the paper's percentage
   framing; raw PDF retained (`ipsos-global-advisor-earth-day-2022-release-2.pdf`), transcription
   recoverable from ef1f896. Switzerland and Norway, used by that wave only, dropped from `countries.csv`.
+* 2026-11-22: Eurobarometer 516 item QA20.7 "natural and social science methods are equally scientific"
+  removed from the categorical track (38 rows; added in e99f83e as `eb516_q07_methods_equally_scientific` with
+  `include_in_main: false`): no factual truth value; rule that no row is committed without a truth value.
+  The workbook stays in `raw/categorical/` and the sheet QA20_7 rows remain in
+  `categorical/transcription/eurobarometer_true_false.csv`.
 
 ## Follow-ups
 

@@ -56,16 +56,6 @@ items:
     truth_source: "UN DESA World Population Prospects 2022: 7.9 billion people in 2021"
     truth_note: ""
     include_in_main: true
-  - item_id: eb516_q07_methods_equally_scientific
-    source: eb516_volume_a
-    wave: eb95.2_2021
-    wording: "Finally, for each of the following statements, please indicate whether you believe them to be true or false. If you don't know, you can just indicate so. — \"The methods used by the natural sciences and the social sciences are equally scientific\""
-    options: ["True", "False", "Don't know"]
-    truth_option: ""
-    truth_source: ""
-    truth_note: "contestable (philosophy of science); no truth assigned; excluded from the main set and kept in the file with include_in_main = false"
-    include_in_main: false
-    exclusion_reason: "contestable (philosophy of science); no truth assigned; excluded from the main set and kept in the file with include_in_main = false"
   - item_id: eb516_q08_humans_evolved
     source: eb516_volume_a
     wave: eb95.2_2021
