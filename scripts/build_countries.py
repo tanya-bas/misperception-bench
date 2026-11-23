@@ -1,5 +1,5 @@
 """Build data/countries.csv: one row per Ipsos country (the 30 of the 2024 wave, the 6 only in the 2020
-causes-of-death wave and the 2 only in the Earth Day 2022 wave) with the covariates used as
+causes-of-death wave) with the covariates used as
 moderators in H1a and as an independent check on Ipsos's immigrant-share truth value.
 
 Inputs (cached API dumps in data/raw/, re-fetchable with the curl lines in data/README.md):
@@ -50,9 +50,6 @@ COUNTRIES = {
     "Romania": ("ROU", "Romania", "Romanian", "no_urban_educated_affluent"),
     "Russia": ("RUS", "Russian Federation", "Russian", "no_urban_educated_affluent"),
     "Saudi Arabia": ("SAU", "Saudi Arabia", "Arabic", "no_urban_educated_affluent"),
-    # Added 2026-11-22 for the Ipsos Earth Day 2022 wave (pairs_banded.csv); representative flag from its technical note (p27).
-    "Switzerland": ("CHE", "Switzerland", "German/French/Italian", "yes"),
-    "Norway": ("NOR", "Norway", "Norwegian", "yes"),
 }
 
 

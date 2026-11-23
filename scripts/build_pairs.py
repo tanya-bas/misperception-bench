@@ -16,15 +16,6 @@ Wave ipsos_2020 (data/raw/ipsos-perils-of-perception-2020-causes-of-death.pdf), 
   data/transcription/ipsos_2020_defective_pages.csv  p19, p21 and p25 as printed, not used (README)
   Pass 1 read the PDF text layer by word coordinates, pass 2 re-read the page images; all 190 cells agreed.
 
-Wave ipsos_earthday_2022 (data/raw/ipsos-global-advisor-earth-day-2022-release-2.pdf), transcribed 2026-11-22:
-  data/transcription/ipsos_earthday_2022_p21.csv   per-country band distribution of "How much do you think the climate
-                                                   of the Earth has warmed since 1850, if at all?" (p21), incl. the
-                                                   all-country column (TOT, not built)
-  Written to data/pairs_banded.csv (not pairs.csv): the answer is in degrees Celsius bands, not a share. H is the band
-  distribution plus a midpoint mean (midpoints in BAND_MIDPOINTS and items.yaml); T = 1.1 (IPCC AR6 WG1 SPM A.1.2),
-  the deck's "True value: 1 degree Celsius" (p20) in t_value_ipsos. Two text-layer extractions (layout lines, word
-  coordinates) agreed on all 160 cells and were checked against the page image.
-
 Truth columns (rule adopted 2026-11-22):
   t_value_ipsos   the figure exactly as printed in the report ("35%", "0%", "<1%", "No data available"; the
                   2020 deck prints one-decimal numbers without a percent sign, e.g. "31.5", "0.0")
@@ -189,40 +180,6 @@ COUNTRIES_2020 = {
 EXPECTED_2020 = {"deaths_cancer": 32, "deaths_cardiovascular": 32, "deaths_neurological": 32,
                  "deaths_hiv_sti": 31, "deaths_violence": 31, "deaths_suicide": 32}
 
-# ---------------------------------------------------------------------------------------------------
-# Wave ipsos_earthday_2022: Ipsos Global Advisor wave 167, Earth Day 2022 release 2. Technical note p27: 23,577 adults,
-# 18 Feb - 4 Mar 2022, 31 countries; "approximately 1000+" per country except 19 countries at "approximately 500+";
-# aged 18-74 in the US, Canada, Malaysia, South Africa and Turkey, 16-99 in Norway, 16-74 elsewhere; 18 countries
-# nationally representative, 13 "more urban & educated, and/or more affluent". Deck column codes -> metadata.
-WAVE_ED = "ipsos_earthday_2022"
-SOURCE_ID_ED = "ipsos_earthday_2022_release2"
-FIELDWORK_ED = ("2022-02-18", "2022-03-04")
-ED_WORDING = "How much do you think the climate of the Earth has warmed since 1850, if at all?"
-BANDS = ["0-0.75", "1-1.75", "2-2.75", "3-4"]            # deck labels "0-0.75 Celsius" etc.; plus "Don't know"
-BAND_MIDPOINTS = [0.375, 1.375, 2.375, 3.5]               # reproduce the deck's all-country mean of 2.1 (p20)
-ED_T = dict(t_value_ipsos="1", t_value=1.1, t_flag="ipcc_ar6_wg1_spm",
-            t_source="IPCC AR6 WG1 Summary for Policymakers, A.1.2 (global surface temperature 2011-2020 was 1.09 [0.95 to 1.20] degrees C above 1850-1900)",
-            t_reference_period="2011-2020 vs 1850-1900", definition_match="approximate",
-            definition_note="question asks warming since 1850 up to the time of asking (Feb-Mar 2022); T is the IPCC AR6 2011-2020 decade average relative to 1850-1900 (1.09, recorded as 1.1); the deck's true value of 1 cites IPCC SR15 (decision 2026-11-22)")
-COUNTRIES_ED = {  # deck code: (name as used in the technical note, iso3, n_approx, age_range, representative)
-    "ARG": ("Argentina", "ARG", 500, "16-74", "yes"), "AUS": ("Australia", "AUS", 1000, "16-74", "yes"),
-    "BEL": ("Belgium", "BEL", 500, "16-74", "yes"), "BRA": ("Brazil", "BRA", 1000, "16-74", "no_urban_educated_affluent"),
-    "CAN": ("Canada", "CAN", 1000, "18-74", "yes"), "CH": ("Switzerland", "CHE", 500, "16-74", "yes"),
-    "CHL": ("Chile", "CHL", 500, "16-74", "no_urban_educated_affluent"), "CHN": ("China", "CHN", 1000, "16-74", "no_urban_educated_affluent"),
-    "COL": ("Colombia", "COL", 500, "16-74", "no_urban_educated_affluent"), "ESP": ("Spain", "ESP", 1000, "16-74", "yes"),
-    "FRA": ("France", "FRA", 1000, "16-74", "yes"), "GB": ("Great Britain", "GBR", 1000, "16-74", "yes"),
-    "GER": ("Germany", "DEU", 1000, "16-74", "yes"), "HUN": ("Hungary", "HUN", 500, "16-74", "yes"),
-    "IND": ("India", "IND", 500, "16-74", "no_urban_educated_affluent"), "IRE": ("Ireland", "IRL", 500, "16-74", "no_urban_educated_affluent"),
-    "ITA": ("Italy", "ITA", 1000, "16-74", "yes"), "JAP": ("Japan", "JPN", 1000, "16-74", "yes"),
-    "KOR": ("South Korea", "KOR", 500, "16-74", "yes"), "KSA": ("Saudi Arabia", "SAU", 500, "16-74", "no_urban_educated_affluent"),
-    "MAL": ("Malaysia", "MYS", 500, "18-74", "no_urban_educated_affluent"), "MEX": ("Mexico", "MEX", 500, "16-74", "no_urban_educated_affluent"),
-    "NLD": ("Netherlands", "NLD", 500, "16-74", "yes"), "NOR": ("Norway", "NOR", 1000, "16-99", "yes"),
-    "PER": ("Peru", "PER", 500, "16-74", "no_urban_educated_affluent"), "POL": ("Poland", "POL", 500, "16-74", "yes"),
-    "RUS": ("Russia", "RUS", 500, "16-74", "no_urban_educated_affluent"), "SAF": ("South Africa", "ZAF", 500, "18-74", "no_urban_educated_affluent"),
-    "SE": ("Sweden", "SWE", 500, "16-74", "yes"), "TUR": ("Turkey", "TUR", 500, "18-74", "no_urban_educated_affluent"),
-    "USA": ("United States", "USA", 1000, "18-74", "yes"),
-}
-
 FIELDS = ["wave", "source_id", "country_name_ipsos", "country_iso3", "item_id", "h_mean", "h_stat", "t_value_ipsos",
           "t_value", "t_flag", "t_unrounded_source", "t_unrounded_url", "t_unrounded_year", "t_source",
           "t_reference_year", "definition_match", "definition_note", "question_wording", "source_page",
@@ -359,35 +316,6 @@ def rows_2020(wdi):
     return rows
 
 
-def rows_banded(wdi):
-    """ipsos_earthday_2022: one row per country with the band distribution and a midpoint mean (not a share)."""
-    import json
-    out = []
-    for r in read("ipsos_earthday_2022_p21.csv"):
-        if r["code"] == "TOT":
-            continue
-        name, iso3, n, age, rep = COUNTRIES_ED[r["code"]]
-        if iso3 not in wdi:
-            sys.exit(f"earthday {name}: no countries.csv row for {iso3}")
-        pct = [int(r[k]) for k in ("pct_0_075", "pct_1_175", "pct_2_275", "pct_3_4")]
-        dk = int(r["pct_dk"]) if r["pct_dk"] != "" else ""
-        mean = sum(p * m for p, m in zip(pct, BAND_MIDPOINTS)) / sum(pct)
-        note = "four bands plus don't-know sum to %d; the deck prints no further category" % (sum(pct) + (dk or 0))
-        if r["code"] == "NOR":
-            note = "don't know not offered (printed '-'); " + note
-        out.append({
-            "wave": WAVE_ED, "source_id": SOURCE_ID_ED, "country_code_ipsos": r["code"], "country_name_ipsos": name,
-            "country_iso3": iso3, "item_id": "climate_warming_since_1850", "question_wording": ED_WORDING,
-            "bands": json.dumps(BANDS), "pct_bands": json.dumps(pct), "pct_dk": dk, "pct_sum": sum(pct) + (dk or 0),
-            "band_midpoints": json.dumps(BAND_MIDPOINTS), "h_mean_midpoint": round(mean, 3),
-            "h_stat": "mean of band midpoints over the four temperature bands, don't-know excluded",
-            **ED_T, "note": note, "source_page": r["page"],
-            "fieldwork_start": FIELDWORK_ED[0], "fieldwork_end": FIELDWORK_ED[1],
-            "n_country_approx": n, "age_range": age, "representative_sample": rep,
-        })
-    return sorted(out, key=lambda r: r["country_iso3"])
-
-
 def main():
     with open(os.path.join(D, "countries.csv"), encoding="utf-8") as f:
         wdi = {r["country_iso3"]: r for r in csv.DictReader(f)}
@@ -424,13 +352,6 @@ def main():
     with open(out2, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(crow[0].keys())); w.writeheader(); w.writerows(crow)
     print("wrote", out2, len(crow), "rows")
-
-    # Banded side table: Earth Day 2022 warming estimate (degrees Celsius bands).
-    brow = rows_banded(wdi)
-    out3 = os.path.join(D, "pairs_banded.csv")
-    with open(out3, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=list(brow[0].keys())); w.writeheader(); w.writerows(brow)
-    print("wrote", out3, len(brow), "rows")
 
 
 if __name__ == "__main__":
