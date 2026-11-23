@@ -16,22 +16,24 @@ Scope of v0: the Ipsos Perils of Perception 2024 wave only (30 countries, fieldw
 | `countries.csv` | country | 30 | `scripts/build_countries.py` |
 | `transcription/ipsos_2024_estimates.csv` | transcribed cell | 90 | hand-transcribed |
 | `transcription/homicide_p22.csv`, `homicide_actual_p23_24.csv` | country | 30 each | hand-transcribed |
-| `transcription/t_unrounded_sources.csv` | muslim_share pair where the report prints <1% | 10 | hand-entered from the cited source |
+| `validation/truth_crosscheck.csv` | candidate truth value per (item, country, source) | 227 | sourced from primary databases; feeds the muslim_share T and documents alternatives |
 | `raw/` | downloads, gitignored | | see Re-fetching below |
 
 ## Provenance
 
 **Ipsos Perils of Perception 2024** (`ipsos_perils_2024_report` in `sources.csv`). Public PDF,
 sha256 in `sources.csv`. H is Ipsos's "Average % mentioned" (a mean, don't-knows excluded).
-For wealth_top1 and muslim_share, T is the "Actual" column Ipsos prints next to it, with the
-source Ipsos cites. For immigrant_share, T is the World Bank WDI copy of the UN DESA migrant-stock
-series (unrounded, 2024) and the printed figure is kept in `t_value_ipsos` (decision 2026-11-22):
+T for every item is taken from the primary source Ipsos cites, at one current vintage, for all
+30 countries: the World Bank WDI copy of the UN DESA migrant-stock series (2024) for
+immigrant_share, Pew's 2020 estimate from the June 2025 release for muslim_share, and the World
+Inequality Database 2024 top-1% net personal wealth share for wealth_top1. The figure Ipsos
+printed is kept in `t_value_ipsos` in every row (decisions 2026-11-22):
 
 | item | report page | T source cited by Ipsos | definition match |
 |---|---|---|---|
-| wealth_top1 | 13 (14 re-read) | World Inequality Database | approximate (households vs adults) |
+| wealth_top1 | 13 (14 re-read) | World Inequality Database (cited); T used = WID 2024 top-1% net personal wealth share, via the Our World in Data mirror | approximate (households vs adults) |
 | immigrant_share | 16 (17 re-read) | UN International Migrant Stock (cited); T used = World Bank WDI SM.POP.TOTL.ZS 2024 | yes (foreign-born) |
-| muslim_share | 20 (re-read) | Pew Research | yes |
+| muslim_share | 20 (re-read) | Pew Research (cited); T used = Pew 2020 estimate, June 2025 release | yes |
 | homicide_trend | 22, direction from p11 and p23-24 | UN Office on Drugs and Crime | categorical |
 
 **Transcription check.** Every H and T cell was transcribed twice on 2026-11-22. The first
@@ -48,25 +50,30 @@ used in analysis, with `t_flag`:
 
 | t_flag | meaning | rows |
 |---|---|---|
-| as_printed | wealth_top1 and muslim_share: report prints a normal number; `t_value` equals it | 49 |
 | world_bank | immigrant_share, all 30 countries: `t_value` is World Bank WDI SM.POP.TOTL.ZS (UN DESA series), year in `t_reference_year`; printed figure in `t_value_ipsos` | 30 |
-| source_unrounded | muslim_share: report prints <1%; `t_value` is the unrounded value from the source Ipsos cites, recorded in `t_unrounded_source`, `t_unrounded_url`, `t_unrounded_year` | 10 |
-| source_unrounded_pending | same case, value not yet fetched; `t_value` blank | 0 |
-| missing | report prints "No data available" (Peru, wealth) | 1 |
+| pew_2020 | muslim_share, all 30 countries: `t_value` is Pew's 2020 estimate (June 2025 release, five decimals), `t_reference_year` = 2020; printed figure in `t_value_ipsos` | 30 |
+| wid_2024 | wealth_top1, all 30 countries: `t_value` is the WID 2024 top-1% share of net personal wealth (WID 2026 release via the Our World in Data mirror), `t_reference_year` = 2024; printed figure in `t_value_ipsos`; fills Peru | 30 |
 
-Unrounded sources used: Muslim share for the ten "<1%" countries from the country table
-embedded in Pew's Religious Composition by Country 2010-2020 interactive page, 2020 column,
-which gives shares to five decimals; Pew's Appendix B PDF prints the same rows as "<0.1" or
-"0.9" and was used as a cross-check. Immigrant share no longer uses this mechanism: the World
-Bank series covers all 30 countries, including India and Indonesia, which Ipsos printed as 0%.
+The `as_printed` and `missing` flags are no longer produced by any v0 item.
 
-Sample sizes, age ranges and the representative-sample flag are from the methodology page (p38).
-Ipsos states that samples in Brazil, Chile, Colombia, Indonesia, Israel, Malaysia, Mexico, Peru,
-Singapore, South Africa, Thailand and Türkiye are more urban, educated and affluent than the
-general population, and that India's sample is an urban SEC A/B/C subset. Ireland and New
-Zealand are named in neither list and are treated as representative (`yes`) by author decision
-2026-11-22, recorded in the decisions log. Israel appears on p38 but in
-none of the item tables, so it is not in the dataset.
+**Pew vintage.** The muslim_share T comes from the 2020 column of the country table embedded in
+Pew's Religious Composition by Country 2010-2020 interactive page (June 2025 release), which
+gives shares to five decimals; Pew's Appendix B PDF prints the same rows rounded and was used as
+a cross-check. No single Pew vintage reproduces Ipsos's printed figures: 8 countries match the
+2020 column and 10 match a 2010 column (Türkiye 98 is Pew 2010, Pew 2020 is 97.1), so one
+vintage is used throughout. All three Pew columns are in `validation/truth_crosscheck.csv`.
+
+**Immigrant-share vintage.** Ipsos's printed immigrant figures match the UN DESA 2020 revision;
+the dataset uses the 2024 revision via the World Bank series. UN DESA derives India's and
+Indonesia's migrant stock from foreign-citizen data rather than place of birth, so those two
+rows carry `definition_match = approximate` with a `definition_note` saying so. Both UN DESA
+revisions are in `validation/truth_crosscheck.csv`.
+
+**Wealth vintage.** Ipsos's printed wealth figures match no current WID year for 13 countries,
+so Ipsos used an older WID vintage. The dataset uses the current WID 2024 value for all 30
+countries from the Our World in Data mirror of the WID 2026 release (interpolations and
+extrapolations excluded). This also fills Peru, printed as "No data available" by Ipsos; WID
+marks Peru as modeled, recorded in that row's `definition_note`.
 
 **World Bank** (`countries.csv`): income group and region from the country endpoint;
 GDP per capita PPP (`NY.GDP.PCAP.PP.CD`, latest year <= 2024); international migrant stock
@@ -80,10 +87,12 @@ fetch date are in `raw/web_presence.json` and `scripts/fetch_web_presence.py`.
 
 ## Special values
 
-* No `t_value` is 0 or 0.5. The ten muslim_share rows the report prints as "<1%" carry Pew's
-  unrounded value (`t_flag = source_unrounded`); the two immigrant_share rows printed as 0%
-  (India, Indonesia) carry the World Bank value like every other country (`t_flag = world_bank`).
-  The log-odds transform is defined for every pair except Peru wealth (`t_flag = missing`).
+* No `t_value` is 0, 0.5 or blank. Every muslim_share row carries Pew's unrounded 2020 estimate
+  (`t_flag = pew_2020`), so the ten countries the report prints as "<1%" have real small numbers;
+  every immigrant_share row carries the World Bank value (`t_flag = world_bank`), including India
+  and Indonesia, which the report prints as 0%; every wealth_top1 row carries the WID 2024 value
+  (`t_flag = wid_2024`), including Peru, which the report prints as "No data available".
+  The log-odds transform is defined for all 90 pairs.
 * `approx_change_per_100k_from_chart` in `pairs_categorical.csv` is read off a scatter plot and
   is approximate; `actual_direction` is the analysable field.
 
@@ -109,7 +118,7 @@ Then rebuild: `python3 -I scripts/build_pairs.py && python3 -I scripts/build_cou
 
 ## Decisions log
 
-* 2026-11-22: truth rule. Keep the printed figure as text (`t_value_ipsos`) and a numeric `t_value`; where the report prints 0% or "<1%", `t_value` is the unrounded figure from the source Ipsos cites with provenance columns, never 0.5; if a source cannot be fetched the row is `source_unrounded_pending` with a blank `t_value`. Peru wealth stays `missing`.
+* 2026-11-22: truth rule. Keep the printed figure as text (`t_value_ipsos`) and a numeric `t_value`; where the report prints 0% or "<1%", `t_value` is the unrounded figure from the source Ipsos cites with provenance columns, never 0.5; if a source cannot be fetched the row is `source_unrounded_pending` with a blank `t_value`. Peru wealth stays `missing`. (Superseded the same day for all three items by the World Bank, Pew and WID decisions below; `t_unrounded_sources.csv` and the `source_unrounded` flag were removed, and Peru wealth is now filled.)
 * 2026-11-22: per-row `entered_by`, `checked_by`, `second_pass_page` and `transcription_flag` columns dropped; the two-pass procedure is described once above, each row keeps `source_page`, and the comparison outcome is in the validation section.
 * 2026-11-22: after both readings agreed on all 90 cells, the second reading was deleted and the first renamed to `transcription/ipsos_2024_estimates.csv`; the agreement check is recorded here and no longer recomputed by `validate.py`.
 
@@ -117,8 +126,10 @@ Then rebuild: `python3 -I scripts/build_pairs.py && python3 -I scripts/build_cou
 * 2026-11-22: v0 uses the Ipsos 2024 wave only. Older waves (2014 to 2018) are not transcribed.
 * 2026-11-22: the p19 comparator chart (legend says 2018, base note says 2014) is dropped entirely under the 2020+ rule.
 * 2026-11-22: Ireland and New Zealand are not named on Ipsos's methodology page; treated as representative by author decision 2026-11-22.
-* 2026-11-22: for wealth_top1 and muslim_share, T is the value Ipsos prints with the source it cites (international databases), not national statistics offices.
+* 2026-11-22: for wealth_top1, T is the value Ipsos prints with the source it cites (international databases), not national statistics offices. (Superseded the same day by the WID decision below.)
 * 2026-11-22: immigrant_share T switched from the Ipsos printed figure to the World Bank WDI 2024 migrant-stock series (same UN DESA origin, unrounded); the printed figure is retained in t_value_ipsos.
+* 2026-11-22: muslim_share T switched to Pew's 2020 estimates (June 2025 release) for all 30 countries; no single Pew vintage reproduces Ipsos's printed figures (8 match 2020, 10 match a 2010 column), so one vintage is used throughout and the printed figure is kept in t_value_ipsos.
+* 2026-11-22: wealth_top1 T switched to WID 2024 values for all 30 countries (fills Peru; replaces 13 printed values that match no current WID year because Ipsos used an older WID vintage).
 * 2026-11-22: web-presence covariate is English Wikipedia mention counts because the Wikidata P17 count times out for most large countries; Wikidata counts are kept where they completed.
 * 2026-11-22: GDP per capita PPP uses the latest available year <= 2024 per country; income group is the current World Bank classification at retrieval, not the FY2025 classification by year.
 * 2026-11-22: the two transcription passes were both done by the same model session reading different pages.
@@ -126,7 +137,6 @@ Then rebuild: `python3 -I scripts/build_pairs.py && python3 -I scripts/build_cou
 
 ## Follow-ups
 
-* Pew vintage: Ipsos's printed Muslim share for Türkiye (98) matches Pew's 2010 figure (98.6) better than Pew's 2020 figure (97.1), so Ipsos may have used an earlier Pew release for its "Actual" column. The ten unrounded values use Pew 2020. Decide whether to re-source all muslim_share T from one Pew vintage.
 * UN DESA direct values (2024 revision), if later sourced, go in `data/validation/truth_crosscheck.csv` only; they do not replace T, which is the World Bank series.
 * `wikidata_p17_count` completed for 2 of 30 countries before the SPARQL time limit; `enwiki_mentions` is the covariate to use.
 
@@ -137,46 +147,116 @@ Generated by `scripts/validate.py`.
 <!-- validation:start -->
 ```
 1. Range check: 90 rows, 0 outside [0,100].
-   t_flag counts: {('immigrant_share', 'world_bank'): 30, ('muslim_share', 'source_unrounded'): 10, ('muslim_share', 'as_printed'): 20, ('wealth_top1', 'as_printed'): 29, ('wealth_top1', 'missing'): 1}
-   T zero or blank (logit undefined): [('wealth_top1', 'Peru')]; source_unrounded_pending: none
-   printed vs unrounded for source_unrounded rows: [('muslim_share', 'Argentina', '<1%', '0.9292'), ('muslim_share', 'Brazil', '<1%', '0.0177'), ('muslim_share', 'Chile', '<1%', '0.06699'), ('muslim_share', 'Colombia', '<1%', '0.00393'), ('muslim_share', 'Hungary', '<1%', '0.13922'), ('muslim_share', 'Japan', '<1%', '0.16997'), ('muslim_share', 'Mexico', '<1%', '0.00629'), ('muslim_share', 'Peru', '<1%', '0.02159'), ('muslim_share', 'Poland', '<1%', '0.00732'), ('muslim_share', 'South Korea', '<1%', '0.31')]
-2. Countries per item: {'immigrant_share': 30, 'muslim_share': 30, 'wealth_top1': 30}. Missing T: [('wealth_top1', 'Peru', 'No data available')]
+   t_flag counts: {('immigrant_share', 'world_bank'): 30, ('muslim_share', 'pew_2020'): 30, ('wealth_top1', 'wid_2024'): 30}
+   T zero or blank (logit undefined): none
+   T below 1 percent (printed figure, T used): [('immigrant_share', 'Brazil', '1%', '0.7'), ('immigrant_share', 'India', '0%', '0.3'), ('immigrant_share', 'Indonesia', '0%', '0.2'), ('muslim_share', 'Argentina', '<1%', '0.9292'), ('muslim_share', 'Brazil', '<1%', '0.0177'), ('muslim_share', 'Chile', '<1%', '0.06699'), ('muslim_share', 'Colombia', '<1%', '0.00393'), ('muslim_share', 'Hungary', '<1%', '0.13922'), ('muslim_share', 'Japan', '<1%', '0.16997'), ('muslim_share', 'Mexico', '<1%', '0.00629'), ('muslim_share', 'Peru', '<1%', '0.02159'), ('muslim_share', 'Poland', '<1%', '0.00732'), ('muslim_share', 'South Korea', '<1%', '0.31')]
+2. Countries per item: {'immigrant_share': 30, 'muslim_share': 30, 'wealth_top1': 30}. Missing T: []
 3. Question wording present verbatim in items.yaml for all items: yes.
-4. immigrant_share: Ipsos printed figure (t_value_ipsos) vs World Bank WDI T used (t_value):
-   | country | Ipsos printed | WDI T (year) | printed - T |
+4. Ipsos printed figure (t_value_ipsos) vs T used (t_value), per item; rows where |printed - T| > 2 points are flagged:
+   wealth_top1 (T source: World Inequality Database, top 1% share of net personal wealth, 2024 (WID 2026 release via Our World in Data mirror))
+   | country | Ipsos printed | T used (year) | printed - T |
    |---|---|---|---|
-   | Argentina | 5% | 4.3 (2024) | +0.7 |
-   | Australia | 30% | 30.4 (2024) | -0.4 |
-   | Belgium | 17% | 20.0 (2024) | -3.0 **>2pp** |
-   | Brazil | 1% | 0.7 (2024) | +0.3 |
-   | Canada | 21% | 22.2 (2024) | -1.2 |
-   | Chile | 9% | 7.8 (2024) | +1.2 |
-   | Colombia | 4% | 5.8 (2024) | -1.8 |
-   | Germany | 19% | 19.8 (2024) | -0.8 |
-   | Spain | 15% | 18.5 (2024) | -3.5 **>2pp** |
-   | France | 13% | 13.8 (2024) | -0.8 |
-   | Great Britain | 14% | 17.1 (2024) | -3.1 **>2pp** |
-   | Hungary | 6% | 7.1 (2024) | -1.1 |
-   | Indonesia | 0% | 0.2 (2024) | -0.2 |
-   | India | 0% | 0.3 (2024) | -0.3 |
-   | Ireland | 18% | 23.1 (2024) | -5.1 **>2pp** |
-   | Italy | 11% | 11.0 (2024) | +0.0 |
-   | Japan | 2% | 2.8 (2024) | -0.8 |
-   | South Korea | 3% | 3.5 (2024) | -0.5 |
-   | Mexico | 1% | 1.3 (2024) | -0.3 |
-   | Malaysia | 11% | 10.7 (2024) | +0.3 |
-   | Netherlands | 14% | 16.2 (2024) | -2.2 **>2pp** |
-   | New Zealand | 29% | 28.2 (2024) | +0.8 |
-   | Peru | 4% | 5.4 (2024) | -1.4 |
-   | Poland | 2% | 4.5 (2024) | -2.5 **>2pp** |
-   | Singapore | 43% | 48.7 (2024) | -5.7 **>2pp** |
-   | Sweden | 20% | 21.4 (2024) | -1.4 |
-   | Thailand | 5% | 4.4 (2024) | +0.6 |
-   | Türkiye | 7% | 8.1 (2024) | -1.1 |
-   | United States | 15% | 15.2 (2024) | -0.2 |
-   | South Africa | 5% | 4.1 (2024) | +0.9 |
-   Countries where |printed - T| > 2 points: 7. T is the World Bank series (decision 2026-11-22); differences reflect the UN DESA release Ipsos used and Ipsos rounding to whole percents.
-5. definition_match per item: {('immigrant_share', 'yes'): 30, ('muslim_share', 'yes'): 30, ('wealth_top1', 'approximate'): 30}. 'approximate' = wealth_top1 (households in question, adults in WID).
+   | Argentina | 26% | 25.78 (2024) | +0.22 |
+   | Australia | 24% | 23.67 (2024) | +0.33 |
+   | Belgium | 15% | 15.53 (2024) | -0.53 |
+   | Brazil | 49% | 39.46 (2024) | +9.54 **>2pp** |
+   | Canada | 25% | 28.58 (2024) | -3.58 **>2pp** |
+   | Chile | 50% | 39.56 (2024) | +10.44 **>2pp** |
+   | Colombia | 33% | 39.23 (2024) | -6.23 **>2pp** |
+   | Germany | 26% | 27.85 (2024) | -1.85 |
+   | Spain | 23% | 24.15 (2024) | -1.15 |
+   | France | 24% | 27.68 (2024) | -3.68 **>2pp** |
+   | Great Britain | 21% | 21.30 (2024) | -0.30 |
+   | Hungary | 33% | 33.36 (2024) | -0.36 |
+   | Indonesia | 30% | 21.32 (2024) | +8.68 **>2pp** |
+   | India | 33% | 40.14 (2024) | -7.14 **>2pp** |
+   | Ireland | 23% | 23.33 (2024) | -0.33 |
+   | Italy | 22% | 22.03 (2024) | -0.03 |
+   | Japan | 25% | 24.62 (2024) | +0.38 |
+   | South Korea | 26% | 26.10 (2024) | -0.10 |
+   | Mexico | 48% | 39.80 (2024) | +8.20 **>2pp** |
+   | Malaysia | 31% | 27.19 (2024) | +3.81 **>2pp** |
+   | Netherlands | 13% | 13.98 (2024) | -0.98 |
+   | New Zealand | 23% | 22.66 (2024) | +0.34 |
+   | Peru | No data available | 38.55 (2024) | n/a |
+   | Poland | 30% | 29.92 (2024) | +0.08 |
+   | Singapore | 31% | 28.35 (2024) | +2.65 **>2pp** |
+   | Sweden | 28% | 27.49 (2024) | +0.51 |
+   | Thailand | 48% | 33.33 (2024) | +14.67 **>2pp** |
+   | Türkiye | 37% | 31.74 (2024) | +5.26 **>2pp** |
+   | United States | 35% | 34.78 (2024) | +0.22 |
+   | South Africa | 55% | 54.91 (2024) | +0.09 |
+   wealth_top1: countries where |printed - T| > 2 points: 12 ['Brazil', 'Canada', 'Chile', 'Colombia', 'France', 'Indonesia', 'India', 'Mexico', 'Malaysia', 'Singapore', 'Thailand', 'Türkiye']
+   immigrant_share (T source: World Bank WDI SM.POP.TOTL.ZS (UN DESA International Migrant Stock))
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | 5% | 4.30 (2024) | +0.70 |
+   | Australia | 30% | 30.40 (2024) | -0.40 |
+   | Belgium | 17% | 20.00 (2024) | -3.00 **>2pp** |
+   | Brazil | 1% | 0.70 (2024) | +0.30 |
+   | Canada | 21% | 22.20 (2024) | -1.20 |
+   | Chile | 9% | 7.80 (2024) | +1.20 |
+   | Colombia | 4% | 5.80 (2024) | -1.80 |
+   | Germany | 19% | 19.80 (2024) | -0.80 |
+   | Spain | 15% | 18.50 (2024) | -3.50 **>2pp** |
+   | France | 13% | 13.80 (2024) | -0.80 |
+   | Great Britain | 14% | 17.10 (2024) | -3.10 **>2pp** |
+   | Hungary | 6% | 7.10 (2024) | -1.10 |
+   | Indonesia | 0% | 0.20 (2024) | -0.20 |
+   | India | 0% | 0.30 (2024) | -0.30 |
+   | Ireland | 18% | 23.10 (2024) | -5.10 **>2pp** |
+   | Italy | 11% | 11.00 (2024) | +0.00 |
+   | Japan | 2% | 2.80 (2024) | -0.80 |
+   | South Korea | 3% | 3.50 (2024) | -0.50 |
+   | Mexico | 1% | 1.30 (2024) | -0.30 |
+   | Malaysia | 11% | 10.70 (2024) | +0.30 |
+   | Netherlands | 14% | 16.20 (2024) | -2.20 **>2pp** |
+   | New Zealand | 29% | 28.20 (2024) | +0.80 |
+   | Peru | 4% | 5.40 (2024) | -1.40 |
+   | Poland | 2% | 4.50 (2024) | -2.50 **>2pp** |
+   | Singapore | 43% | 48.70 (2024) | -5.70 **>2pp** |
+   | Sweden | 20% | 21.40 (2024) | -1.40 |
+   | Thailand | 5% | 4.40 (2024) | +0.60 |
+   | Türkiye | 7% | 8.10 (2024) | -1.10 |
+   | United States | 15% | 15.20 (2024) | -0.20 |
+   | South Africa | 5% | 4.10 (2024) | +0.90 |
+   immigrant_share: countries where |printed - T| > 2 points: 7 ['Belgium', 'Spain', 'Great Britain', 'Ireland', 'Netherlands', 'Poland', 'Singapore']
+   muslim_share (T source: Pew Research Center, Religious Composition of the World's Population 2010-2020 (June 2025), 2020 estimate)
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | <1% | 0.9292 (2020) | n/a |
+   | Australia | 3% | 3.50 (2020) | -0.50 |
+   | Belgium | 8% | 6.81 (2020) | +1.19 |
+   | Brazil | <1% | 0.0177 (2020) | n/a |
+   | Canada | 3% | 4.89 (2020) | -1.89 |
+   | Chile | <1% | 0.06699 (2020) | n/a |
+   | Colombia | <1% | 0.00393 (2020) | n/a |
+   | Germany | 7% | 6.55 (2020) | +0.45 |
+   | Spain | 3% | 3.58 (2020) | -0.58 |
+   | France | 8% | 9.10 (2020) | -1.10 |
+   | Great Britain | 6% | 6.37 (2020) | -0.37 |
+   | Hungary | <1% | 0.13922 (2020) | n/a |
+   | Indonesia | 87% | 86.96 (2020) | +0.04 |
+   | India | 15% | 15.19 (2020) | -0.19 |
+   | Ireland | 2% | 1.69 (2020) | +0.31 |
+   | Italy | 5% | 4.42 (2020) | +0.58 |
+   | Japan | <1% | 0.16997 (2020) | n/a |
+   | South Korea | <1% | 0.31 (2020) | n/a |
+   | Mexico | <1% | 0.00629 (2020) | n/a |
+   | Malaysia | 66% | 64.12 (2020) | +1.88 |
+   | Netherlands | 7% | 5.50 (2020) | +1.50 |
+   | New Zealand | 2% | 1.36 (2020) | +0.64 |
+   | Peru | <1% | 0.02159 (2020) | n/a |
+   | Poland | <1% | 0.00732 (2020) | n/a |
+   | Singapore | 16% | 16.14 (2020) | -0.14 |
+   | Sweden | 7% | 8.10 (2020) | -1.10 |
+   | Thailand | 6% | 4.51 (2020) | +1.49 |
+   | Türkiye | 98% | 97.11 (2020) | +0.89 |
+   | United States | 1% | 1.19 (2020) | -0.19 |
+   | South Africa | 2% | 1.60 (2020) | +0.40 |
+   muslim_share: countries where |printed - T| > 2 points: 0 
+   T is the World Bank WDI 2024 series (immigrant_share), Pew's 2020 estimate (muslim_share) and WID 2024 (wealth_top1), decisions 2026-11-22; differences reflect the older source vintages Ipsos used and Ipsos rounding to whole percents.
+5. definition_match per item: {('immigrant_share', 'yes'): 28, ('immigrant_share', 'approximate'): 2, ('muslim_share', 'yes'): 30, ('wealth_top1', 'approximate'): 30}. 'approximate' = wealth_top1 (households in question, adults in WID).
 6. Sum of Ipsos 'approximately' per-country samples: 22000 vs 22,989 interviews stated on p38 (Ipsos rounds per-country n).
 7. countries.csv: 30 rows; web_presence missing for: none; income groups: {'Upper middle income': 10, 'High income': 19, 'Lower middle income': 1}.
 ```
