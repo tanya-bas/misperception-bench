@@ -23,7 +23,7 @@ SAMPLE_ITEM = {"ipsos_2024": "immigrant_share", "ipsos_2020": "deaths_cancer"}
 ITEM_ORDER = {"ipsos_2024": ("wealth_top1", "immigrant_share", "muslim_share")}  # report order of the v0 README; other waves in pairs.csv order
 T_NOTE = {
     "ipsos_2024": "T is the World Bank WDI 2024 series (immigrant_share), Pew's 2020 estimate (muslim_share) and WID 2024 (wealth_top1), decisions 2026-11-22; differences reflect the older source vintages Ipsos used and Ipsos rounding to whole percents.",
-    "ipsos_2020": "T is the printed GBD 2017 figure itself (fallback after the Our World in Data pull was refused, decision 2026-11-22), so printed and used differ only where the printed actual is swapped between two adjacent rows (cardiovascular, Saudi Arabia and Germany) or is a rounded 0.0 left blank.",
+    "ipsos_2020": "T is the WHO Global Health Estimates 2023 release, 2019 share of all deaths by cause, for the 31 countries WHO covers (decision 2026-11-22); Ipsos printed IHME GBD 2017 figures, so printed and used differ by source, vintage and cause definition (largest for neurological, where WHO and GBD assign dementia deaths differently). Hong Kong keeps the printed health-department figure (HIV/STI row: national vital registration 2017).",
 }
 
 

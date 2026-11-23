@@ -37,7 +37,12 @@ Truth columns (rule adopted 2026-11-22):
                                         data/validation/truth_crosscheck.csv (rows whose source_name is
                                         WID_2024_SOURCE); fills Peru, which the report prints as
                                         "No data available"; printed figure stays in t_value_ipsos
-                  ipsos_printed_gbd2017 ipsos_2020 items (decision 2026-11-22): t_value is the "Actual" Ipsos
+                  who_ghe2023_y2019     ipsos_2020 items, the 31 countries WHO covers (decision 2026-11-22):
+                                        t_value is the WHO Global Health Estimates 2023 release share of all
+                                        deaths by cause for 2019 (closest pre-COVID year to the fieldwork),
+                                        read from data/validation/truth_crosscheck_2020.csv (WHO_DEFN gives
+                                        the cause codes); the printed GBD 2017 figure stays in t_value_ipsos
+                  ipsos_printed_gbd2017 superseded by who_ghe2023_y2019 (no longer produced): t_value was the "Actual" Ipsos
                                         printed, which its technical note (p53) attributes to the IHME Global
                                         Burden of Disease Study 2017. The planned Our World in Data pull of the
                                         current GBD vintage failed (OWID returns HTTP 403: IHME data is not
@@ -50,7 +55,7 @@ Truth columns (rule adopted 2026-11-22):
                                         of these two adjacent rows are swapped relative to Ipsos's own printed
                                         difference column (and to Destatis for Germany); t_value is the other
                                         row's printed figure, t_value_ipsos stays as printed (SWAPPED_2020)
-                  national_vr_2017      ipsos_2020 HIV/STI rows printed as "0.0" (Hong Kong, Hungary, Japan,
+                  national_vr_2017      now Hong Kong only (the other five moved to who_ghe2023_y2019); was: ipsos_2020 HIV/STI rows printed as "0.0" (Hong Kong, Hungary, Japan,
                                         Netherlands, Poland, Sweden): t_value is the 2017 national vital-
                                         registration share read from data/validation/truth_crosscheck_2020.csv
                                         (Eurostat hlth_cd_aro, Japan MHLW, Hong Kong Department of Health);
@@ -233,6 +238,41 @@ def truth(item, country, raw, pew, wdi, wid):
     return {**base, "t_value": float(raw), "t_flag": "as_printed"}
 
 
+WHO_T_SOURCE = "WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths"
+WHO_FLAG = "who_ghe2023_y2019"
+# definition_match and definition_note per item for the WHO truth (decision 2026-11-22)
+WHO_DEFN = {'deaths_cancer': ('approximate', "question says cancer; T is WHO 'Malignant neoplasms' (GHE code 610) over all causes, while the GBD 'Neoplasms' group behind Ipsos's printed figure also counts non-malignant neoplasms, so WHO is slightly lower"), 'deaths_cardiovascular': ('yes', "WHO 'Cardiovascular diseases' (GHE code 1100) over all causes; same scope as the question and the GBD group Ipsos printed"), 'deaths_neurological': ('approximate', "WHO 'Neurological conditions' (GHE code 940) over all causes; WHO and GBD assign dementia deaths differently, so the WHO share is much lower than the printed GBD 2017 figure in ageing countries (Japan 6.3 vs 16.0)"), 'deaths_hiv_sti': ('yes', "WHO 'HIV/AIDS' (GHE code 100) plus 'STDs excluding HIV' (code 40) over all causes; same scope as the question; for Hungary, Japan, Netherlands, Poland and Sweden this supersedes the 2017 national HIV-only figure, retained in validation/truth_crosscheck_2020.csv"), 'deaths_violence': ('yes', "WHO 'Interpersonal violence' (GHE code 1620) over all causes; same scope as the question and GBD"), 'deaths_suicide': ('yes', "WHO 'Self-harm' (GHE code 1610) over all causes; same scope as the question and GBD")}
+WHO_GHE_2019 = None
+
+
+def who_ghe_2019():
+    """WHO Global Health Estimates 2023 release, year 2019, share of all deaths by cause, for the 31 ipsos_2020 countries
+    WHO covers (Hong Kong SAR China is not a WHO reporting entity), read from data/validation/truth_crosscheck_2020.csv:
+    rows whose source_name starts with 'WHO Global Health Estimates' and source_year is 2019. For deaths_cancer the
+    file holds two candidates (code 610 alone, and 610 + 790 'Other neoplasms'); the one used is malignant neoplasms
+    alone, identified by the prefix of its definition_note.
+    Decision 2026-11-22."""
+    global WHO_GHE_2019
+    if WHO_GHE_2019 is None:
+        path = os.path.join(D, "validation", "truth_crosscheck_2020.csv")
+        table = {}
+        with open(path, encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                if not r["source_name"].startswith("WHO Global Health Estimates") or r["source_year"] != "2019":
+                    continue
+                if r["item_id"] == "deaths_cancer" and r["definition_note"].startswith("WHO GHE 'Malignant neoplasms' (code 610) + 'Other neoplasms'"):
+                    continue
+                key = (r["item_id"], r["country_iso3"])
+                if key in table:
+                    sys.exit(f"truth_crosscheck_2020.csv: duplicate WHO 2019 candidate for {key}")
+                table[key] = r
+        n_items = {i for i, _ in table}; n_c = {c for _, c in table}
+        if n_items != set(WHO_DEFN) or len(n_c) != 31 or "HKG" in n_c or len(table) != 186:
+            sys.exit(f"truth_crosscheck_2020.csv: WHO 2019 candidates: {len(table)} cells, {len(n_c)} countries, items {sorted(n_items)}")
+        WHO_GHE_2019 = table
+    return WHO_GHE_2019
+
+
 NATIONAL_VR_2017 = None
 
 
@@ -266,7 +306,12 @@ def truth_2020(item, country, iso3, raw):
     base = {"t_value_ipsos": raw, "t_unrounded_source": "", "t_unrounded_url": "", "t_unrounded_year": "",
             "t_reference_year": "" if country == "Hong Kong SAR China" else "2017"}
     flag = "ipsos_printed_healthyhk" if country == "Hong Kong SAR China" else "ipsos_printed_gbd2017"
-    if (item, country) in SWAPPED_2020:
+    if (item, iso3) in who_ghe_2019():  # every country WHO covers; Hong Kong falls through to the printed figure
+        c = who_ghe_2019()[(item, iso3)]
+        return {**base, "t_value": float(c["candidate_value"]), "t_flag": WHO_FLAG,
+                "t_unrounded_source": c["source_name"], "t_unrounded_url": c["source_url"],
+                "t_unrounded_year": c["source_year"], "t_reference_year": "2019"}
+    if (item, country) in SWAPPED_2020:  # unreachable for Saudi Arabia and Germany now (WHO); kept to document the deck error
         return {**base, "t_value": float(SWAPPED_2020[(item, country)]), "t_flag": flag + "_swap_corrected"}
     if raw.endswith("*") or float(raw) == 0:  # "0.0" or "0.0*" (= more than 0 but less than 0.05): no placeholder
         if item == "deaths_hiv_sti" and iso3 in national_vr_2017():
@@ -338,6 +383,9 @@ def rows_2020(wdi):
         if country == "Hong Kong SAR China":
             defn_match, defn_note = "approximate", HK_NOTE
         t_source = T_SOURCE_2020
+        if t["t_flag"] == WHO_FLAG:
+            t_source = WHO_T_SOURCE
+            defn_match, defn_note = WHO_DEFN[item]
         if t["t_flag"] == "national_vr_2017":
             t_source = t["t_unrounded_source"]
             defn_match, defn_note = "approximate", HIV_NOTE
