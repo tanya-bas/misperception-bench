@@ -17,12 +17,14 @@ Truth columns (rule adopted 2026-11-22):
                                         WDI SM.POP.TOTL.ZS value from data/countries.csv (UN DESA series,
                                         unrounded, year in t_reference_year); the printed figure stays in
                                         t_value_ipsos
-                  source_unrounded      report printed 0% or <1%; t_value is the unrounded value from
-                                        the source Ipsos cites (details in t_unrounded_source / _url)
-                  source_unrounded_pending  same case but the unrounded value could not be fetched yet;
-                                        t_value is blank (never 0.5); listed in README follow-ups
+                  pew_2020              muslim_share only (decision 2026-11-22): t_value is Pew's 2020
+                                        estimate from the June 2025 "Religious Composition of the World's
+                                        Population 2010-2020" release, read from
+                                        data/validation/truth_crosscheck.csv (rows whose source_name is
+                                        PEW_2020_SOURCE and source_year is 2020); printed figure stays in
+                                        t_value_ipsos
                   missing               report prints "No data available"
-  The unrounded values live in data/transcription/t_unrounded_sources.csv.
+  No row carries a placeholder: every t_value is a real number or blank (missing).
 Run: python3 -I scripts/build_pairs.py
 """
 import csv, os, sys
@@ -46,9 +48,20 @@ ITEMS = {
         definition_note="foreign-born in both question and source; Ipsos cites UN International Migrant Stock, T taken from the World Bank copy of the same series (decision 2026-11-22)"),
     "muslim_share": dict(
         wording="In your country, out of 100 people, how many do you think are Muslim?",
-        t_source="Pew Research", definition_match="yes",
-        definition_note="share of population Muslim in both question and source"),
+        t_source="Pew Research Center, Religious Composition of the World's Population 2010-2020 (June 2025), 2020 estimate",
+        definition_match="yes",
+        definition_note="share of population Muslim in both question and source; Ipsos cites Pew, T taken from Pew's 2020 estimate in the June 2025 release for every country (decision 2026-11-22)"),
 }
+
+# Per-row overrides of the definition columns (checked against the sources in data/validation/truth_crosscheck.csv).
+DEFINITION_OVERRIDES = {
+    ("immigrant_share", "India"): ("approximate", "question says foreign-born; UN DESA derives India's migrant stock from foreign-citizen data rather than place of birth (World Bank copy of the same series)"),
+    ("immigrant_share", "Indonesia"): ("approximate", "question says foreign-born; UN DESA derives Indonesia's migrant stock from foreign-citizen data rather than place of birth (World Bank copy of the same series)"),
+}
+
+# Exact source_name of the Pew 2020 rows in data/validation/truth_crosscheck.csv (the same file also holds
+# the 2010 column of the 2025 release and the 2010 column of the 2015 release; neither is used).
+PEW_2020_SOURCE = "Pew Research Center, Religious Composition by Country 2010-2020 (June 2025 release; country table embedded in the interactive page), Muslims % 2020"
 
 # Country metadata from the methodology page (p38). n is "approximately" as Ipsos states it.
 # representative: Ipsos's own statement; Ireland and New Zealand are named in neither p38 list and are
@@ -84,29 +97,28 @@ def printed(raw):
     return raw if raw.lower() in ("no data available", "n/a") or raw.endswith("%") else raw + "%"
 
 
-def truth(item, country, raw, unrounded, wdi):
+def truth(item, country, raw, pew, wdi):
     """Return a dict of the truth columns for one pair (see module docstring)."""
     raw = raw.strip()
     base = {"t_value_ipsos": printed(raw), "t_unrounded_source": "", "t_unrounded_url": "", "t_unrounded_year": "",
             "t_reference_year": ""}
+    iso3 = COUNTRIES[country][0]
     if item == "immigrant_share":
         # World Bank series is T for this item regardless of what Ipsos printed (decision 2026-11-22).
-        w = wdi[COUNTRIES[country][0]]
+        w = wdi[iso3]
         if w["migrant_stock_pct_wdi"] == "":
             sys.exit(f"no World Bank migrant stock value in countries.csv for {country}")
         return {**base, "t_value": float(w["migrant_stock_pct_wdi"]), "t_flag": "world_bank",
                 "t_reference_year": w["migrant_stock_pct_year"]}
+    if item == "muslim_share":
+        # Pew 2020 estimate is T for this item regardless of what Ipsos printed (decision 2026-11-22).
+        if iso3 not in pew:
+            sys.exit(f"no Pew 2020 value in truth_crosscheck.csv for {country}")
+        return {**base, "t_value": float(pew[iso3]), "t_flag": "pew_2020", "t_reference_year": "2020"}
     if raw.lower() in ("no data available", "n/a", ""):
         return {**base, "t_value": "", "t_flag": "missing"}
     if raw == "<1" or float(raw) == 0:
-        u = unrounded.get((item, country))
-        if u is None:
-            sys.exit(f"no entry in t_unrounded_sources.csv for {item} / {country}")
-        pending = u["status"] != "ok" or u["t_value"] == ""
-        return {**base, "t_value": "" if pending else float(u["t_value"]),
-                "t_flag": "source_unrounded_pending" if pending else "source_unrounded",
-                "t_unrounded_source": u["t_unrounded_source"], "t_unrounded_url": u["t_unrounded_url"],
-                "t_unrounded_year": u["source_year"]}
+        sys.exit(f"{item} / {country}: report prints a rounded zero and no rule exists for this item")
     return {**base, "t_value": float(raw), "t_flag": "as_printed"}
 
 
@@ -115,14 +127,19 @@ def main():
     if set(c for _, c in p1) != set(COUNTRIES):
         sys.exit(f"country set mismatch: {set(c for _, c in p1) ^ set(COUNTRIES)}")
 
-    unrounded = {(r["item_id"], r["country"]): r for r in read("t_unrounded_sources.csv")}
     with open(os.path.join(D, "countries.csv"), encoding="utf-8") as f:
         wdi = {r["country_iso3"]: r for r in csv.DictReader(f)}
+    with open(os.path.join(D, "validation", "truth_crosscheck.csv"), encoding="utf-8") as f:
+        pew = {r["country_iso3"]: r["candidate_value"] for r in csv.DictReader(f)
+               if r["item_id"] == "muslim_share" and r["source_year"] == "2020" and r["source_name"] == PEW_2020_SOURCE}
+    if len(pew) != 30:
+        sys.exit(f"expected 30 Pew 2020 muslim_share rows in truth_crosscheck.csv, found {len(pew)}")
     rows = []
     for (item, country), r in sorted(p1.items()):
         iso3, n, age, rep = COUNTRIES[country]
         meta = ITEMS[item]
-        t = truth(item, country, r["t_raw"], unrounded, wdi)
+        t = truth(item, country, r["t_raw"], pew, wdi)
+        defn_match, defn_note = DEFINITION_OVERRIDES.get((item, country), (meta["definition_match"], meta["definition_note"]))
         rows.append({
             "wave": WAVE, "source_id": SOURCE_ID,
             "country_name_ipsos": country, "country_iso3": iso3, "item_id": item,
@@ -131,7 +148,7 @@ def main():
             "t_unrounded_source": t["t_unrounded_source"], "t_unrounded_url": t["t_unrounded_url"],
             "t_unrounded_year": t["t_unrounded_year"],
             "t_source": meta["t_source"], "t_reference_year": t["t_reference_year"],
-            "definition_match": meta["definition_match"], "definition_note": meta["definition_note"],
+            "definition_match": defn_match, "definition_note": defn_note,
             "question_wording": meta["wording"],
             "source_page": r["page"],  # pass-1 page; the two-pass outcome is reported by validate.py, not per row
             "fieldwork_start": FIELDWORK[0], "fieldwork_end": FIELDWORK[1],

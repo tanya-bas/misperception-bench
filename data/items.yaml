@@ -38,11 +38,15 @@ items:
     transform: logit
     wording_2024: "In your country, out of 100 people, how many do you think are Muslim?"
     report_page: 20
-    t_source: Pew Research
+    t_source: Pew Research Center, Religious Composition of the World's Population 2010-2020 (June 2025), 2020 estimate
+    t_source_cited_by_ipsos: Pew Research
     t_definition_note: >
       Pew Research Center share of population identifying as Muslim. Definitional match = yes.
-      Ipsos prints "<1%" for ten countries; t_value for those rows is Pew's unrounded 2020 share
-      (t_flag = source_unrounded), never 0.5.
+      Decision 2026-11-22: T for every country is Pew's 2020 estimate from the June 2025 release
+      (t_flag = pew_2020, unrounded, five decimals), so the ten countries Ipsos prints as "<1%"
+      carry real small numbers. No single Pew vintage reproduces Ipsos's printed figures (8 match
+      the 2020 column, 10 match a 2010 column), so one vintage is used throughout and the printed
+      figure is kept in t_value_ipsos.
     salience_apriori: high
   - item_id: homicide_trend
     name: Whether the homicide rate is higher, lower or about the same as in 2000
