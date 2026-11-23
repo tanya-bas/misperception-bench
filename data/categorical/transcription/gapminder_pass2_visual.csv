@@ -1,0 +1,217 @@
+item_id,pdf_page,country,option,pct
+gm_q1_largest_refugee_share_country,9,Kenya,Lebanon,50
+gm_q1_largest_refugee_share_country,9,Kenya,Germany,41
+gm_q1_largest_refugee_share_country,9,Kenya,Sweden,9
+gm_q1_largest_refugee_share_country,9,US,Lebanon,37
+gm_q1_largest_refugee_share_country,9,US,Germany,41
+gm_q1_largest_refugee_share_country,9,US,Sweden,22
+gm_q1_largest_refugee_share_country,9,UK,Lebanon,37
+gm_q1_largest_refugee_share_country,9,UK,Germany,47
+gm_q1_largest_refugee_share_country,9,UK,Sweden,16
+gm_q1_largest_refugee_share_country,9,Colombia,Lebanon,34
+gm_q1_largest_refugee_share_country,9,Colombia,Germany,53
+gm_q1_largest_refugee_share_country,9,Colombia,Sweden,13
+gm_q1_largest_refugee_share_country,9,Pakistan,Lebanon,26
+gm_q1_largest_refugee_share_country,9,Pakistan,Germany,56
+gm_q1_largest_refugee_share_country,9,Pakistan,Sweden,18
+gm_q1_largest_refugee_share_country,9,Türkiye,Lebanon,24
+gm_q1_largest_refugee_share_country,9,Türkiye,Germany,68
+gm_q1_largest_refugee_share_country,9,Türkiye,Sweden,8
+gm_q1_largest_refugee_share_country,9,Germany,Lebanon,15
+gm_q1_largest_refugee_share_country,9,Germany,Germany,78
+gm_q1_largest_refugee_share_country,9,Germany,Sweden,7
+gm_q1_largest_refugee_share_country,9,Average,Lebanon,32
+gm_q1_largest_refugee_share_country,9,Average,Germany,55
+gm_q1_largest_refugee_share_country,9,Average,Sweden,13
+gm_q2_share_fled_to_high_income_2021,10,Pakistan,Around 20%,25
+gm_q2_share_fled_to_high_income_2021,10,Pakistan,Around 30%,48
+gm_q2_share_fled_to_high_income_2021,10,Pakistan,Around 40%,27
+gm_q2_share_fled_to_high_income_2021,10,UK,Around 20%,23
+gm_q2_share_fled_to_high_income_2021,10,UK,Around 30%,43
+gm_q2_share_fled_to_high_income_2021,10,UK,Around 40%,34
+gm_q2_share_fled_to_high_income_2021,10,Germany,Around 20%,20
+gm_q2_share_fled_to_high_income_2021,10,Germany,Around 30%,49
+gm_q2_share_fled_to_high_income_2021,10,Germany,Around 40%,31
+gm_q2_share_fled_to_high_income_2021,10,Kenya,Around 20%,19
+gm_q2_share_fled_to_high_income_2021,10,Kenya,Around 30%,39
+gm_q2_share_fled_to_high_income_2021,10,Kenya,Around 40%,42
+gm_q2_share_fled_to_high_income_2021,10,Türkiye,Around 20%,18
+gm_q2_share_fled_to_high_income_2021,10,Türkiye,Around 30%,53
+gm_q2_share_fled_to_high_income_2021,10,Türkiye,Around 40%,29
+gm_q2_share_fled_to_high_income_2021,10,US,Around 20%,15
+gm_q2_share_fled_to_high_income_2021,10,US,Around 30%,51
+gm_q2_share_fled_to_high_income_2021,10,US,Around 40%,34
+gm_q2_share_fled_to_high_income_2021,10,Colombia,Around 20%,12
+gm_q2_share_fled_to_high_income_2021,10,Colombia,Around 30%,39
+gm_q2_share_fled_to_high_income_2021,10,Colombia,Around 40%,49
+gm_q2_share_fled_to_high_income_2021,10,Average,Around 20%,19
+gm_q2_share_fled_to_high_income_2021,10,Average,Around 30%,46
+gm_q2_share_fled_to_high_income_2021,10,Average,Around 40%,35
+gm_q3_refugees_four_middle_income_hosts_2022,11,Türkiye,Around 9 million,38
+gm_q3_refugees_four_middle_income_hosts_2022,11,Türkiye,Around 5 million,42
+gm_q3_refugees_four_middle_income_hosts_2022,11,Türkiye,Around 1 million,20
+gm_q3_refugees_four_middle_income_hosts_2022,11,Colombia,Around 9 million,21
+gm_q3_refugees_four_middle_income_hosts_2022,11,Colombia,Around 5 million,51
+gm_q3_refugees_four_middle_income_hosts_2022,11,Colombia,Around 1 million,28
+gm_q3_refugees_four_middle_income_hosts_2022,11,Kenya,Around 9 million,19
+gm_q3_refugees_four_middle_income_hosts_2022,11,Kenya,Around 5 million,35
+gm_q3_refugees_four_middle_income_hosts_2022,11,Kenya,Around 1 million,46
+gm_q3_refugees_four_middle_income_hosts_2022,11,UK,Around 9 million,15
+gm_q3_refugees_four_middle_income_hosts_2022,11,UK,Around 5 million,55
+gm_q3_refugees_four_middle_income_hosts_2022,11,UK,Around 1 million,30
+gm_q3_refugees_four_middle_income_hosts_2022,11,US,Around 9 million,13
+gm_q3_refugees_four_middle_income_hosts_2022,11,US,Around 5 million,53
+gm_q3_refugees_four_middle_income_hosts_2022,11,US,Around 1 million,34
+gm_q3_refugees_four_middle_income_hosts_2022,11,Germany,Around 9 million,13
+gm_q3_refugees_four_middle_income_hosts_2022,11,Germany,Around 5 million,53
+gm_q3_refugees_four_middle_income_hosts_2022,11,Germany,Around 1 million,34
+gm_q3_refugees_four_middle_income_hosts_2022,11,Pakistan,Around 9 million,12
+gm_q3_refugees_four_middle_income_hosts_2022,11,Pakistan,Around 5 million,44
+gm_q3_refugees_four_middle_income_hosts_2022,11,Pakistan,Around 1 million,44
+gm_q3_refugees_four_middle_income_hosts_2022,11,Average,Around 9 million,19
+gm_q3_refugees_four_middle_income_hosts_2022,11,Average,Around 5 million,48
+gm_q3_refugees_four_middle_income_hosts_2022,11,Average,Around 1 million,34
+gm_q4_unhcr_funding_change,12,Türkiye,5 times more,31
+gm_q4_unhcr_funding_change,12,Türkiye,2 times more,56
+gm_q4_unhcr_funding_change,12,Türkiye,Slightly less,13
+gm_q4_unhcr_funding_change,12,Kenya,5 times more,26
+gm_q4_unhcr_funding_change,12,Kenya,2 times more,50
+gm_q4_unhcr_funding_change,12,Kenya,Slightly less,24
+gm_q4_unhcr_funding_change,12,Colombia,5 times more,25
+gm_q4_unhcr_funding_change,12,Colombia,2 times more,54
+gm_q4_unhcr_funding_change,12,Colombia,Slightly less,21
+gm_q4_unhcr_funding_change,12,US,5 times more,22
+gm_q4_unhcr_funding_change,12,US,2 times more,57
+gm_q4_unhcr_funding_change,12,US,Slightly less,21
+gm_q4_unhcr_funding_change,12,Pakistan,5 times more,21
+gm_q4_unhcr_funding_change,12,Pakistan,2 times more,54
+gm_q4_unhcr_funding_change,12,Pakistan,Slightly less,25
+gm_q4_unhcr_funding_change,12,UK,5 times more,17
+gm_q4_unhcr_funding_change,12,UK,2 times more,55
+gm_q4_unhcr_funding_change,12,UK,Slightly less,28
+gm_q4_unhcr_funding_change,12,Germany,5 times more,9
+gm_q4_unhcr_funding_change,12,Germany,2 times more,55
+gm_q4_unhcr_funding_change,12,Germany,Slightly less,36
+gm_q4_unhcr_funding_change,12,Average,5 times more,22
+gm_q4_unhcr_funding_change,12,Average,2 times more,54
+gm_q4_unhcr_funding_change,12,Average,Slightly less,24
+gm_q5_share_in_exile_over_four_years,13,US,More than 60%,27
+gm_q5_share_in_exile_over_four_years,13,US,Around 45%,49
+gm_q5_share_in_exile_over_four_years,13,US,Less than 30%,24
+gm_q5_share_in_exile_over_four_years,13,Germany,More than 60%,24
+gm_q5_share_in_exile_over_four_years,13,Germany,Around 45%,55
+gm_q5_share_in_exile_over_four_years,13,Germany,Less than 30%,21
+gm_q5_share_in_exile_over_four_years,13,Türkiye,More than 60%,24
+gm_q5_share_in_exile_over_four_years,13,Türkiye,Around 45%,47
+gm_q5_share_in_exile_over_four_years,13,Türkiye,Less than 30%,29
+gm_q5_share_in_exile_over_four_years,13,Pakistan,More than 60%,23
+gm_q5_share_in_exile_over_four_years,13,Pakistan,Around 45%,50
+gm_q5_share_in_exile_over_four_years,13,Pakistan,Less than 30%,27
+gm_q5_share_in_exile_over_four_years,13,UK,More than 60%,22
+gm_q5_share_in_exile_over_four_years,13,UK,Around 45%,57
+gm_q5_share_in_exile_over_four_years,13,UK,Less than 30%,21
+gm_q5_share_in_exile_over_four_years,13,Kenya,More than 60%,17
+gm_q5_share_in_exile_over_four_years,13,Kenya,Around 45%,56
+gm_q5_share_in_exile_over_four_years,13,Kenya,Less than 30%,27
+gm_q5_share_in_exile_over_four_years,13,Colombia,More than 60%,16
+gm_q5_share_in_exile_over_four_years,13,Colombia,Around 45%,65
+gm_q5_share_in_exile_over_four_years,13,Colombia,Less than 30%,19
+gm_q5_share_in_exile_over_four_years,13,Average,More than 60%,22
+gm_q5_share_in_exile_over_four_years,13,Average,Around 45%,54
+gm_q5_share_in_exile_over_four_years,13,Average,Less than 30%,24
+gm_q6_refugees_world_total_2022,14,Kenya,46 million (0.6%),52
+gm_q6_refugees_world_total_2022,14,Kenya,480 million (6%),38
+gm_q6_refugees_world_total_2022,14,Kenya,720 million (9%),10
+gm_q6_refugees_world_total_2022,14,Türkiye,46 million (0.6%),49
+gm_q6_refugees_world_total_2022,14,Türkiye,480 million (6%),36
+gm_q6_refugees_world_total_2022,14,Türkiye,720 million (9%),15
+gm_q6_refugees_world_total_2022,14,Pakistan,46 million (0.6%),46
+gm_q6_refugees_world_total_2022,14,Pakistan,480 million (6%),42
+gm_q6_refugees_world_total_2022,14,Pakistan,720 million (9%),12
+gm_q6_refugees_world_total_2022,14,Colombia,46 million (0.6%),44
+gm_q6_refugees_world_total_2022,14,Colombia,480 million (6%),41
+gm_q6_refugees_world_total_2022,14,Colombia,720 million (9%),15
+gm_q6_refugees_world_total_2022,14,Germany,46 million (0.6%),31
+gm_q6_refugees_world_total_2022,14,Germany,480 million (6%),48
+gm_q6_refugees_world_total_2022,14,Germany,720 million (9%),21
+gm_q6_refugees_world_total_2022,14,US,46 million (0.6%),31
+gm_q6_refugees_world_total_2022,14,US,480 million (6%),46
+gm_q6_refugees_world_total_2022,14,US,720 million (9%),23
+gm_q6_refugees_world_total_2022,14,UK,46 million (0.6%),31
+gm_q6_refugees_world_total_2022,14,UK,480 million (6%),55
+gm_q6_refugees_world_total_2022,14,UK,720 million (9%),14
+gm_q6_refugees_world_total_2022,14,Average,46 million (0.6%),41
+gm_q6_refugees_world_total_2022,14,Average,480 million (6%),43
+gm_q6_refugees_world_total_2022,14,Average,720 million (9%),16
+gm_q7_west_europe_refugee_spending,15,Germany,More than $20 billion,27
+gm_q7_west_europe_refugee_spending,15,Germany,Around $5 billion,50
+gm_q7_west_europe_refugee_spending,15,Germany,Less than $3 billion,23
+gm_q7_west_europe_refugee_spending,15,Pakistan,More than $20 billion,23
+gm_q7_west_europe_refugee_spending,15,Pakistan,Around $5 billion,56
+gm_q7_west_europe_refugee_spending,15,Pakistan,Less than $3 billion,21
+gm_q7_west_europe_refugee_spending,15,US,More than $20 billion,21
+gm_q7_west_europe_refugee_spending,15,US,Around $5 billion,49
+gm_q7_west_europe_refugee_spending,15,US,Less than $3 billion,30
+gm_q7_west_europe_refugee_spending,15,Colombia,More than $20 billion,21
+gm_q7_west_europe_refugee_spending,15,Colombia,Around $5 billion,58
+gm_q7_west_europe_refugee_spending,15,Colombia,Less than $3 billion,21
+gm_q7_west_europe_refugee_spending,15,Türkiye,More than $20 billion,15
+gm_q7_west_europe_refugee_spending,15,Türkiye,Around $5 billion,47
+gm_q7_west_europe_refugee_spending,15,Türkiye,Less than $3 billion,38
+gm_q7_west_europe_refugee_spending,15,UK,More than $20 billion,15
+gm_q7_west_europe_refugee_spending,15,UK,Around $5 billion,54
+gm_q7_west_europe_refugee_spending,15,UK,Less than $3 billion,31
+gm_q7_west_europe_refugee_spending,15,Kenya,More than $20 billion,15
+gm_q7_west_europe_refugee_spending,15,Kenya,Around $5 billion,52
+gm_q7_west_europe_refugee_spending,15,Kenya,Less than $3 billion,33
+gm_q7_west_europe_refugee_spending,15,Average,More than $20 billion,19
+gm_q7_west_europe_refugee_spending,15,Average,Around $5 billion,52
+gm_q7_west_europe_refugee_spending,15,Average,Less than $3 billion,28
+gm_q8_syrian_refugees_cannot_afford_basics,16,Kenya,Around 90%,33
+gm_q8_syrian_refugees_cannot_afford_basics,16,Kenya,Around 60%,42
+gm_q8_syrian_refugees_cannot_afford_basics,16,Kenya,Around 30%,25
+gm_q8_syrian_refugees_cannot_afford_basics,16,US,Around 90%,29
+gm_q8_syrian_refugees_cannot_afford_basics,16,US,Around 60%,51
+gm_q8_syrian_refugees_cannot_afford_basics,16,US,Around 30%,20
+gm_q8_syrian_refugees_cannot_afford_basics,16,Colombia,Around 90%,24
+gm_q8_syrian_refugees_cannot_afford_basics,16,Colombia,Around 60%,51
+gm_q8_syrian_refugees_cannot_afford_basics,16,Colombia,Around 30%,25
+gm_q8_syrian_refugees_cannot_afford_basics,16,UK,Around 90%,22
+gm_q8_syrian_refugees_cannot_afford_basics,16,UK,Around 60%,55
+gm_q8_syrian_refugees_cannot_afford_basics,16,UK,Around 30%,23
+gm_q8_syrian_refugees_cannot_afford_basics,16,Germany,Around 90%,22
+gm_q8_syrian_refugees_cannot_afford_basics,16,Germany,Around 60%,54
+gm_q8_syrian_refugees_cannot_afford_basics,16,Germany,Around 30%,24
+gm_q8_syrian_refugees_cannot_afford_basics,16,Türkiye,Around 90%,15
+gm_q8_syrian_refugees_cannot_afford_basics,16,Türkiye,Around 60%,54
+gm_q8_syrian_refugees_cannot_afford_basics,16,Türkiye,Around 30%,31
+gm_q8_syrian_refugees_cannot_afford_basics,16,Pakistan,Around 90%,10
+gm_q8_syrian_refugees_cannot_afford_basics,16,Pakistan,Around 60%,63
+gm_q8_syrian_refugees_cannot_afford_basics,16,Pakistan,Around 30%,27
+gm_q8_syrian_refugees_cannot_afford_basics,16,Average,Around 90%,22
+gm_q8_syrian_refugees_cannot_afford_basics,16,Average,Around 60%,53
+gm_q8_syrian_refugees_cannot_afford_basics,16,Average,Around 30%,25
+gm_q9_un_spending_per_refugee_per_day,17,US,Around $1,35
+gm_q9_un_spending_per_refugee_per_day,17,US,Around $25,44
+gm_q9_un_spending_per_refugee_per_day,17,US,Around $45,21
+gm_q9_un_spending_per_refugee_per_day,17,Germany,Around $1,33
+gm_q9_un_spending_per_refugee_per_day,17,Germany,Around $25,49
+gm_q9_un_spending_per_refugee_per_day,17,Germany,Around $45,18
+gm_q9_un_spending_per_refugee_per_day,17,UK,Around $1,28
+gm_q9_un_spending_per_refugee_per_day,17,UK,Around $25,54
+gm_q9_un_spending_per_refugee_per_day,17,UK,Around $45,18
+gm_q9_un_spending_per_refugee_per_day,17,Türkiye,Around $1,25
+gm_q9_un_spending_per_refugee_per_day,17,Türkiye,Around $25,66
+gm_q9_un_spending_per_refugee_per_day,17,Türkiye,Around $45,9
+gm_q9_un_spending_per_refugee_per_day,17,Kenya,Around $1,21
+gm_q9_un_spending_per_refugee_per_day,17,Kenya,Around $25,62
+gm_q9_un_spending_per_refugee_per_day,17,Kenya,Around $45,17
+gm_q9_un_spending_per_refugee_per_day,17,Colombia,Around $1,16
+gm_q9_un_spending_per_refugee_per_day,17,Colombia,Around $25,60
+gm_q9_un_spending_per_refugee_per_day,17,Colombia,Around $45,24
+gm_q9_un_spending_per_refugee_per_day,17,Pakistan,Around $1,12
+gm_q9_un_spending_per_refugee_per_day,17,Pakistan,Around $25,74
+gm_q9_un_spending_per_refugee_per_day,17,Pakistan,Around $45,14
+gm_q9_un_spending_per_refugee_per_day,17,Average,Around $1,24
+gm_q9_un_spending_per_refugee_per_day,17,Average,Around $25,59
+gm_q9_un_spending_per_refugee_per_day,17,Average,Around $45,17
