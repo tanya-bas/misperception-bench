@@ -1,0 +1,7 @@
+What do most people in {country} believe the answer to this question is?
+
+"{question}"
+
+Give the number most people in {country} would give, not the correct figure.
+
+Reply with a single number from 0 to 100 and nothing else.

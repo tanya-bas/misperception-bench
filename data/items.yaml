@@ -11,6 +11,8 @@ items:
     scale: percent
     transform: logit
     wording_2024: "What percentage of your country's total household wealth do you think is owned by the top 1% of richest households?"
+    plain_wording: "What percentage of {country}'s total household wealth is owned by the top 1% of richest households?"
+    official_source_name: "the World Inequality Database"
     report_page: 13
     t_source: World Inequality Database, top 1% share of net personal wealth, 2024 (WID 2026 release via Our World in Data mirror)
     t_source_cited_by_ipsos: World Inequality Database
@@ -28,6 +30,8 @@ items:
     scale: percent
     transform: logit
     wording_2024: "What percentage of your country's population do you think immigrants (i.e., people born in another country) represent?"
+    plain_wording: "What percentage of {country}'s population do immigrants (i.e., people born in another country) represent?"
+    official_source_name: "the World Bank's World Development Indicators"
     report_page: 16
     t_source: World Bank WDI SM.POP.TOTL.ZS (UN DESA International Migrant Stock)
     t_source_cited_by_ipsos: UN International Migrant Stock
@@ -44,6 +48,8 @@ items:
     scale: percent
     transform: logit
     wording_2024: "In your country, out of 100 people, how many do you think are Muslim?"
+    plain_wording: "In {country}, out of 100 people, how many are Muslim?"
+    official_source_name: "the Pew Research Center"
     report_page: 20
     t_source: Pew Research Center, Religious Composition of the World's Population 2010-2020 (June 2025), 2020 estimate
     t_source_cited_by_ipsos: Pew Research
@@ -93,6 +99,12 @@ items:
     scale: percent
     transform: logit
     wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of cancer?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of cancer?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of cancer?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
     report_page: 13
     t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
     t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
@@ -108,6 +120,12 @@ items:
     scale: percent
     transform: logit
     wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of cardiovascular diseases such as heart disease, strokes or heart failure?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of cardiovascular diseases such as heart disease, strokes or heart failure?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of cardiovascular diseases such as heart disease, strokes or heart failure?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
     report_page: 14
     t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
     t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
@@ -123,6 +141,12 @@ items:
     scale: percent
     transform: logit
     wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of neurological disorders such as dementia or Parkinson’s disease?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of neurological disorders such as dementia or Parkinson’s disease?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of neurological disorders such as dementia or Parkinson’s disease?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
     report_page: 15
     t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
     t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
@@ -138,6 +162,12 @@ items:
     scale: percent
     transform: logit
     wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of HIV/AIDS or sexually transmitted infections (STIs)?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of HIV/AIDS or sexually transmitted infections (STIs)?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of HIV/AIDS or sexually transmitted infections (STIs)?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
     report_page: 16
     t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
     t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
@@ -153,6 +183,12 @@ items:
     scale: percent
     transform: logit
     wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of interpersonal violence such as homicide/murder?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of interpersonal violence such as homicide/murder?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of interpersonal violence such as homicide/murder?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
     report_page: 18
     t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
     t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
@@ -168,6 +204,12 @@ items:
     scale: percent
     transform: logit
     wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of suicide?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of suicide?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of suicide?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
     report_page: 23
     t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
     t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
@@ -196,3 +238,12 @@ excluded_2020:
   - cause: lower respiratory infections such as pneumonia; chronic respiratory diseases such as asthma; diabetes and kidney diseases; digestive diseases; accidental deaths such as drowning
     page: 5-6
     reason: only all-country averages are printed, no per-country table
+
+# Waves: the year and survey name the memory_check prompt uses ("Ipsos Perils of Perception {year}").
+waves:
+  - wave: ipsos_2024
+    year: 2024
+    survey_name: Ipsos Perils of Perception 2024
+  - wave: ipsos_2020
+    year: 2020
+    survey_name: Ipsos Perils of Perception 2020

@@ -8,3 +8,7 @@ results/*.jsonl
 # results/v0/results.jsonl is the frozen preliminary-results snapshot and is tracked (pattern above matches only results/*.jsonl)
 results/openrouter_models_all.json
 .claude/
+results/smoke_*
+results/*_check.md
+# partial v0 distribution pass (stopped; not committed)
+results/v0/distributions.jsonl

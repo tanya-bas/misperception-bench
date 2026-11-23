@@ -1,0 +1,5 @@
+According to {source}: {question}
+
+{choices}
+
+Reply with the letter of the correct option and nothing else.
