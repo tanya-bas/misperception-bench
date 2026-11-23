@@ -1,7 +1,7 @@
 # Running the v0 model inference
 
 Proof of concept: three small open-weight instruct models, run locally on this Mac with Apple MLX,
-answer four prompt types about every country-item pair in `data/pairs.csv` (Ipsos 2024, 89 pairs
+answer four prompt types about every country-item pair in `data/pairs.csv` (Ipsos 2024, 90 pairs
 with a truth value; Peru wealth is skipped), 5 samples per cell. Output is one JSON line per call in
 `results/results.jsonl`; `metrics.py` turns that into `results/metrics.md`.
 
@@ -45,7 +45,7 @@ All three repos are ungated; no Hugging Face token is needed. Total 33.3 GB on d
 .venv/bin/python run.py --smoke                           # smallest model, 2 items x 3 countries x 4 prompts x 1 sample
 .venv/bin/python run.py --models gpt-oss-20b --n 1 --limit 20 --results results/timing.jsonl
 .venv/bin/python timing.py --results results/timing.jsonl # per-model latency and full-run estimate
-.venv/bin/python run.py                                   # the full v0: 3 models x 89 pairs x 4 prompts x 5 samples = 5,340 cells
+.venv/bin/python run.py                                   # the full v0: 3 models x 90 pairs x 4 prompts x 5 samples = 5,400 cells
 .venv/bin/python metrics.py                               # writes results/metrics.md
 ```
 
