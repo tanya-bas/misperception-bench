@@ -23,8 +23,15 @@ Truth columns (rule adopted 2026-11-22):
                                         data/validation/truth_crosscheck.csv (rows whose source_name is
                                         PEW_2020_SOURCE and source_year is 2020); printed figure stays in
                                         t_value_ipsos
-                  missing               report prints "No data available"
-  No row carries a placeholder: every t_value is a real number or blank (missing).
+                  wid_2024              wealth_top1 only (decision 2026-11-22): t_value is the World Inequality
+                                        Database top-1% share of net personal wealth, 2024 (WID 2026 release
+                                        via the Our World in Data mirror), read from
+                                        data/validation/truth_crosscheck.csv (rows whose source_name is
+                                        WID_2024_SOURCE); fills Peru, which the report prints as
+                                        "No data available"; printed figure stays in t_value_ipsos
+                  as_printed / missing  no longer produced by any v0 item; kept as the fallback for items
+                                        without a primary-source rule
+  No row carries a placeholder: every t_value is a real number.
 Run: python3 -I scripts/build_pairs.py
 """
 import csv, os, sys
@@ -40,8 +47,9 @@ FIELDWORK = ("2024-09-20", "2024-10-04")
 ITEMS = {
     "wealth_top1": dict(
         wording="What percentage of your country's total household wealth do you think is owned by the top 1% of richest households?",
-        t_source="World Inequality Database", definition_match="approximate",
-        definition_note="question says households; WID top-1% wealth share is adult-based (equal-split)"),
+        t_source="World Inequality Database, top 1% share of net personal wealth, 2024 (WID 2026 release via Our World in Data mirror)",
+        definition_match="approximate",
+        definition_note="question says households; WID top-1% wealth share is adult-based (equal-split); Ipsos cites WID, T taken from the current WID 2024 value for every country (decision 2026-11-22)"),
     "immigrant_share": dict(
         wording="What percentage of your country's population do you think immigrants (i.e., people born in another country) represent?",
         t_source="World Bank WDI SM.POP.TOTL.ZS (UN DESA International Migrant Stock)", definition_match="yes",
@@ -55,12 +63,14 @@ ITEMS = {
 
 # Per-row overrides of the definition columns (checked against the sources in data/validation/truth_crosscheck.csv).
 DEFINITION_OVERRIDES = {
+    ("wealth_top1", "Peru"): ("approximate", "question says households; WID top-1% wealth share is adult-based (equal-split); WID marks Peru as modeled, and the Ipsos report prints 'No data available' for it"),
     ("immigrant_share", "India"): ("approximate", "question says foreign-born; UN DESA derives India's migrant stock from foreign-citizen data rather than place of birth (World Bank copy of the same series)"),
     ("immigrant_share", "Indonesia"): ("approximate", "question says foreign-born; UN DESA derives Indonesia's migrant stock from foreign-citizen data rather than place of birth (World Bank copy of the same series)"),
 }
 
 # Exact source_name of the Pew 2020 rows in data/validation/truth_crosscheck.csv (the same file also holds
 # the 2010 column of the 2025 release and the 2010 column of the 2015 release; neither is used).
+WID_2024_SOURCE = "World Inequality Database (WID.world) 2026 release, top 1% share of net personal wealth, as mirrored by Our World in Data (interpolations/extrapolations excluded)"
 PEW_2020_SOURCE = "Pew Research Center, Religious Composition by Country 2010-2020 (June 2025 release; country table embedded in the interactive page), Muslims % 2020"
 
 # Country metadata from the methodology page (p38). n is "approximately" as Ipsos states it.
@@ -97,7 +107,7 @@ def printed(raw):
     return raw if raw.lower() in ("no data available", "n/a") or raw.endswith("%") else raw + "%"
 
 
-def truth(item, country, raw, pew, wdi):
+def truth(item, country, raw, pew, wdi, wid):
     """Return a dict of the truth columns for one pair (see module docstring)."""
     raw = raw.strip()
     base = {"t_value_ipsos": printed(raw), "t_unrounded_source": "", "t_unrounded_url": "", "t_unrounded_year": "",
@@ -110,6 +120,11 @@ def truth(item, country, raw, pew, wdi):
             sys.exit(f"no World Bank migrant stock value in countries.csv for {country}")
         return {**base, "t_value": float(w["migrant_stock_pct_wdi"]), "t_flag": "world_bank",
                 "t_reference_year": w["migrant_stock_pct_year"]}
+    if item == "wealth_top1":
+        # WID 2024 value is T for this item regardless of what Ipsos printed (decision 2026-11-22).
+        if iso3 not in wid:
+            sys.exit(f"no WID 2024 value in truth_crosscheck.csv for {country}")
+        return {**base, "t_value": float(wid[iso3]), "t_flag": "wid_2024", "t_reference_year": "2024"}
     if item == "muslim_share":
         # Pew 2020 estimate is T for this item regardless of what Ipsos printed (decision 2026-11-22).
         if iso3 not in pew:
@@ -134,11 +149,16 @@ def main():
                if r["item_id"] == "muslim_share" and r["source_year"] == "2020" and r["source_name"] == PEW_2020_SOURCE}
     if len(pew) != 30:
         sys.exit(f"expected 30 Pew 2020 muslim_share rows in truth_crosscheck.csv, found {len(pew)}")
+    with open(os.path.join(D, "validation", "truth_crosscheck.csv"), encoding="utf-8") as f:
+        wid = {r["country_iso3"]: r["candidate_value"] for r in csv.DictReader(f)
+               if r["item_id"] == "wealth_top1" and r["source_year"] == "2024" and r["source_name"] == WID_2024_SOURCE}
+    if len(wid) != 30:
+        sys.exit(f"expected 30 WID 2024 wealth_top1 rows in truth_crosscheck.csv, found {len(wid)}")
     rows = []
     for (item, country), r in sorted(p1.items()):
         iso3, n, age, rep = COUNTRIES[country]
         meta = ITEMS[item]
-        t = truth(item, country, r["t_raw"], pew, wdi)
+        t = truth(item, country, r["t_raw"], pew, wdi, wid)
         defn_match, defn_note = DEFINITION_OVERRIDES.get((item, country), (meta["definition_match"], meta["definition_note"]))
         rows.append({
             "wave": WAVE, "source_id": SOURCE_ID,

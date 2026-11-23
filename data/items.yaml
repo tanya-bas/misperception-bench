@@ -10,11 +10,16 @@ items:
     transform: logit
     wording_2024: "What percentage of your country's total household wealth do you think is owned by the top 1% of richest households?"
     report_page: 13
-    t_source: World Inequality Database
+    t_source: World Inequality Database, top 1% share of net personal wealth, 2024 (WID 2026 release via Our World in Data mirror)
+    t_source_cited_by_ipsos: World Inequality Database
     t_definition_note: >
       Ipsos cites the World Inequality Database top-1% wealth share. WID measures adults
       (equal-split), the question says households. Treated as an approximate definitional
       match; flagged in pairs.csv (definition_match = approximate).
+      Decision 2026-11-22: T for every country is the current WID 2024 value (t_flag = wid_2024),
+      which fills Peru (WID marks it as modeled) and replaces 13 printed values that match no
+      current WID year because Ipsos used an older WID vintage. The printed figure is kept in
+      t_value_ipsos.
     salience_apriori: medium
   - item_id: immigrant_share
     name: Share of the population born in another country

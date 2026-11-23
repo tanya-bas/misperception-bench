@@ -66,7 +66,7 @@ def main():
                 big.append(r["country_name_ipsos"])
             out.append(f"   | {r['country_name_ipsos']} | {r['t_value_ipsos']} | {float(r['t_value']):.2f} ({r['t_reference_year']}) | {diff:+.2f}{flag} |")
         out.append(f"   {item}: countries where |printed - T| > 2 points: {len(big)} {big or ''}")
-    out.append("   immigrant_share T is the World Bank WDI 2024 series and muslim_share T is Pew's 2020 estimate (decisions 2026-11-22); differences reflect the older source vintages Ipsos used and Ipsos rounding to whole percents. wealth_top1 T is the printed figure, so its differences are zero by construction.")
+    out.append("   T is the World Bank WDI 2024 series (immigrant_share), Pew's 2020 estimate (muslim_share) and WID 2024 (wealth_top1), decisions 2026-11-22; differences reflect the older source vintages Ipsos used and Ipsos rounding to whole percents.")
 
     # 5. definition match
     dm = Counter((r["item_id"], r["definition_match"]) for r in pct)
