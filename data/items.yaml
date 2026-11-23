@@ -1,7 +1,8 @@
 # Item dictionary for the dataset: Ipsos Perils of Perception 2024 (four items, also asked with identical
 # wording in the Ipsos survey for the Entretiens de Royaumont, December 2023, wave ipsos_royaumont_2023,
 # 10 countries; that wave reuses the 2024 T values and serves as a replication of H one year earlier, not as
-# an independent truth point) and Ipsos Perils of Perception 2020, causes of death (six items; wave ipsos_2020).
+# an independent truth point), Ipsos Perils of Perception 2020, causes of death (six items; wave ipsos_2020), and
+# Ipsos Earth Day 2022 (one banded degrees-Celsius item in pairs_banded.csv; wave ipsos_earthday_2022).
 # scale:      percent = a 0-100 share; categorical = fixed answer options
 # transform:  logit = analyse on the log-odds scale (H2b compression, H1a variance ratio);
 #             none  = categorical, analysed as agreement with public majority vs truth
@@ -174,6 +175,39 @@ items:
     t_definition_note: >
       "Suicide" in the question; GBD 2017 "Self-harm" (level 3, deaths from intentional self-harm) in the source.
       Treated as a match.
+    salience_apriori: high
+
+  # ---- Ipsos Global Advisor, Earth Day 2022 (fieldwork 18 Feb - 4 Mar 2022; published April 2022), wave ipsos_earthday_2022 ----
+  # Not a share: the public answered in temperature bands, so the item lives in data/pairs_banded.csv, not pairs.csv,
+  # and sits outside the log-odds analyses. H per country is the band distribution plus a midpoint mean.
+  - item_id: climate_warming_since_1850
+    name: How much the Earth's climate has warmed since 1850, in degrees Celsius (banded answers)
+    scale: degrees_c
+    transform: none
+    wording_2022: "How much do you think the climate of the Earth has warmed since 1850, if at all?"
+    report_page: 21
+    bands: ["0-0.75", "1-1.75", "2-2.75", "3-4"]
+    band_labels_as_printed: ["0-0.75 Celsius", "1-1.75 Celsius", "2-2.75 Celsius", "3-4 Celsius", "Don't know"]
+    band_midpoints: [0.375, 1.375, 2.375, 3.5]
+    h_mean_midpoint_rule: >
+      sum(pct_band x midpoint) / sum(pct_band) over the four temperature bands, don't-know excluded, midpoints
+      as listed (the band edges are 0, 0.75, 1, 1.75, 2, 2.75, 3, 4; the gaps between bands are the deck's).
+      Applied to the deck's all-country column (7 / 17 / 15 / 15) this gives 2.11, which reproduces the
+      "Mean: 2.1 degrees Celsius" Ipsos prints on p20. Norway has no don't-know option (printed "-").
+      The four bands plus don't-know sum to 90-101 per country; the deck prints no further category.
+    t_source: IPCC AR6 WG1 Summary for Policymakers, A.1.2 (global surface temperature 2011-2020 was 1.09 [0.95 to 1.20] degrees C above 1850-1900)
+    t_source_cited_by_ipsos: 'IPCC Special Report Global Warming of 1.5 degrees C, chapter 1 ("True value: 1 degree Celsius", p20)'
+    t_value: 1.1
+    t_value_ipsos: "1"
+    t_flag: ipcc_ar6_wg1_spm
+    definition_match: approximate
+    t_definition_note: >
+      The question asks how much the climate has warmed since 1850 up to the time of asking (February to
+      March 2022). T is the IPCC AR6 WG1 best estimate for the 2011-2020 decade relative to 1850-1900 (1.09,
+      recorded as 1.1), not a single-year value for 2021 or 2022; warming to date at fieldwork was slightly
+      higher (about 1.2) and the deck's own true value of 1 comes from SR15's 2017 estimate. Treated as an
+      approximate definitional match. Decision 2026-11-22.
+    analysis_note: outside the log-odds analyses; compare H (band distribution, midpoint mean) with T in degrees only
     salience_apriori: high
 
 # Causes in the 2020 deck that are NOT items (decisions 2026-11-22, details in data/README.md):

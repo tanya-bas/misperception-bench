@@ -9,6 +9,8 @@ Checks, per wave where it matters:
   5. definition_match summary per item
   6. stated sample sizes per wave
   7. countries.csv coverage
+  8. categorical table per wave; 9. Royaumont T identical to 2024 T
+ 10. pairs_banded.csv (Earth Day 2022): 31 countries, band percentages sum to about 100, midpoint mean reproduces the deck's all-country mean
 Run: python3 -I scripts/validate.py
 """
 import csv, os, re
@@ -129,6 +131,22 @@ def main():
     t24 = {(r["item_id"], r["country_iso3"]): (r["t_value"], r["t_flag"]) for r in by_wave["ipsos_2024"]}
     mism = [(r["item_id"], r["country_name_ipsos"]) for r in by_wave["ipsos_royaumont_2023"] if t24.get((r["item_id"], r["country_iso3"])) != (r["t_value"], r["t_flag"])]
     out.append(f"9. ipsos_royaumont_2023 T identical to the ipsos_2024 T of the same country for all {len(by_wave['ipsos_royaumont_2023'])} rows: {'yes' if not mism else 'NO: ' + str(mism)}.")
+
+    # 10. banded table (Earth Day 2022)
+    banded = read(os.path.join(D, "pairs_banded.csv"))
+    sums = {r["country_name_ipsos"]: int(r["pct_sum"]) for r in banded}
+    low = {c: v for c, v in sums.items() if v < 95 or v > 103}
+    tr = next(r for r in read(os.path.join(D, "transcription", "ipsos_earthday_2022_p21.csv")) if r["code"] == "TOT")
+    import json
+    mids = json.loads(banded[0]["band_midpoints"]); tot = [int(tr[k]) for k in ("pct_0_075", "pct_1_175", "pct_2_275", "pct_3_4")]
+    tot_mean = sum(p * m for p, m in zip(tot, mids)) / sum(tot)
+    means = [float(r["h_mean_midpoint"]) for r in banded]
+    out.append(f"10. pairs_banded.csv: {len(banded)} rows ({len(set(r['country_iso3'] for r in banded))} countries); waves {dict(Counter(r['wave'] for r in banded))}; "
+               f"bands + don't-know sum: min {min(sums.values())}, max {max(sums.values())}; rows outside [95, 103]: {low or 'none'} (the deck prints no further category); "
+               f"don't-know blank for: {[r['country_name_ipsos'] for r in banded if r['pct_dk'] == ''] or 'none'}; "
+               f"h_mean_midpoint range {min(means):.2f} to {max(means):.2f}; all-country column recomputed with the same midpoints = {tot_mean:.2f} vs 2.1 printed on p20; "
+               f"T = {set(r['t_value'] for r in banded)} ({set(r['t_flag'] for r in banded)}), printed {set(r['t_value_ipsos'] for r in banded)}; "
+               f"countries without a countries.csv row: {sorted(set(r['country_iso3'] for r in banded) - set(countries)) or 'none'}.")
 
     report = "\n".join(out)
     print(report)

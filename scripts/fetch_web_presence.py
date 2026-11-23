@@ -1,4 +1,4 @@
-"""Fetch the web-presence covariate for each Ipsos country (2024 wave plus the six added by the 2020 wave; network step; resumable).
+"""Fetch the web-presence covariate for each Ipsos country (2024 wave, the six added by the 2020 wave and the two added by Earth Day 2022; network step; resumable).
 
 Two measures, both written to data/raw/web_presence.json with the fetch date:
   1. wikidata_p17_count : number of Wikidata items whose 'country' (P17) is this country.
@@ -38,6 +38,8 @@ COUNTRIES = {
     "China": ("CHN", "Q148", "China"), "Hong Kong": ("HKG", "Q8646", "Hong Kong"),
     "Philippines": ("PHL", "Q928", "Philippines"), "Romania": ("ROU", "Q218", "Romania"),
     "Russia": ("RUS", "Q159", "Russia"), "Saudi Arabia": ("SAU", "Q851", "Saudi Arabia"),
+    # added for the Ipsos Earth Day 2022 wave, 2026-11-22
+    "Switzerland": ("CHE", "Q39", "Switzerland"), "Norway": ("NOR", "Q20", "Norway"),
 }
 
 

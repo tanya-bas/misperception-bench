@@ -2,29 +2,32 @@
 
 Human estimates (H), truth values (T) and country covariates for the paper
 *Lost in Average: How LLMs Erase Differences in What the World Believes*.
-Scope: three Ipsos waves. `ipsos_2024` (Perils of Perception 2024, 30 countries, fieldwork 20
+Scope: four Ipsos waves. `ipsos_2024` (Perils of Perception 2024, 30 countries, fieldwork 20
 September to 4 October 2024; the v0 dataset, unchanged), `ipsos_2020` (Perils of Perception 2020,
-causes of death, 32 countries, fieldwork 22 November to 6 December 2019, published February 2020)
-and `ipsos_royaumont_2023` (Ipsos for the Entretiens de Royaumont, December 2023, 10 countries,
+causes of death, 32 countries, fieldwork 22 November to 6 December 2019, published February 2020),
+`ipsos_royaumont_2023` (Ipsos for the Entretiens de Royaumont, December 2023, 10 countries,
 fieldwork 22 to 25 November 2023; the 2024 items asked a year earlier, a replication of H that
-reuses the 2024 T). Every value carries the document and page it came from. Inclusion rule:
-surveys published from 2020 onward.
+reuses the 2024 T) and `ipsos_earthday_2022` (Ipsos Global Advisor Earth Day 2022, 31 countries,
+fieldwork 18 February to 4 March 2022; one banded degrees-Celsius item in its own table). Every
+value carries the document and page it came from. Inclusion rule: surveys published from 2020 onward.
 
 ## Files
 
 | File | One row per | Rows | Built by |
 |---|---|---|---|
-| `items.yaml` | item | 10 (4 from 2024, 6 from 2020) | hand-written |
-| `sources.csv` | document, dataset or API dump | 12 | hand-written |
+| `items.yaml` | item | 11 (4 from 2024, 6 from 2020, 1 from Earth Day 2022) | hand-written |
+| `sources.csv` | document, dataset or API dump | 13 | hand-written |
 | `pairs.csv` | country x percent item | 309 (90 `ipsos_2024` + 190 `ipsos_2020` + 29 `ipsos_royaumont_2023`) | `scripts/build_pairs.py` |
 | `pairs_categorical.csv` | country x homicide-trend item | 40 (30 `ipsos_2024` + 10 `ipsos_royaumont_2023`) | `scripts/build_pairs.py` |
-| `countries.csv` | country | 36 (30 from 2024 + 6 only in 2020) | `scripts/build_countries.py` |
+| `pairs_banded.csv` | country x banded degrees-Celsius item (Earth Day 2022) | 31 | `scripts/build_pairs.py` |
+| `countries.csv` | country | 38 (30 from 2024 + 6 only in 2020 + 2 only in Earth Day 2022) | `scripts/build_countries.py` |
 | `transcription/ipsos_2024_estimates.csv` | transcribed cell | 90 | hand-transcribed |
 | `transcription/homicide_p22.csv`, `homicide_actual_p23_24.csv` | country | 30 each | hand-transcribed |
 | `transcription/ipsos_2020_estimates.csv` | transcribed cell (six usable cause pages) | 190 | transcribed from the PDF text layer, checked against page images |
 | `transcription/ipsos_2020_defective_pages.csv` | printed row of the three unusable cause pages (p19, p21, p25) | 95 | record only, not built into `pairs.csv` |
 | `transcription/ipsos_royaumont_2023_estimates.csv` | bar-chart label pair (incl. the "Global Average" bars, which are not built) | 32 | transcribed from the PDF text layer, checked against page images |
 | `transcription/ipsos_royaumont_2023_homicide_p6.csv` | country (incl. "Global Average") | 11 | same |
+| `transcription/ipsos_earthday_2022_p21.csv` | country column of the p21 band table (incl. the all-country column, not built) | 32 | two text-layer extractions, checked against the page image |
 | `validation/truth_crosscheck.csv` | candidate truth value per (item, country, source) | 227 | sourced from primary databases; feeds the muslim_share T and documents alternatives |
 | `raw/` | downloads, gitignored | | see Re-fetching below |
 
@@ -215,6 +218,50 @@ countries, `same_or_higher` for the United States.
 nearest country label by x-position (`pdftotext -tsv`); pass 2 read the rendered page images. All
 43 label groups (75 values, including the Global Average bars) agreed.
 
+**Ipsos Global Advisor, Earth Day 2022** (`ipsos_earthday_2022_release2` in `sources.csv`, wave
+`ipsos_earthday_2022`, table `pairs_banded.csv`). Release 2 of the April 2022 report, 32 pages.
+"Q. How much do you think the climate of the Earth has warmed since 1850, if at all?" with the
+answer bands 0-0.75, 1-1.75, 2-2.75 and 3-4 degrees Celsius plus "Don't know", one column per
+country on p21 (31 countries and an all-country column). This is not a share, so it is stored in
+`pairs_banded.csv` with `scale = degrees_c`, `transform = none`, the bands and percentages as JSON,
+`pct_dk`, and `h_mean_midpoint` = the percentage-weighted mean of the band midpoints 0.375,
+1.375, 2.375 and 3.5 over the four bands with don't-know excluded (midpoints listed in
+`items.yaml`). Applied to the all-country column (7 / 17 / 15 / 15) the rule gives 2.11, which
+reproduces the "Mean: 2.1 degrees Celsius" Ipsos prints on p20. Norway has no don't-know option
+(printed "-"; p29 notes its data is not comparable for some questions). The bands plus don't-know
+sum to 90-101 per country (90 in Peru, 92 India, 93 Russia and Turkey); the deck prints no further
+category. **The item sits outside the log-odds analyses**: it is compared with T in degrees and as
+a band distribution only.
+
+**Truth, Earth Day 2022.** The deck states "True value: 1 degree Celsius" citing IPCC SR15
+chapter 1 (p20); that is kept in `t_value_ipsos`. `t_value` = 1.1 from IPCC AR6 WG1 SPM A.1.2
+(global surface temperature in 2011-2020 was 1.09 [0.95 to 1.20] degrees C above 1850-1900),
+`t_flag = ipcc_ar6_wg1_spm`, `definition_match = approximate`: the question asks about warming up
+to the time of asking (February to March 2022), while T is the 2011-2020 decade average, and the
+deck's 1 degree is SR15's 2017 figure (decision 2026-11-22).
+
+**Sample metadata, Earth Day 2022** (technical note, p27). 23,577 adults, 18 February to 4 March
+2022, 31 countries; "Approximately 1000+ individuals participated on a country-by-country basis
+... with the exception of Argentina, Belgium, Chile, Colombia, Hungary, India, Ireland, Malaysia,
+Mexico, the Netherlands, Peru, Poland, Russia, Saudi Arabia, South Africa, South Korea, Sweden,
+Switzerland and Turkey, where each have a sample of approximately 500+"; "aged 18-74 in the US,
+Canada, Hong Kong, Malaysia, South Africa, and Turkey, aged 16-99 in Norway and age 16-74 in all
+other countries". Representative: "18 of the 31 countries surveyed online generate nationally
+representative samples in their countries (Argentina, Australia, Belgium, Canada, France,
+Germany, Great Britain, Hungary, Italy, Japan, the Netherlands, Norway Poland, South Korea, Spain,
+Sweden, Switzerland and United States)"; "The samples in Brazil, Chile, mainland China, Colombia,
+India, Ireland Malaysia, Mexico, Peru, Russia, Saudi Arabia, South Africa and Turkey are more urban
+& educated, and/or more affluent than the general population." Both lists cover all 31 countries
+(Ireland is not representative in this wave; the 2024 Ireland decision applies to 2024 only).
+Switzerland and Norway are added to `countries.csv` from the cached World Bank dumps and a
+web-presence fetch of the same day.
+
+**Transcription check, Earth Day 2022.** Pass 1 parsed the p21 layout text line by line (five
+band rows of 32 values); pass 2 re-derived the table from word coordinates (`pdftotext -tsv`,
+nearest column header by x and nearest band label by y). All 160 cells agreed, and the page image
+was checked for the values that drive the sums. The all-country column reproduces the deck's
+printed mean as described above.
+
 **World Bank** (`countries.csv`): income group and region from the country endpoint;
 GDP per capita PPP (`NY.GDP.PCAP.PP.CD`, latest year <= 2024); international migrant stock
 % (`SM.POP.TOTL.ZS`, UN DESA, 2024), which is T for immigrant_share in `pairs.csv` (decision
@@ -253,6 +300,10 @@ curl -L -o data/raw/ipsos-perils-of-perception-2024.pdf \
   https://www.ipsos.com/sites/default/files/ct/publication/documents/2025-01/ipsos-the-perils-of-perception-2024.pdf
 curl -L -o data/raw/ipsos-perils-of-perception-2020-causes-of-death.pdf \
   https://www.ipsos.com/sites/default/files/ct/news/documents/2020-02/ipsos-perils-of-perception-2020-causes-of-death.pdf
+curl -L -o data/raw/ipsos-perils-perception-prejudice-conspiracy-theories-december-2023.pdf \
+  https://www.ipsos.com/sites/default/files/ct/news/documents/2023-12/ipsos-perils-perception-prejudice-conspiracy-theories-december-2023.pdf
+curl -L -o data/raw/ipsos-global-advisor-earth-day-2022-release-2.pdf \
+  "https://www.ipsos.com/sites/default/files/ct/news/documents/2022-04/Ipsos%20-%20Global%20Advisor%20-%20Earth%20Day%202022%20-%20Release%202.pdf"
 mkdir -p data/raw/worldbank
 curl -sL "https://api.worldbank.org/v2/country?format=json&per_page=400" -o data/raw/worldbank/countries.json
 curl -sL "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.PP.CD?format=json&per_page=20000&mrv=12" -o data/raw/worldbank/NY.GDP.PCAP.PP.CD.json
@@ -290,14 +341,16 @@ Then rebuild: `python3 -I scripts/build_pairs.py && python3 -I scripts/build_cou
 * 2026-11-22: 2020 country names in pairs.csv are as printed in that deck (United Kingdom, Turkey, Hong Kong SAR China); countries.csv keeps the 2024 names for the shared countries.
 * 2026-11-22: Ipsos Royaumont December 2023 wave admitted (published December 2023) with the same item_ids as 2024. T is reused from the 2024 rows (one vintage per item across waves); the wave is a replication of H one year earlier, not an independent truth point. The deck does not describe its samples as representative: representative_sample = not_stated, age_range = not_stated, n approximately 1,000 (10,000 respondents, 10 countries).
 * 2026-11-22: Royaumont homicide item stored in pairs_categorical.csv from the "% higher" chart alone; the p6 footnote gives the actual direction (down everywhere except the United States, which is recorded as same_or_higher).
+* 2026-11-22: Ipsos Earth Day 2022 warming item admitted (published April 2022) as a banded degrees-Celsius item in its own table, pairs_banded.csv, outside the log-odds analyses; midpoints 0.375 / 1.375 / 2.375 / 3.5 (reproduce the deck's printed all-country mean); T = 1.1 from IPCC AR6 WG1 SPM A.1.2 with the deck's 1 in t_value_ipsos. Switzerland and Norway added to countries.csv.
 * 2026-11-22: skip list. ISSP 2019 occupational-earnings items are excluded (truth normalisation cost: earnings questions need country- and occupation-specific wage truths on a common scale). The Fabre, Douenne and Mattauch 2023 foreign-aid item is excluded (figure-only publication: the per-country estimates are printed only as a chart).
 
 ## Follow-ups
 
 * UN DESA direct values (2024 revision), if later sourced, go in `data/validation/truth_crosscheck.csv` only; they do not replace T, which is the World Bank series.
-* `wikidata_p17_count` completed for 3 of 36 countries (Argentina, Hungary, China) before the SPARQL time limit; `enwiki_mentions` is the covariate to use.
+* `wikidata_p17_count` completed for 3 of 38 countries (Argentina, Hungary, China) before the SPARQL time limit; `enwiki_mentions` is the covariate to use.
 * ipsos_2020 T from a current GBD vintage: OWID's API and CSV downloads refuse IHME data (indicator IDs listed under Truth, 2020). Options are the IHME GBD Results Tool (login, non-commercial licence) or the WHO Global Health Estimates (open CSV, different cause taxonomy). Whichever is used, keep one vintage for all 32 countries, record it in t_flag as `owid_gbd_<year>` or equivalent, and fill the six `source_unrounded_pending` HIV/STI rows; Hong Kong is not a GBD location.
 * ipsos_2020 terrorism, substance use and transport items: per-country figures may exist in Ipsos's data tables or at perils.ipsos.com (the deck's stated source page); if found, the printed rows in `transcription/ipsos_2020_defective_pages.csv` can be attributed and the items built.
+* ipsos_earthday_2022: the bands plus don't-know fall short of 100 by up to 10 points in some countries; if Ipsos's data tables name the missing category (e.g. "not warmed at all" or "prefer not to say"), add it to the transcription and the note column.
 * ipsos_royaumont_2023: `t_value_ipsos` carries the deck's printed actuals (e.g. IOM 2022 immigrant shares); they are not cross-checked against the 2024 printed figures beyond the validation table.
 * ipsos_2020 question wording: `run.py` builds plain/official prompts from `PLAIN_QUESTIONS[item]`, which has no entries for the six new items, and the verbatim wording keeps the deck's "[COUNTRY]" placeholder and missing "how"; the prompt layer needs per-item questions before the 2020 wave is run.
 
@@ -694,8 +747,9 @@ Generated by `scripts/validate.py`.
    ipsos_2024 (immigrant_share, 30 countries): 22000 from 30 stated n (0 not_stated) vs 22,989 interviews stated on p38.
    ipsos_2020 (deaths_cancer, 32 countries): 21000 from 29 stated n (3 not_stated) vs 16,000 interviews stated on p53.
    ipsos_royaumont_2023 (wealth_top1, 10 countries): 10000 from 10 stated n (0 not_stated) vs 10,000 interviews stated on p1.
-7. countries.csv: 36 rows; web_presence missing for: none; income groups: {'Upper middle income': 12, 'High income': 23, 'Lower middle income': 1}; pairs.csv countries without a countries.csv row: none.
+7. countries.csv: 38 rows; web_presence missing for: none; income groups: {'Upper middle income': 12, 'High income': 25, 'Lower middle income': 1}; pairs.csv countries without a countries.csv row: none.
 8. pairs_categorical.csv: 40 rows; per wave: {'ipsos_2024': 30, 'ipsos_royaumont_2023': 10}; rows with a determinable public majority: 38; actual_direction counts: {'same_or_lower': 6, 'lower': 29, 'higher': 1, 'same': 3, 'same_or_higher': 1}.
 9. ipsos_royaumont_2023 T identical to the ipsos_2024 T of the same country for all 29 rows: yes.
+10. pairs_banded.csv: 31 rows (31 countries); waves {'ipsos_earthday_2022': 31}; bands + don't-know sum: min 90, max 101; rows outside [95, 103]: {'India': 92, 'Peru': 90, 'Russia': 93, 'Turkey': 93} (the deck prints no further category); don't-know blank for: ['Norway']; h_mean_midpoint range 1.42 to 2.44; all-country column recomputed with the same midpoints = 2.11 vs 2.1 printed on p20; T = {'1.1'} ({'ipcc_ar6_wg1_spm'}), printed {'1'}; countries without a countries.csv row: none.
 ```
 <!-- validation:end -->

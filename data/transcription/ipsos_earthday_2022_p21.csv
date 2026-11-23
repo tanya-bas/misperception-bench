@@ -1,0 +1,33 @@
+code,country,pct_0_075,pct_1_175,pct_2_275,pct_3_4,pct_dk,page,pass_note
+TOT,Global Country Average,7,17,15,15,42,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+ARG,Argentina,4,12,12,19,50,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+AUS,Australia,13,21,11,12,40,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+BEL,Belgium,7,21,18,15,38,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+BRA,Brazil,8,14,12,20,42,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+CAN,Canada,6,14,15,16,46,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+CH,Switzerland,7,23,18,11,36,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+CHL,Chile,3,13,15,20,46,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+CHN,China,9,18,13,13,46,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+COL,Colombia,8,16,16,17,39,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+ESP,Spain,8,10,12,10,56,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+FRA,France,4,17,23,13,39,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+GB,Great Britain,6,19,15,10,47,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+GER,Germany,7,22,18,10,39,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+HUN,Hungary,6,15,22,25,31,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+IND,India,10,17,12,17,36,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+IRE,Ireland,5,21,18,14,39,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+ITA,Italy,6,15,13,10,52,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+JAP,Japan,8,13,15,13,46,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+KOR,South Korea,8,19,15,14,44,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+KSA,Saudi Arabia,14,14,11,12,45,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+MAL,Malaysia,8,11,13,19,47,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+MEX,Mexico,6,11,10,19,49,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+NLD,Netherlands,6,21,27,14,31,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+NOR,Norway,2,50,29,20,,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked; don't know printed as '-' (not offered)
+PER,Peru,4,12,10,16,48,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+POL,Poland,9,12,15,20,43,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+RUS,Russia,5,12,14,15,47,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+SAF,South Africa,7,14,12,25,42,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+SE,Sweden,5,26,21,20,26,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+TUR,Turkey,15,12,7,16,43,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
+USA,United States,14,11,5,5,62,21,p21 table; layout-line parse and word-coordinate parse agreed; image checked
