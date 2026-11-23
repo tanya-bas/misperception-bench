@@ -2,7 +2,8 @@
 
 Every prompt ends with "Reply with a single number from 0 to 100 and nothing else", but
 models still add "%", words, ranges or a sentence of reasoning. Rules, in order:
-  1. no digit at all -> "refusal" if a refusal phrase is present, else "unparseable"
+  1. no digit at all -> "refusal" if a decline phrase is present (apology, inability, "don't have
+     that figure"; typographic apostrophes are folded to ASCII first), else "unparseable"
   2. "1 in 10" style fraction -> 10, status "ok", note "fraction"
   3. range "20-30" / "20 to 30" / "between 20 and 30" -> midpoint, status "ok", note "range"
   4. otherwise take the LAST number in the reply (reasoning text tends to come first and
@@ -17,15 +18,24 @@ RANGE = re.compile(NUM + r"\s*%?\s*(?:-|–|to)\s*" + NUM + r"\s*%?", re.I)
 BETWEEN = re.compile(r"between\s+" + NUM + r"\s*%?\s*(?:and|-|–)\s*" + NUM, re.I)
 FRACTION = re.compile(r"\b(\d{1,3})\s+in\s+(\d{1,4})\b", re.I)
 REFUSAL_HINTS = ("i can't", "i cannot", "i'm unable", "i am unable", "not able to", "cannot provide",
-                 "can't provide", "don't have", "do not have", "no reliable", "unable to provide",
-                 "i'm sorry", "i am sorry", "as an ai")
+                 "can't provide", "can't help", "cannot help", "don't have", "do not have", "no reliable",
+                 "unable to provide", "i'm sorry", "i am sorry", "as an ai", "no data", "no information",
+                 "not available", "don't know", "do not know")
+# Models often emit typographic apostrophes and quotes ("I’m sorry"); fold them to ASCII before matching.
+APOSTROPHES = {"\u2019": "'", "\u2018": "'", "\u02bc": "'", "\u201c": '"', "\u201d": '"'}
+
+
+def _normalize(text):
+    for k, v in APOSTROPHES.items():
+        text = text.replace(k, v)
+    return text
 
 
 def parse_number(text):
     """Return (value, status, note) for a reply string."""
     if text is None:
         return None, "unparseable", "empty"
-    t = text.strip()
+    t = _normalize(text).strip()
     if not t:
         return None, "unparseable", "empty"
     low = t.lower()
@@ -64,6 +74,11 @@ if __name__ == "__main__":
         ("I'd estimate the figure is around 14 percent.", (14.0, "ok")),
         ("The share is small, maybe 1 in 10.", (10.0, "ok")),
         ("I cannot provide that figure.", (None, "refusal")), ("", (None, "unparseable")),
+        ("I\u2019m sorry, but I can\u2019t provide that.", (None, "refusal")),
+        ("I\u2019m sorry, but I can\u2019t help with that.", (None, "refusal")),
+        ("I\u2019m sorry, but I don\u2019t have that specific figure.", (None, "refusal")),
+        ("I don\u2019t have any details about that specific survey question or its results.", (None, "refusal")),
+        ("   ", (None, "unparseable")),
         ("Sure thing!", (None, "unparseable")), ("150", (150.0, "out_of_range")),
         ("Immigrants are 15% of the US and 21% of Canada; for Japan the answer is 2", (2.0, "ok")),
         ("0", (0.0, "ok")), ("100", (100.0, "ok")), ("0.5", (0.5, "ok")),

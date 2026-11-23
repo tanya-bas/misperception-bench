@@ -4,6 +4,11 @@ Per model (cell = median of the parsed samples for one pair x prompt type):
   quality     ok / refusal / unparseable / out_of_range / truncated rates per prompt type
   noise floor mean within-cell SD across samples vs between-country SD of cell medians, per item
   H1a         variance ratio per item: var over countries of logit(M_public) / var of logit(H), bootstrap CI
+  flattening  slope of logit(M_public) on logit(H) across countries, per item and pooled with item fixed effects
+              (demeaned within item), bootstrap CI on the slope, plus raw-scale SDs of M_public and H. A slope
+              below 1 means the model's simulated public varies less across countries than the real public.
+              The variance ratio can exceed 1 even then, when the model tracks a truth that varies more than
+              human guesses do; the slope is the direct flattening measure.
   H2a         lambda: slope of (logit M_plain - logit T) on (logit H - logit T), pooled and per item, bootstrap CI
   H2b         compression: slope and intercept of logit M_plain on logit T, next to the human slope (logit H on logit T)
   H3          knowing vs saying: mean |M_official - T| vs mean |M_public - H| (points), and where M_plain sits on the
@@ -57,6 +62,16 @@ def fmt(v, d=2):
     return "n/a" if v is None or (isinstance(v, float) and not np.isfinite(v)) else ("%%.%df" % d) % v
 
 
+def demean_by_group(x, groups):
+    """Subtract each group's mean from x (item fixed effects for the pooled flattening fit)."""
+    x = np.asarray(x, float)
+    out = x.copy()
+    for g in set(groups):
+        mask = np.asarray([gg == g for gg in groups])
+        out[mask] = x[mask] - x[mask].mean()
+    return out
+
+
 def load_pairs(path):
     out = {}
     for r in csv.DictReader(open(path, encoding="utf-8")):
@@ -70,7 +85,10 @@ def load_results(path):
     cells = defaultdict(list)   # (model, item, iso3, prompt) -> parsed ok values
     status = defaultdict(lambda: defaultdict(int))  # (model, prompt) -> status -> count
     for line in open(path, encoding="utf-8"):
-        r = json.loads(line)
+        try:
+            r = json.loads(line)
+        except ValueError:
+            continue  # a run in progress may leave a partial last line
         k = (r["model_id"], r["item_id"], r["country_iso3"], r["prompt_type"])
         status[(r["model_id"], r["prompt_type"])][r["parse_status"]] += 1
         if r["parse_status"] == "ok":
@@ -115,6 +133,14 @@ def model_metrics(model, cells, status, pairs, rng, reps):
 
     summary = {"model": model}
 
+    # coverage: pairs with at least one parsed sample, per item x prompt (a run in progress shows partial counts)
+    L += ["### Coverage (pairs with at least one parsed sample)", "", "| item | plain | official | public_guess | memory_check |", "|---|---|---|---|---|"]
+    for item in ITEMS:
+        counts = [sum(1 for (i, iso, p) in med if i == item and p == pt) for pt in ["plain", "official", "public_guess", "memory_check"]]
+        L.append("| %s | %s |" % (item, " | ".join(str(c) for c in counts)))
+        print("coverage %s %s: plain=%d official=%d public_guess=%d memory_check=%d" % ((model, item) + tuple(counts)))
+    L.append("")
+
     # H1a variance ratio (public_guess)
     L += ["### H1a variance ratio, logit scale (model public_guess vs human H)", "", "| item | countries | VR | 95% CI | corr(M_public, H) |", "|---|---|---|---|---|"]
     for item in ITEMS:
@@ -128,6 +154,40 @@ def model_metrics(model, cells, status, pairs, rng, reps):
         corr = float(np.corrcoef(mp, h)[0, 1])
         L.append("| %s | %d | %s | [%s, %s] | %s |" % (item, len(keys), fmt(vr), fmt(ci[0]), fmt(ci[1]), fmt(corr)))
         summary["VR_" + item] = vr
+    L.append("")
+
+    # flattening: slope of logit(M_public) on logit(H); < 1 = the simulated public varies less than the real one
+    L += ["### Flattening: slope of logit(M_public) on logit(H) across countries", "",
+          "Slope below 1 = flattening. Pooled row demeans both sides within item (item fixed effects).", "",
+          "| scope | countries | slope | 95% CI | intercept | corr | SD M_public (pts) | SD H (pts) |", "|---|---|---|---|---|---|---|---|"]
+    pooled_keys = []
+    for item in ITEMS:
+        keys = [(item, iso) for (item2, iso) in pairs if item2 == item and (item, iso, "public_guess") in med]
+        pooled_keys += keys
+        if len(keys) < 5:
+            continue
+        raw_mp = np.array([med[(item, iso, "public_guess")] for item, iso in keys])
+        raw_h = np.array([pairs[k]["H"] for k in keys])
+        mp, h = logit(raw_mp), logit(raw_h)
+        b, a = ols(h, mp)
+        ci = boot(lambda idx: ols(h[idx], mp[idx])[0], len(keys), rng, reps)
+        corr = float(np.corrcoef(h, mp)[0, 1]) if np.std(mp) > 0 else float("nan")
+        L.append("| %s | %d | %s | [%s, %s] | %s | %s | %s | %s |" % (item, len(keys), fmt(b), fmt(ci[0]), fmt(ci[1]), fmt(a), fmt(corr), fmt(float(np.std(raw_mp, ddof=1)), 1), fmt(float(np.std(raw_h, ddof=1)), 1)))
+        summary["flat_" + item] = b
+    if len(pooled_keys) >= 5 and len({k[0] for k in pooled_keys}) >= 1:
+        groups = [k[0] for k in pooled_keys]
+        mp = logit([med[(k[0], k[1], "public_guess")] for k in pooled_keys])
+        h = logit([pairs[k]["H"] for k in pooled_keys])
+        mp_d, h_d = demean_by_group(mp, groups), demean_by_group(h, groups)
+        b, _ = ols(h_d, mp_d)
+
+        def pooled_slope(idx):
+            g = [groups[i] for i in idx]
+            return ols(demean_by_group(h[idx], g), demean_by_group(mp[idx], g))[0]
+        ci = boot(pooled_slope, len(pooled_keys), rng, reps)
+        corr = float(np.corrcoef(h_d, mp_d)[0, 1]) if np.std(mp_d) > 0 else float("nan")
+        L.append("| pooled (item FE) | %d | %s | [%s, %s] | 0 | %s | | |" % (len(pooled_keys), fmt(b), fmt(ci[0]), fmt(ci[1]), fmt(corr)))
+        summary["flat_pooled"] = b
     L.append("")
 
     # H2a lambda and H2b compression on the plain prompt
@@ -197,19 +257,25 @@ def main():
     pairs = load_pairs(args.pairs)
     cells, status = load_results(args.results)
     models = sorted({k[0] for k in cells})
-    lines = ["# v0 metrics", "", "Source: `%s` (%d pairs with truth). Cell value = median of parsed samples. Log-odds clip = %g." % (os.path.relpath(args.results, ROOT), len(pairs), CLIP), ""]
+    lines = ["# v0 metrics", "", "Source: `%s` (%d pairs with truth). Cell value = median of parsed samples. Log-odds clip = %g." % (os.path.relpath(args.results, ROOT), len(pairs), CLIP), "",
+             "Flattening (\"flatten slope\" columns): slope of logit(M_public) on logit(H) across countries. A slope below 1 means the "
+             "model's simulated public varies less across countries than the real public. The H1a variance ratio can exceed 1 even "
+             "when answers are flat, because the model tracks a truth that varies more across countries than human guesses do; the "
+             "slope is the direct flattening measure. The pooled slope demeans within item (item fixed effects).", ""]
     summaries = []
     for m in models:
         L, s = model_metrics(m, cells, status, pairs, rng, args.boot)
         lines += L
         summaries.append(s)
-    head = ["| model | VR wealth | VR immigrants | VR Muslim | lambda | model slope | human slope | abs(M_official - T) | abs(M_public - H) | s(M_plain) | memory within 2 |", "|---|---|---|---|---|---|---|---|---|---|---|"]
+    head = ["| model | VR wealth | VR immigrants | VR Muslim | flatten slope wealth | flatten slope immigrants | flatten slope Muslim | flatten slope pooled | lambda | model slope | human slope | abs(M_official - T) | abs(M_public - H) | s(M_plain) | memory within 2 |",
+            "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for s in summaries:
-        head.append("| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |" % (
-            s["model"], fmt(s.get("VR_wealth_top1")), fmt(s.get("VR_immigrant_share")), fmt(s.get("VR_muslim_share")), fmt(s.get("lambda")),
-            fmt(s.get("slope_model")), fmt(s.get("slope_human")), fmt(s.get("official_err"), 1), fmt(s.get("public_err"), 1), fmt(s.get("s_plain")),
+        head.append("| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |" % (
+            s["model"], fmt(s.get("VR_wealth_top1")), fmt(s.get("VR_immigrant_share")), fmt(s.get("VR_muslim_share")),
+            fmt(s.get("flat_wealth_top1")), fmt(s.get("flat_immigrant_share")), fmt(s.get("flat_muslim_share")), fmt(s.get("flat_pooled")),
+            fmt(s.get("lambda")), fmt(s.get("slope_model")), fmt(s.get("slope_human")), fmt(s.get("official_err"), 1), fmt(s.get("public_err"), 1), fmt(s.get("s_plain")),
             "n/a" if s.get("memory_within2") is None else "%.0f%%" % (100 * s["memory_within2"])))
-    lines = lines[:4] + ["## Summary", ""] + head + [""] + lines[4:]
+    lines = lines[:6] + ["## Summary", ""] + head + [""] + lines[6:]
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     open(args.out, "w", encoding="utf-8").write("\n".join(lines) + "\n")
     print("\n".join(head))
