@@ -1,0 +1,49 @@
+# Optional remote list for `python3 run.py --models-file models_openrouter.yaml` (needs OPENROUTER_API_KEY).
+# Not the default. Slugs and USD-per-million-token list prices verified against
+# https://openrouter.ai/api/v1/models on 2026-11-22 (snapshot: results/openrouter_models_snapshot.json).
+# reasoning: "off" sends {"reasoning": {"enabled": false}}; "low" sends {"reasoning": {"effort": "low"}}.
+
+- model_id: or-qwen3.8-27b
+  provider: openrouter
+  slug: qwen/qwen3.8-27b
+  reasoning: off
+  max_tokens: 64
+  temperature: 1.0
+  price_in_per_m: 0.035
+  price_out_per_m: 1.50
+
+- model_id: or-glm-5.3-flash
+  provider: openrouter
+  slug: z-ai/glm-5.3-flash
+  reasoning: off
+  max_tokens: 64
+  temperature: 1.0
+  price_in_per_m: 0.0399
+  price_out_per_m: 0.0784
+
+- model_id: or-mistral-small-4
+  provider: openrouter
+  slug: mistralai/mistral-small-2603
+  reasoning: off
+  max_tokens: 64
+  temperature: 1.0
+  price_in_per_m: 0.15
+  price_out_per_m: 0.60
+
+- model_id: or-deepseek-v4.1-flash
+  provider: openrouter
+  slug: deepseek/deepseek-v4.1-flash
+  reasoning: off
+  max_tokens: 64
+  temperature: 1.0
+  price_in_per_m: 0.0498
+  price_out_per_m: 0.1992
+
+- model_id: or-gpt-oss-120b
+  provider: openrouter
+  slug: openai/gpt-oss-120b
+  reasoning: low
+  max_tokens: 1024
+  temperature: 1.0
+  price_in_per_m: 0.09
+  price_out_per_m: 0.36

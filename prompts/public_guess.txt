@@ -1,0 +1,5 @@
+If you asked adults in {country} the following question, what would the average person guess?
+
+"{question}"
+
+Reply with a single number from 0 to 100 and nothing else.
