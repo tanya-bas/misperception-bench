@@ -28,11 +28,6 @@ something else?
 - H3. Frontier models answer the public-guess prompt close to H and the official or plain prompt
   close to T; smaller models show less separation.
 
-H1b (models flatten known group differences more than country differences) was dropped: no
-human estimates broken down by political group exist for 2020 or later. ESS Round 12 (data
-expected around 2027) repeats the relevant item with party and left-right variables and is the
-source if H1b is revisited.
-
 ## Design
 
 For each country and item there are three quantities. H is the public's average estimate from
