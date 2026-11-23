@@ -123,6 +123,17 @@ def main():
     cat = read(os.path.join(D, "pairs_categorical.csv"))
     out.append(f"8. pairs_categorical.csv: {len(cat)} rows; per wave: {dict(Counter(r['wave'] for r in cat))}; "
                f"rows with a determinable public majority: {sum(1 for r in cat if r['public_majority'])}; actual_direction counts: {dict(Counter(r['actual_direction'] for r in cat))}.")
+    p22 = {r["country"]: r for r in read(os.path.join(D, "transcription", "homicide_p22.csv"))}
+    pct_bad = [r["country_name_ipsos"] for r in cat if (r["pct_higher"], r["pct_same"], r["pct_lower"]) != tuple(p22[r["country_name_ipsos"]][k] for k in ("pct_higher", "pct_same", "pct_lower"))]
+    rule_bad = [r["country_name_ipsos"] for r in cat if r["actual_direction"] != ("lower" if float(r["change_pct"]) <= -10 else ("higher" if float(r["change_pct"]) >= 10 else "same"))]
+    blank_dir = [r["country_name_ipsos"] for r in cat if r["actual_direction"] == ""]
+    differs = [(r["country_name_ipsos"], r["ipsos_actual_direction"], r["actual_direction"], r["change_pct"]) for r in cat
+               if not (r["actual_direction"] == r["ipsos_actual_direction"] or (r["ipsos_actual_direction"] == "same_or_lower" and r["actual_direction"] in ("same", "lower")))]
+    out.append(f"   homicide_trend truth (UNODC series, 10% rule): percentages match transcription/homicide_p22.csv: {'yes' if not pct_bad else 'NO: ' + str(pct_bad)}; "
+               f"direction recomputed from change_pct matches: {'yes' if not rule_bad else 'NO: ' + str(rule_bad)}; blank direction: {blank_dir or 'none'}; "
+               f"baseline year not 2000: {[(r['country_name_ipsos'], r['year_2000_used']) for r in cat if r['year_2000_used'] != '2000']}; "
+               f"latest year before 2023: {[(r['country_name_ipsos'], r['year_latest']) for r in cat if int(r['year_latest']) < 2023]}; "
+               f"differs from Ipsos's printed direction: {differs}.")
 
     report = "\n".join(out)
     print(report)

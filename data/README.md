@@ -38,7 +38,7 @@ printed is kept in `t_value_ipsos` in every row (decisions 2026-11-22):
 | wealth_top1 | 13 (14 re-read) | World Inequality Database (cited); T used = WID 2024 top-1% net personal wealth share, via the Our World in Data mirror | approximate (households vs adults) |
 | immigrant_share | 16 (17 re-read) | UN International Migrant Stock (cited); T used = World Bank WDI SM.POP.TOTL.ZS 2024 | yes (foreign-born) |
 | muslim_share | 20 (re-read) | Pew Research (cited); T used = Pew 2020 estimate, June 2025 release | yes |
-| homicide_trend | 22, direction from p11 and p23-24 | UN Office on Drugs and Crime | categorical |
+| homicide_trend | 22; direction from the UNODC rate series with a 10% tolerance (Ipsos's p11 direction kept alongside) | UNODC via World Bank WDI (2000) and UNODC 2026 release (latest year) | categorical |
 
 **Transcription check.** Every H and T cell was transcribed twice on 2026-11-22. The first
 reading used p13, p16 and p20. The second, independent reading used p14 and p17, where the
@@ -193,6 +193,24 @@ neither, so `n_country_approx` is `not_stated` for those three (and `age_range` 
 Philippines); the stated n sum to 21,000 against 16,000 interviews, which equals 32 x 500, so
 the lists may be boilerplate. Recorded as printed, not corrected.
 
+**Truth, homicide trend (categorical).** `actual_direction` in `pairs_categorical.csv` is set
+from the UNODC intentional-homicide victim rate per 100,000: the 2000 baseline from the World Bank
+WDI copy of the UNODC series (`VC.IHR.PSRC.P5`; the nearest later year where 2000 is missing:
+Argentina 2001, Chile and Türkiye 2003, Peru 2011) and the latest year from the UNODC 2026 release
+(`data_cts_intentional_homicide.xlsx`, sha256 in `validation/truth_crosscheck_homicide.csv`; 2024 for
+23 countries, earlier where the series stops, Thailand 2011). The rule, with a 10 percent tolerance
+for "about the same": `lower` if the latest rate is at least 10 percent below the baseline, `higher`
+if at least 10 percent above, else `same`. The table carries `rate_2000`, `year_2000_used`,
+`rate_latest`, `year_latest`, `change_pct`, `truth_rule`, `truth_source` and `truth_note` (series
+caveats: Thailand's series ends in 2011; Belgium's 2000 baseline may sit on a series break; Peru's
+baseline is 2011; Singapore's latest values rest on very small counts). Ipsos's own direction from its
+text on p11 ("about the same or lower in all countries except Mexico") is kept as
+`ipsos_actual_direction` with its source note; it disagrees with the series for Chile (higher, +91
+percent since 2003) and Peru (higher, +56 percent since 2011), and the tolerance moves Canada (+12
+percent) to higher and Sweden (-20 percent) to lower where Ipsos's chart put them at about the same.
+The 20 percent variant of the rule is recorded in the cross-check file for sensitivity. Decision
+2026-11-22.
+
 **World Bank** (`countries.csv`): income group and region from the country endpoint;
 GDP per capita PPP (`NY.GDP.PCAP.PP.CD`, latest year <= 2024); international migrant stock
 % (`SM.POP.TOTL.ZS`, UN DESA, 2024), which is T for immigrant_share in `pairs.csv` (decision
@@ -216,7 +234,8 @@ fetch date are in `raw/web_presence.json` and `scripts/fetch_web_presence.py`.
 * `t_value_ipsos` in the 2020 wave is the one-decimal figure as printed, without a percent sign
   (the deck's column header is "% actual causes of death"); "0.0" is a rounded zero.
 * `approx_change_per_100k_from_chart` in `pairs_categorical.csv` is read off a scatter plot and
-  is approximate; `actual_direction` is the analysable field.
+  is approximate; `actual_direction` (UNODC series, 10% rule) is the analysable field, and
+  `ipsos_actual_direction` keeps the coarse direction from Ipsos's text.
 
 ## Licences
 
@@ -275,6 +294,7 @@ Then rebuild: `python3 -I scripts/build_pairs.py && python3 -I scripts/build_cou
 * 2026-11-22: rule: no row is committed to any table without a truth value. Applied first to the categorical track (Eurobarometer 516 QA20.7 removed). The six `ipsos_2020` deaths_hiv_sti rows whose printed actual is 0.0 were filled from national vital registration the same day (entry below), so no committed row lacks a truth value.
 * 2026-11-22: six deaths_hiv_sti rows printed 0.0 (Hong Kong, Hungary, Japan, Netherlands, Poland, Sweden) filled from national vital registration 2017 (Eurostat hlth_cd_aro; Japan MHLW; Hong Kong Department of Health) read from `validation/truth_crosscheck_2020.csv`; `t_flag = national_vr_2017`; HIV-only caveat: the national tables report HIV disease deaths only, STI deaths are not separately reported (Hong Kong's figure includes STI). `validation/truth_crosscheck_2020.csv` and `validation/truth_crosscheck_homicide.csv` committed as validation artifacts (no homicide direction changed; that decision is pending).
 * 2026-11-22: ipsos_2020 truth switched to WHO GHE 2023 release, 2019 values, for the 31 countries WHO covers; Hong Kong keeps the Ipsos-printed health-department figure; Ipsos-printed GBD 2017 values retained in t_value_ipsos. Cause mapping and per-item definition_match are in items.yaml (cancer and neurological approximate). For Hungary, Japan, the Netherlands, Poland and Sweden the WHO HIV/AIDS plus STD value supersedes the national HIV-only 2017 figure filled earlier the same day (WHO includes modelled STD deaths); the national figures are retained in `validation/truth_crosscheck_2020.csv`. Hong Kong's HIV/STI row keeps `national_vr_2017`.
+* 2026-11-22: homicide_trend truth set from the UNODC series with a 10% tolerance for 'about the same'; Ipsos's text was wrong for Chile and Peru. Canada (+12%) and Sweden (-20%) move from 'same' to higher and lower under the tolerance. Ipsos's direction kept as ipsos_actual_direction; `validation/truth_crosscheck_homicide.csv` holds the rates, years and the 20% variant.
 * 2026-11-22: skip list. ISSP 2019 occupational-earnings items are excluded (truth normalisation cost: earnings questions need country- and occupation-specific wage truths on a common scale). The Fabre, Douenne and Mattauch 2023 foreign-aid item is excluded (figure-only publication: the per-country estimates are printed only as a chart).
 
 ## Removed or excluded data
@@ -670,6 +690,7 @@ Generated by `scripts/validate.py`.
    ipsos_2024 (immigrant_share, 30 countries): 22000 from 30 stated n (0 not_stated) vs 22,989 interviews stated on p38.
    ipsos_2020 (deaths_cancer, 32 countries): 21000 from 29 stated n (3 not_stated) vs 16,000 interviews stated on p53.
 7. countries.csv: 36 rows; web_presence missing for: none; income groups: {'Upper middle income': 12, 'High income': 23, 'Lower middle income': 1}; pairs.csv countries without a countries.csv row: none.
-8. pairs_categorical.csv: 30 rows; per wave: {'ipsos_2024': 30}; rows with a determinable public majority: 30; actual_direction counts: {'same_or_lower': 6, 'lower': 20, 'higher': 1, 'same': 3}.
+8. pairs_categorical.csv: 30 rows; per wave: {'ipsos_2024': 30}; rows with a determinable public majority: 30; actual_direction counts: {'higher': 4, 'lower': 24, 'same': 2}.
+   homicide_trend truth (UNODC series, 10% rule): percentages match transcription/homicide_p22.csv: yes; direction recomputed from change_pct matches: yes; blank direction: none; baseline year not 2000: [('Chile', '2003'), ('Türkiye', '2003'), ('Peru', '2011'), ('Argentina', '2001')]; latest year before 2023: [('Peru', '2021'), ('Thailand', '2011'), ('New Zealand', '2022'), ('Belgium', '2021')]; differs from Ipsos's printed direction: [('Chile', 'same_or_lower', 'higher', '90.8'), ('Peru', 'same_or_lower', 'higher', '55.9'), ('Sweden', 'same', 'lower', '-19.8'), ('Canada', 'same', 'higher', '12.2')].
 ```
 <!-- validation:end -->

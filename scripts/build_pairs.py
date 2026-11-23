@@ -273,6 +273,35 @@ def who_ghe_2019():
     return WHO_GHE_2019
 
 
+HOMICIDE_TRUTH = None
+
+
+def homicide_truth():
+    """homicide_trend truth per country from data/validation/truth_crosscheck_homicide.csv: UNODC intentional-homicide
+    victims per 100,000, 2000 baseline from the World Bank WDI copy (VC.IHR.PSRC.P5; nearest later year where 2000 is
+    missing) and the latest year from the UNODC 2026 release. Direction with a 10 percent tolerance: lower if the latest
+    rate is at least 10 percent below the baseline, higher if at least 10 percent above, else same. Decision 2026-11-22."""
+    global HOMICIDE_TRUTH
+    if HOMICIDE_TRUTH is None:
+        path = os.path.join(D, "validation", "truth_crosscheck_homicide.csv")
+        table = {}
+        with open(path, encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                if r["item_id"] != "homicide_trend":
+                    continue
+                change = float(r["change_pct"])
+                rule = "lower" if change <= -10 else ("higher" if change >= 10 else "same")
+                if rule != r["direction_10pct"]:
+                    sys.exit(f"homicide {r['country_iso3']}: 10% rule gives {rule}, file says {r['direction_10pct']}")
+                caveats = [p.strip() for p in r["note"].split(";")
+                           if p.strip() and not p.strip().startswith(("thresholds:", "agrees_with_ipsos", "UNODC xlsx sha256"))]
+                table[r["country_iso3"]] = {**r, "direction": rule, "caveats": "; ".join(caveats)}
+        if len(table) != 30:
+            sys.exit(f"truth_crosscheck_homicide.csv: {len(table)} countries, expected 30")
+        HOMICIDE_TRUTH = table
+    return HOMICIDE_TRUTH
+
+
 NATIONAL_VR_2017 = None
 
 
@@ -416,7 +445,8 @@ def main():
         w = csv.DictWriter(f, fieldnames=FIELDS); w.writeheader(); w.writerows(rows)
     print("wrote", out, len(rows), "rows", {wv: sum(1 for r in rows if r["wave"] == wv) for wv in (WAVE, WAVE_2020)})
 
-    # Categorical side table: homicide trend (2024 wave).
+    # Categorical side table: homicide trend (2024 wave). actual_direction comes from the UNODC series with a 10%
+    # tolerance (homicide_truth); Ipsos's coarse direction from p11 is kept as ipsos_actual_direction.
     actual = {r["country"]: r for r in read("homicide_actual_p23_24.csv")}
     crow = []
     for r in read("homicide_p22.csv"):
@@ -424,16 +454,21 @@ def main():
         hi, sa, lo = int(r["pct_higher"]), int(r["pct_same"]), int(r["pct_lower"])
         majority = "higher" if hi > 50 else ("lower" if lo > 50 else ("same" if sa > 50 else "no_majority"))
         plural = max((hi, "higher"), (sa, "same"), (lo, "lower"))[1]
-        a = actual[c]
+        a = actual[c]; h = homicide_truth()[iso3]
         crow.append({
             "wave": WAVE, "source_id": SOURCE_ID, "country_name_ipsos": c, "country_iso3": iso3,
             "item_id": "homicide_trend",
             "question_wording": "Do you think the homicide rate in your country is higher, lower, or about the same as in 2000?",
             "pct_higher": hi, "pct_same": sa, "pct_lower": lo,
             "public_majority": majority, "public_plurality": plural,
-            "actual_direction": a["actual_direction"],
+            "actual_direction": h["direction"],
+            "rate_2000": h["rate_2000"], "year_2000_used": h["year_2000_used"],
+            "rate_latest": h["rate_latest"], "year_latest": h["year_latest"], "change_pct": h["change_pct"],
+            "truth_rule": "lower if latest rate <= 0.9 x baseline, higher if >= 1.1 x baseline, else same",
+            "truth_source": h["source_name"] + " | " + h["source_url"], "truth_note": h["caveats"],
+            "ipsos_actual_direction": a["actual_direction"],
+            "ipsos_actual_direction_source": "Ipsos text p11 ('about the same or lower in all countries except Mexico'); scatter p23-24; underlying source UN Office on Drugs and Crime",
             "approx_change_per_100k_from_chart": a["approx_change_per_100k_from_chart"],
-            "actual_direction_source": "Ipsos text p11 ('about the same or lower in all countries except Mexico'); scatter p23-24; underlying source UN Office on Drugs and Crime",
             "chart_page": a["chart_page"], "source_page": 22, "note": a["note"],
             "fieldwork_start": FIELDWORK[0], "fieldwork_end": FIELDWORK[1],
             "n_country_approx": n, "age_range": age, "representative_sample": rep,
