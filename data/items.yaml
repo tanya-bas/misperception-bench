@@ -1,8 +1,10 @@
-# Item dictionary for the v0 dataset (Ipsos Perils of Perception 2024 only).
+# Item dictionary for the dataset: Ipsos Perils of Perception 2024 (four items) and Ipsos Perils of
+# Perception 2020, causes of death (six items; wave ipsos_2020).
 # scale:      percent = a 0-100 share; categorical = fixed answer options
 # transform:  logit = analyse on the log-odds scale (H2b compression, H1a variance ratio);
 #             none  = categorical, analysed as agreement with public majority vs truth
-# wording is verbatim from the 2024 report page cited. The report prints each wording once per item.
+# wording is verbatim from the report page cited (wording_2024 / wording_2020). The 2024 report prints each
+# wording once per item; the 2020 deck prints the question stem on every cause page.
 items:
   - item_id: wealth_top1
     name: Share of total household wealth owned by the richest 1% of households
@@ -66,3 +68,118 @@ items:
       public's answer distribution and the actual direction; approximate per-100k change read
       from the p23-24 scatter is included only as a flagged convenience column.
     salience_apriori: high
+  # ---- Ipsos Perils of Perception 2020: causes of death (fieldwork 22 Nov - 6 Dec 2019; published Feb 2020) ----
+  # Question stem as printed on every cause page: "Q. Out of every 100 deaths in [COUNTRY] – about many are a
+  # result of ...?". The deck omits "how" on every page (an Ipsos typo; the stem the project brief gives reads
+  # "about how many") and keeps the "[COUNTRY]" placeholder; both are kept verbatim here and in pairs.csv.
+  # H is Ipsos's "Avg. guess" (a mean). T is the "Actual" Ipsos printed, which the technical note (p53) sources
+  # from the IHME Global Burden of Disease Study 2017 (Hong Kong: healthyhk.gov.hk). The GBD cause group that
+  # Ipsos's actual corresponds to is given as gbd_cause; definition_match compares it with the question wording.
+  # Decision 2026-11-22: the planned Our World in Data pull of the current GBD vintage was refused (HTTP 403, IHME
+  # data not redistributable), so t_flag = ipsos_printed_gbd2017 and the pull stays a follow-up (data/README.md).
+  - item_id: deaths_cancer
+    name: Share of all deaths caused by cancer
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of cancer?"
+    report_page: 13
+    t_source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: Neoplasms
+    definition_match: yes
+    t_definition_note: >
+      "Cancer" in the question; GBD 2017 "Neoplasms" (level 2) in the source, which also counts a small number
+      of deaths from non-malignant neoplasms. Treated as a match.
+    salience_apriori: high
+  - item_id: deaths_cardiovascular
+    name: Share of all deaths caused by cardiovascular diseases
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of cardiovascular diseases such as heart disease, strokes or heart failure?"
+    report_page: 14
+    t_source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: Cardiovascular diseases
+    definition_match: yes
+    t_definition_note: >
+      Question and GBD 2017 "Cardiovascular diseases" (level 2) match. The printed actuals for Saudi Arabia and
+      Germany (adjacent rows on p14) are swapped relative to Ipsos's own printed difference column; t_value
+      takes the figure the difference implies (t_flag = ipsos_printed_gbd2017_swap_corrected), t_value_ipsos
+      stays as printed. Decision 2026-11-22.
+    salience_apriori: high
+  - item_id: deaths_neurological
+    name: Share of all deaths caused by neurological disorders
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of neurological disorders such as dementia or Parkinson’s disease?"
+    report_page: 15
+    t_source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: Neurological disorders
+    definition_match: yes
+    t_definition_note: >
+      Question gives dementia and Parkinson's as examples; GBD 2017 "Neurological disorders" (level 2) also
+      includes epilepsy, multiple sclerosis, motor neuron disease, headache disorders and others. Treated as a
+      match because the examples are illustrative, not a definition. China's guess is printed as "6" (no decimal).
+    salience_apriori: medium
+  - item_id: deaths_hiv_sti
+    name: Share of all deaths caused by HIV/AIDS or sexually transmitted infections
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of HIV/AIDS or sexually transmitted infections (STIs)?"
+    report_page: 16
+    t_source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: HIV/AIDS and sexually transmitted infections
+    definition_match: yes
+    t_definition_note: >
+      Question and GBD 2017 "HIV/AIDS and sexually transmitted infections" (level 2) match. Saudi Arabia is not
+      shown on this page (31 countries). Six countries are printed as "0.0" (Hong Kong, Hungary, Japan,
+      Netherlands, Poland, Sweden): t_value is blank with t_flag = source_unrounded_pending, never 0 or 0.5.
+    salience_apriori: high
+  - item_id: deaths_violence
+    name: Share of all deaths caused by interpersonal violence
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of interpersonal violence such as homicide/murder?"
+    report_page: 18
+    t_source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: Interpersonal violence
+    definition_match: yes
+    t_definition_note: >
+      Question and GBD 2017 "Interpersonal violence" (level 3, deaths from assault) match. Saudi Arabia is not
+      shown on this page (31 countries).
+    salience_apriori: high
+  - item_id: deaths_suicide
+    name: Share of all deaths caused by suicide
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of suicide?"
+    report_page: 23
+    t_source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: Self-harm
+    definition_match: yes
+    t_definition_note: >
+      "Suicide" in the question; GBD 2017 "Self-harm" (level 3, deaths from intentional self-harm) in the source.
+      Treated as a match.
+    salience_apriori: high
+
+# Causes in the 2020 deck that are NOT items (decisions 2026-11-22, details in data/README.md):
+excluded_2020:
+  - cause: terrorism and conflict
+    page: 19
+    gbd_cause: Conflict and terrorism
+    reason: the page prints 32 country labels and difference bars but only 30 guess/actual rows, so values cannot be attributed to countries; printed values kept in transcription/ipsos_2020_defective_pages.csv
+  - cause: substance use disorders such as drug or alcohol addiction
+    page: 21
+    gbd_cause: Substance use disorders (alcohol use disorders + drug use disorders)
+    reason: the page prints 31 country labels and difference bars but only 30 guess/actual rows; same treatment as p19
+  - cause: transport injuries such as road accidents
+    page: 25
+    gbd_cause: Transport injuries
+    reason: the guess/actual column repeats the suicide values of p23 for 30 of the 32 rows and its mean does not match the deck's own all-country transport average (p6), so the page is corrupted; printed values kept in transcription/ipsos_2020_defective_pages.csv
+  - cause: lower respiratory infections such as pneumonia; chronic respiratory diseases such as asthma; diabetes and kidney diseases; digestive diseases; accidental deaths such as drowning
+    page: 5-6
+    reason: only all-country averages are printed, no per-country table

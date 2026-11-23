@@ -1,21 +1,25 @@
-# misperception-bench data, v0
+# misperception-bench data, v1
 
 Human estimates (H), truth values (T) and country covariates for the paper
 *Lost in Average: How LLMs Erase Differences in What the World Believes*.
-Scope of v0: the Ipsos Perils of Perception 2024 wave only (30 countries, fieldwork
-20 September to 4 October 2024). Every value carries the document and page it came from.
+Scope: two Ipsos Perils of Perception waves. `ipsos_2024` (30 countries, fieldwork 20 September
+to 4 October 2024; the v0 dataset, unchanged) and `ipsos_2020`, the causes-of-death wave (32
+countries, fieldwork 22 November to 6 December 2019, published February 2020). Every value
+carries the document and page it came from. Inclusion rule: surveys published from 2020 onward.
 
 ## Files
 
 | File | One row per | Rows | Built by |
 |---|---|---|---|
-| `items.yaml` | item | 4 | hand-written |
-| `sources.csv` | document, dataset or API dump | 10 | hand-written |
-| `pairs.csv` | country x percent item | 90 | `scripts/build_pairs.py` |
+| `items.yaml` | item | 10 (4 from 2024, 6 from 2020) | hand-written |
+| `sources.csv` | document, dataset or API dump | 11 | hand-written |
+| `pairs.csv` | country x percent item | 280 (90 `ipsos_2024` + 190 `ipsos_2020`) | `scripts/build_pairs.py` |
 | `pairs_categorical.csv` | country x homicide-trend item | 30 | `scripts/build_pairs.py` |
-| `countries.csv` | country | 30 | `scripts/build_countries.py` |
+| `countries.csv` | country | 36 (30 from 2024 + 6 only in 2020) | `scripts/build_countries.py` |
 | `transcription/ipsos_2024_estimates.csv` | transcribed cell | 90 | hand-transcribed |
 | `transcription/homicide_p22.csv`, `homicide_actual_p23_24.csv` | country | 30 each | hand-transcribed |
+| `transcription/ipsos_2020_estimates.csv` | transcribed cell (six usable cause pages) | 190 | transcribed from the PDF text layer, checked against page images |
+| `transcription/ipsos_2020_defective_pages.csv` | printed row of the three unusable cause pages (p19, p21, p25) | 95 | record only, not built into `pairs.csv` |
 | `validation/truth_crosscheck.csv` | candidate truth value per (item, country, source) | 227 | sourced from primary databases; feeds the muslim_share T and documents alternatives |
 | `raw/` | downloads, gitignored | | see Re-fetching below |
 
@@ -53,8 +57,12 @@ used in analysis, with `t_flag`:
 | world_bank | immigrant_share, all 30 countries: `t_value` is World Bank WDI SM.POP.TOTL.ZS (UN DESA series), year in `t_reference_year`; printed figure in `t_value_ipsos` | 30 |
 | pew_2020 | muslim_share, all 30 countries: `t_value` is Pew's 2020 estimate (June 2025 release, five decimals), `t_reference_year` = 2020; printed figure in `t_value_ipsos` | 30 |
 | wid_2024 | wealth_top1, all 30 countries: `t_value` is the WID 2024 top-1% share of net personal wealth (WID 2026 release via the Our World in Data mirror), `t_reference_year` = 2024; printed figure in `t_value_ipsos`; fills Peru | 30 |
+| ipsos_printed_gbd2017 | ipsos_2020 items: `t_value` is the printed actual, which Ipsos sources from IHME GBD 2017; `t_reference_year` = 2017 | 177 |
+| ipsos_printed_gbd2017_swap_corrected | ipsos_2020 cardiovascular, Saudi Arabia and Germany: `t_value` is the other row's printed figure (see Truth, 2020) | 2 |
+| ipsos_printed_healthyhk | ipsos_2020 Hong Kong: printed actual sourced by Ipsos from healthyhk.gov.hk; reference year not stated | 5 |
+| source_unrounded_pending | ipsos_2020 HIV/STI rows printed as "0.0": `t_value` blank | 6 |
 
-The `as_printed` and `missing` flags are no longer produced by any v0 item.
+The `as_printed` and `missing` flags are no longer produced by any item.
 
 **Pew vintage.** The muslim_share T comes from the 2020 column of the country table embedded in
 Pew's Religious Composition by Country 2010-2020 interactive page (June 2025 release), which
@@ -75,6 +83,101 @@ countries from the Our World in Data mirror of the WID 2026 release (interpolati
 extrapolations excluded). This also fills Peru, printed as "No data available" by Ipsos; WID
 marks Peru as modeled, recorded in that row's `definition_note`.
 
+**Ipsos Perils of Perception 2020, causes of death** (`ipsos_perils_2020_causes_of_death_deck` in
+`sources.csv`, wave `ipsos_2020`). Public 54-page PDF, sha256 in `sources.csv`; downloaded 2026-11-22.
+Question stem on every cause page: "Out of every 100 deaths in [COUNTRY] – about many are a result
+of ...?" (the deck omits "how" on every page and keeps its "[COUNTRY]" placeholder; both are kept
+verbatim in `question_wording`, noted in `items.yaml`). H is Ipsos's "Avg. guess" (a mean). T is
+Ipsos's printed "Actual", which the technical note (p53) sources from the IHME Global Burden of
+Disease Study 2017 (Hong Kong: healthyhk.gov.hk). Of the 14 causes in the deck, nine have a
+per-country page and five (lower respiratory infections, chronic respiratory diseases, diabetes and
+kidney diseases, digestive diseases, accidental deaths such as drowning) have only all-country
+averages (p5-6) and are not included. Of the nine, six are transcribed:
+
+| item | deck page | GBD cause group behind Ipsos's actual | definition match | countries |
+|---|---|---|---|---|
+| deaths_cancer | 13 | Neoplasms | yes | 32 |
+| deaths_cardiovascular | 14 | Cardiovascular diseases | yes | 32 |
+| deaths_neurological | 15 | Neurological disorders | yes | 32 |
+| deaths_hiv_sti | 16 | HIV/AIDS and sexually transmitted infections | yes | 31 (no Saudi Arabia) |
+| deaths_violence | 18 | Interpersonal violence | yes | 31 (no Saudi Arabia) |
+| deaths_suicide | 23 | Self-harm | yes | 32 |
+
+Hong Kong rows carry `definition_match = approximate` because their actual is the Hong Kong
+government's figure, not GBD's. Country names are as printed in the 2020 deck ("United Kingdom",
+"Turkey", "Hong Kong SAR China"); the join key is `country_iso3`.
+
+**Three 2020 pages are defective and are not built into `pairs.csv`** (decision 2026-11-22; the
+printed rows are kept in `transcription/ipsos_2020_defective_pages.csv`):
+
+* p19 (terrorism and conflict) prints 32 country labels and 32 difference bars but only 30
+  guess/actual rows, in a column whose line spacing differs from the label column (12.9 vs 13.75 pt
+  in the text layer). The 30 values cannot be attributed to countries: the printed differences
+  show that Mexico's values are absent, and the second absent row is one of Romania, Argentina,
+  Netherlands, South Korea or Canada.
+* p21 (substance use disorders) prints 31 labels and bars but 30 guess/actual rows; the absent row
+  is one of Belgium, China, Poland, Japan, the Philippines or the United Kingdom.
+* p25 (transport injuries) prints the suicide guess/actual values of p23 for 30 of its 32 rows (only
+  Hong Kong and the Philippines differ), and its column mean (7.5 guess, 1.5 actual) does not match
+  the deck's own all-country transport average on p6 (10.0, 2.0), whereas the six transcribed pages
+  reproduce their p6 averages to one decimal. The page is treated as corrupted.
+
+**Transcription check, 2020.** Pass 1 parsed the PDF text layer word by word (`pdftotext -tsv`),
+pairing country labels with guess/actual values by vertical rank within each page and requiring
+equal counts (this is how the p19/p21 defects surfaced). Pass 2 re-read the rendered page images
+(`pdftoppm`, 130 dpi) independently. All 190 cells of the six usable pages agreed on both H and T;
+nothing had to be resolved. Two further consistency checks passed: the per-page means of the
+transcribed columns match the all-country averages Ipsos prints on p6 for all six items (e.g.
+cancer 14.7 / 23.6, cardiovascular 10.7 / 32.0, suicide 7.3 / 1.6), and Ipsos's printed
+difference column equals guess minus actual to within rounding for every row except the two
+swapped cardiovascular actuals described below (and two HIV/STI rows, France and Belgium, that are
+within 0.1 of a rounding boundary). Both passes were done by the same model session;
+`transcription/ipsos_2020_estimates.csv` is the single committed transcription, and `pairs.csv`
+carries `source_page`.
+
+**Truth, 2020.** The plan was to take T for every country from Our World in Data's GBD-based
+share-of-deaths-by-cause dataset at the latest GBD vintage, mapping cancer to Neoplasms,
+substance use to alcohol plus drug use disorders, suicide to Self-harm, and so on. OWID now refuses
+to serve IHME data: the chart CSV
+(`https://ourworldindata.org/grapher/share-of-deaths-by-cause.csv`) and the indicator endpoints
+(`https://api.ourworldindata.org/v1/indicators/<id>.data.json`) both return HTTP 403 with the
+message that the data "comes from a source that doesn't allow us to redistribute it" (checked
+2026-11-22; the current OWID vintage is GBD 2023, catalog `ihme_gbd/2026-02-07`, indicator IDs
+1162665 neoplasms, 1162356 cardiovascular, 1162676 neurological, 1162521 HIV/AIDS and STIs,
+1162554 interpersonal violence, 1162841 self-harm, 1162864 substance use, 1162899 transport,
+1162411 conflict and terrorism). The fallback adopted the same day is Ipsos's printed GBD 2017
+actual, `t_flag = ipsos_printed_gbd2017` (`ipsos_printed_healthyhk` for Hong Kong), with
+`t_reference_year = 2017`; the pull from a GBD source stays a follow-up. Two adjustments:
+
+* On p14 the printed actuals of Saudi Arabia (37.6) and Germany (33.4), adjacent rows, are swapped:
+  Ipsos's own printed differences (-23, -24) and bars require 33.4 for Saudi Arabia (10.1 - 33.4)
+  and 37.6 for Germany (14.1 - 37.6), and Destatis gives 37.0% of German deaths from cardiovascular
+  disease in 2017. `t_value` takes the figure the difference implies, `t_value_ipsos` stays as
+  printed, `t_flag = ipsos_printed_gbd2017_swap_corrected`.
+* Six HIV/STI rows are printed as "0.0" (Hong Kong, Hungary, Japan, Netherlands, Poland, Sweden).
+  `t_value` is blank with `t_flag = source_unrounded_pending`, never 0 or 0.5; these six pairs have
+  no log-odds transform until an unrounded figure is sourced.
+
+**Sample metadata, 2020** (technical note, p53). "16,000 interviews were conducted between 22
+November and 6 December 2019." Representative: "18 of the 32 countries surveyed online generate
+nationally representative samples in their countries (Argentina, Australia, Belgium, Canada,
+France, Germany, Great Britain, Hong Kong SAR China, Hungary, Italy, Japan, Netherlands, Poland,
+Singapore, South Korea, Spain, Sweden and United States)." Not representative: "Brazil, Chile,
+Colombia, China, India, Malaysia, Mexico, Peru, Philippines, Romania, Russia, Saudi Arabia, South
+Africa, and Turkey produce a national sample that is more urban & educated, and with higher
+incomes than their fellow citizens." The two lists cover all 32 countries, so the Ireland/New
+Zealand precedent was not needed. Singapore is representative here but urban/affluent in 2024;
+`countries.csv` keeps the 2024 flag and `pairs.csv` carries the per-wave flag. Sample sizes:
+"Approximately 1000 individuals aged 16-74 were surveyed Argentina, Australia, Belgium, Brazil,
+Chile, China, France, Germany, Great Britain, Italy, Japan, Mexico and Spain. Approximately 1000
+individuals aged 18-74 were surveyed in the USA and Canada. Approximately 500 individuals aged
+16-74 were surveyed in Argentina, Belgium, Colombia, Hong Kong SAR China, Hungary, India,
+Malaysia, Netherlands, Peru, Poland, Romania, Russia, Saudi Arabia, Singapore, South Africa,
+South Korea, Sweden and Turkey." Argentina and Belgium are in both lists and the Philippines in
+neither, so `n_country_approx` is `not_stated` for those three (and `age_range` for the
+Philippines); the stated n sum to 21,000 against 16,000 interviews, which equals 32 x 500, so
+the lists may be boilerplate. Recorded as printed, not corrected.
+
 **World Bank** (`countries.csv`): income group and region from the country endpoint;
 GDP per capita PPP (`NY.GDP.PCAP.PP.CD`, latest year <= 2024); international migrant stock
 % (`SM.POP.TOTL.ZS`, UN DESA, 2024), which is T for immigrant_share in `pairs.csv` (decision
@@ -87,12 +190,16 @@ fetch date are in `raw/web_presence.json` and `scripts/fetch_web_presence.py`.
 
 ## Special values
 
-* No `t_value` is 0, 0.5 or blank. Every muslim_share row carries Pew's unrounded 2020 estimate
+* No `t_value` is 0 or 0.5. The only blank `t_value`s are the six ipsos_2020 HIV/STI rows printed as
+  "0.0" (`t_flag = source_unrounded_pending`); analysis code skips rows with blank T. In the 2024
+  wave no `t_value` is blank: every muslim_share row carries Pew's unrounded 2020 estimate
   (`t_flag = pew_2020`), so the ten countries the report prints as "<1%" have real small numbers;
   every immigrant_share row carries the World Bank value (`t_flag = world_bank`), including India
   and Indonesia, which the report prints as 0%; every wealth_top1 row carries the WID 2024 value
   (`t_flag = wid_2024`), including Peru, which the report prints as "No data available".
-  The log-odds transform is defined for all 90 pairs.
+  The log-odds transform is defined for all 90 pairs of 2024 and 184 of the 190 pairs of 2020.
+* `t_value_ipsos` in the 2020 wave is the one-decimal figure as printed, without a percent sign
+  (the deck's column header is "% actual causes of death"); "0.0" is a rounded zero.
 * `approx_change_per_100k_from_chart` in `pairs_categorical.csv` is read off a scatter plot and
   is approximate; `actual_direction` is the analysable field.
 
@@ -107,6 +214,8 @@ Nothing in `raw/` is redistributed; see Re-fetching.
 ```
 curl -L -o data/raw/ipsos-perils-of-perception-2024.pdf \
   https://www.ipsos.com/sites/default/files/ct/publication/documents/2025-01/ipsos-the-perils-of-perception-2024.pdf
+curl -L -o data/raw/ipsos-perils-of-perception-2020-causes-of-death.pdf \
+  https://www.ipsos.com/sites/default/files/ct/news/documents/2020-02/ipsos-perils-of-perception-2020-causes-of-death.pdf
 mkdir -p data/raw/worldbank
 curl -sL "https://api.worldbank.org/v2/country?format=json&per_page=400" -o data/raw/worldbank/countries.json
 curl -sL "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.PP.CD?format=json&per_page=20000&mrv=12" -o data/raw/worldbank/NY.GDP.PCAP.PP.CD.json
@@ -134,11 +243,22 @@ Then rebuild: `python3 -I scripts/build_pairs.py && python3 -I scripts/build_cou
 * 2026-11-22: GDP per capita PPP uses the latest available year <= 2024 per country; income group is the current World Bank classification at retrieval, not the FY2025 classification by year.
 * 2026-11-22: the two transcription passes were both done by the same model session reading different pages.
 * 2026-11-22: human spot-check of pairs.csv against the PDF completed by the author.
+* 2026-11-22: inclusion rule stated as publication date 2020 onward; Ipsos Perils of Perception 2020 (causes of death) admitted on that basis.
+* 2026-11-22: of the nine 2020 causes with a per-country page, three (terrorism and conflict p19, substance use disorders p21, transport injuries p25) are not built into pairs.csv because the printed pages are defective (p19 and p21 have fewer value rows than country labels; p25 repeats the p23 suicide values); their printed rows are kept in `transcription/ipsos_2020_defective_pages.csv`. The five causes with only all-country averages are not included.
+* 2026-11-22: 2020 T rule. Planned: Our World in Data's GBD-based share-of-deaths dataset at the latest vintage, one vintage for all countries, Ipsos's printed value kept in t_value_ipsos. OWID refuses to serve IHME data (HTTP 403, non-redistributable), so T is Ipsos's printed GBD 2017 actual (`ipsos_printed_gbd2017`; `ipsos_printed_healthyhk` for Hong Kong) and the GBD pull is a follow-up. Printed "0.0" rows get a blank t_value (`source_unrounded_pending`), never 0 or 0.5.
+* 2026-11-22: p14 cardiovascular actuals for Saudi Arabia and Germany are swapped in the deck (Ipsos's own difference column and Destatis agree); t_value takes the implied figure with `t_flag = ipsos_printed_gbd2017_swap_corrected`, t_value_ipsos stays as printed.
+* 2026-11-22: 2020 question wording kept verbatim as printed, including the missing "how" ("about many are a result of") and the "[COUNTRY]" placeholder; the typo is noted in items.yaml rather than corrected in the data.
+* 2026-11-22: 2020 sample sizes recorded as the technical note states them; Argentina and Belgium (listed under both ~1000 and ~500) and the Philippines (listed under neither) get `n_country_approx = not_stated`. All 32 countries are named in the representative or urban/affluent list, so no Ireland/New Zealand-style decision was needed.
+* 2026-11-22: the six countries only in the 2020 wave (China, Hong Kong, Philippines, Romania, Russia, Saudi Arabia) are appended to countries.csv from the cached World Bank dumps (which cover all economies) and a web-presence fetch run the same day; the 30 existing rows are unchanged. Their `ipsos_representative_sample` comes from the 2020 technical note.
+* 2026-11-22: 2020 country names in pairs.csv are as printed in that deck (United Kingdom, Turkey, Hong Kong SAR China); countries.csv keeps the 2024 names for the shared countries.
 
 ## Follow-ups
 
 * UN DESA direct values (2024 revision), if later sourced, go in `data/validation/truth_crosscheck.csv` only; they do not replace T, which is the World Bank series.
-* `wikidata_p17_count` completed for 2 of 30 countries before the SPARQL time limit; `enwiki_mentions` is the covariate to use.
+* `wikidata_p17_count` completed for 3 of 36 countries (Argentina, Hungary, China) before the SPARQL time limit; `enwiki_mentions` is the covariate to use.
+* ipsos_2020 T from a current GBD vintage: OWID's API and CSV downloads refuse IHME data (indicator IDs listed under Truth, 2020). Options are the IHME GBD Results Tool (login, non-commercial licence) or the WHO Global Health Estimates (open CSV, different cause taxonomy). Whichever is used, keep one vintage for all 32 countries, record it in t_flag as `owid_gbd_<year>` or equivalent, and fill the six `source_unrounded_pending` HIV/STI rows; Hong Kong is not a GBD location.
+* ipsos_2020 terrorism, substance use and transport items: per-country figures may exist in Ipsos's data tables or at perils.ipsos.com (the deck's stated source page); if found, the printed rows in `transcription/ipsos_2020_defective_pages.csv` can be attributed and the items built.
+* ipsos_2020 question wording: `run.py` builds plain/official prompts from `PLAIN_QUESTIONS[item]`, which has no entries for the six new items, and the verbatim wording keeps the deck's "[COUNTRY]" placeholder and missing "how"; the prompt layer needs per-item questions before the 2020 wave is run.
 
 ## Validation results
 
@@ -146,13 +266,21 @@ Generated by `scripts/validate.py`.
 
 <!-- validation:start -->
 ```
-1. Range check: 90 rows, 0 outside [0,100].
+1. Range check: 280 rows (ipsos_2024: 90, ipsos_2020: 190).
+   ipsos_2024: 0 outside [0,100].
    t_flag counts: {('immigrant_share', 'world_bank'): 30, ('muslim_share', 'pew_2020'): 30, ('wealth_top1', 'wid_2024'): 30}
    T zero or blank (logit undefined): none
    T below 1 percent (printed figure, T used): [('immigrant_share', 'Brazil', '1%', '0.7'), ('immigrant_share', 'India', '0%', '0.3'), ('immigrant_share', 'Indonesia', '0%', '0.2'), ('muslim_share', 'Argentina', '<1%', '0.9292'), ('muslim_share', 'Brazil', '<1%', '0.0177'), ('muslim_share', 'Chile', '<1%', '0.06699'), ('muslim_share', 'Colombia', '<1%', '0.00393'), ('muslim_share', 'Hungary', '<1%', '0.13922'), ('muslim_share', 'Japan', '<1%', '0.16997'), ('muslim_share', 'Mexico', '<1%', '0.00629'), ('muslim_share', 'Peru', '<1%', '0.02159'), ('muslim_share', 'Poland', '<1%', '0.00732'), ('muslim_share', 'South Korea', '<1%', '0.31')]
-2. Countries per item: {'immigrant_share': 30, 'muslim_share': 30, 'wealth_top1': 30}. Missing T: []
-3. Question wording present verbatim in items.yaml for all items: yes.
+   ipsos_2020: 0 outside [0,100].
+   t_flag counts: {('deaths_cancer', 'ipsos_printed_gbd2017'): 31, ('deaths_cancer', 'ipsos_printed_healthyhk'): 1, ('deaths_cardiovascular', 'ipsos_printed_gbd2017'): 29, ('deaths_cardiovascular', 'ipsos_printed_gbd2017_swap_corrected'): 2, ('deaths_cardiovascular', 'ipsos_printed_healthyhk'): 1, ('deaths_hiv_sti', 'ipsos_printed_gbd2017'): 25, ('deaths_hiv_sti', 'source_unrounded_pending'): 6, ('deaths_neurological', 'ipsos_printed_gbd2017'): 31, ('deaths_neurological', 'ipsos_printed_healthyhk'): 1, ('deaths_suicide', 'ipsos_printed_gbd2017'): 31, ('deaths_suicide', 'ipsos_printed_healthyhk'): 1, ('deaths_violence', 'ipsos_printed_gbd2017'): 30, ('deaths_violence', 'ipsos_printed_healthyhk'): 1}
+   T zero or blank (logit undefined): [('deaths_hiv_sti', 'Hong Kong SAR China', '0.0'), ('deaths_hiv_sti', 'Hungary', '0.0'), ('deaths_hiv_sti', 'Japan', '0.0'), ('deaths_hiv_sti', 'Netherlands', '0.0'), ('deaths_hiv_sti', 'Poland', '0.0'), ('deaths_hiv_sti', 'Sweden', '0.0')]
+   T below 1 percent (printed figure, T used): [('deaths_hiv_sti', 'Argentina', '0.6', '0.6'), ('deaths_hiv_sti', 'Australia', '0.1', '0.1'), ('deaths_hiv_sti', 'Belgium', '0.1', '0.1'), ('deaths_hiv_sti', 'Canada', '0.1', '0.1'), ('deaths_hiv_sti', 'Chile', '0.5', '0.5'), ('deaths_hiv_sti', 'China', '0.4', '0.4'), ('deaths_hiv_sti', 'France', '0.1', '0.1'), ('deaths_hiv_sti', 'Germany', '0.1', '0.1'), ('deaths_hiv_sti', 'India', '0.7', '0.7'), ('deaths_hiv_sti', 'Italy', '0.1', '0.1'), ('deaths_hiv_sti', 'Mexico', '0.9', '0.9'), ('deaths_hiv_sti', 'Philippines', '0.9', '0.9'), ('deaths_hiv_sti', 'Romania', '0.1', '0.1'), ('deaths_hiv_sti', 'Singapore', '0.2', '0.2'), ('deaths_hiv_sti', 'South Korea', '0.1', '0.1'), ('deaths_hiv_sti', 'Spain', '0.2', '0.2'), ('deaths_hiv_sti', 'Turkey', '0.1', '0.1'), ('deaths_hiv_sti', 'United Kingdom', '0.1', '0.1'), ('deaths_hiv_sti', 'United States', '0.3', '0.3'), ('deaths_suicide', 'Italy', '0.7', '0.7'), ('deaths_suicide', 'Peru', '0.7', '0.7'), ('deaths_suicide', 'Philippines', '0.8', '0.8'), ('deaths_suicide', 'Romania', '0.9', '0.9'), ('deaths_suicide', 'Spain', '0.9', '0.9'), ('deaths_suicide', 'Turkey', '0.7', '0.7'), ('deaths_violence', 'Argentina', '0.8', '0.8'), ('deaths_violence', 'Australia', '0.2', '0.2'), ('deaths_violence', 'Belgium', '0.1', '0.1'), ('deaths_violence', 'Canada', '0.2', '0.2'), ('deaths_violence', 'Chile', '0.7', '0.7'), ('deaths_violence', 'China', '0.1', '0.1'), ('deaths_violence', 'France', '0.1', '0.1'), ('deaths_violence', 'Germany', '0.1', '0.1'), ('deaths_violence', 'Hong Kong SAR China', '0.1', '0.1'), ('deaths_violence', 'Hungary', '0.1', '0.1'), ('deaths_violence', 'India', '0.4', '0.4'), ('deaths_violence', 'Italy', '0.1', '0.1'), ('deaths_violence', 'Japan', '0.1', '0.1'), ('deaths_violence', 'Malaysia', '0.4', '0.4'), ('deaths_violence', 'Netherlands', '0.1', '0.1'), ('deaths_violence', 'Peru', '0.8', '0.8'), ('deaths_violence', 'Poland', '0.2', '0.2'), ('deaths_violence', 'Romania', '0.2', '0.2'), ('deaths_violence', 'Singapore', '0.1', '0.1'), ('deaths_violence', 'South Korea', '0.2', '0.2'), ('deaths_violence', 'Spain', '0.1', '0.1'), ('deaths_violence', 'Sweden', '0.1', '0.1'), ('deaths_violence', 'Turkey', '0.4', '0.4'), ('deaths_violence', 'United Kingdom', '0.1', '0.1'), ('deaths_violence', 'United States', '0.7', '0.7')]
+2. Countries per item:
+   ipsos_2024: {'immigrant_share': 30, 'muslim_share': 30, 'wealth_top1': 30}. Rows without usable T: none
+   ipsos_2020: {'deaths_cancer': 32, 'deaths_cardiovascular': 32, 'deaths_hiv_sti': 31, 'deaths_neurological': 32, 'deaths_suicide': 32, 'deaths_violence': 31}. Rows without usable T: [('deaths_hiv_sti', 'Hong Kong SAR China', '0.0'), ('deaths_hiv_sti', 'Hungary', '0.0'), ('deaths_hiv_sti', 'Japan', '0.0'), ('deaths_hiv_sti', 'Netherlands', '0.0'), ('deaths_hiv_sti', 'Poland', '0.0'), ('deaths_hiv_sti', 'Sweden', '0.0')]
+3. Question wording present verbatim in items.yaml for all 9 items: yes.
 4. Ipsos printed figure (t_value_ipsos) vs T used (t_value), per item; rows where |printed - T| > 2 points are flagged:
+   wave ipsos_2024
    wealth_top1 (T source: World Inequality Database, top 1% share of net personal wealth, 2024 (WID 2026 release via Our World in Data mirror))
    | country | Ipsos printed | T used (year) | printed - T |
    |---|---|---|---|
@@ -256,8 +384,226 @@ Generated by `scripts/validate.py`.
    | South Africa | 2% | 1.60 (2020) | +0.40 |
    muslim_share: countries where |printed - T| > 2 points: 0 
    T is the World Bank WDI 2024 series (immigrant_share), Pew's 2020 estimate (muslim_share) and WID 2024 (wealth_top1), decisions 2026-11-22; differences reflect the older source vintages Ipsos used and Ipsos rounding to whole percents.
-5. definition_match per item: {('immigrant_share', 'yes'): 28, ('immigrant_share', 'approximate'): 2, ('muslim_share', 'yes'): 30, ('wealth_top1', 'approximate'): 30}. 'approximate' = wealth_top1 (households in question, adults in WID).
-6. Sum of Ipsos 'approximately' per-country samples: 22000 vs 22,989 interviews stated on p38 (Ipsos rounds per-country n).
-7. countries.csv: 30 rows; web_presence missing for: none; income groups: {'Upper middle income': 10, 'High income': 19, 'Lower middle income': 1}.
+   wave ipsos_2020
+   deaths_cancer (T source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk))
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | 30.8 | 30.80 (2017) | +0.00 |
+   | Australia | 26.8 | 26.80 (2017) | +0.00 |
+   | Belgium | 28.3 | 28.30 (2017) | +0.00 |
+   | Brazil | 18.2 | 18.20 (2017) | +0.00 |
+   | Canada | 29.4 | 29.40 (2017) | +0.00 |
+   | Chile | 22.3 | 22.30 (2017) | +0.00 |
+   | China | 24.9 | 24.90 (2017) | +0.00 |
+   | Colombia | 19.9 | 19.90 (2017) | +0.00 |
+   | Germany | 26.7 | 26.70 (2017) | +0.00 |
+   | Spain | 27.8 | 27.80 (2017) | +0.00 |
+   | France | 30.9 | 30.90 (2017) | +0.00 |
+   | United Kingdom | 29.6 | 29.60 (2017) | +0.00 |
+   | Hong Kong SAR China | 31.5 | 31.50 () | +0.00 |
+   | Hungary | 26.3 | 26.30 (2017) | +0.00 |
+   | India | 9.4 | 9.40 (2017) | +0.00 |
+   | Italy | 29.0 | 29.00 (2017) | +0.00 |
+   | Japan | 30.2 | 30.20 (2017) | +0.00 |
+   | South Korea | 34.1 | 34.10 (2017) | +0.00 |
+   | Mexico | 13.7 | 13.70 (2017) | +0.00 |
+   | Malaysia | 16.4 | 16.40 (2017) | +0.00 |
+   | Netherlands | 30.9 | 30.90 (2017) | +0.00 |
+   | Peru | 20.1 | 20.10 (2017) | +0.00 |
+   | Philippines | 11.9 | 11.90 (2017) | +0.00 |
+   | Poland | 27.7 | 27.70 (2017) | +0.00 |
+   | Romania | 19.6 | 19.60 (2017) | +0.00 |
+   | Russia | 15.9 | 15.90 (2017) | +0.00 |
+   | Saudi Arabia | 12.5 | 12.50 (2017) | +0.00 |
+   | Singapore | 27.5 | 27.50 (2017) | +0.00 |
+   | Sweden | 26.2 | 26.20 (2017) | +0.00 |
+   | Turkey | 23.1 | 23.10 (2017) | +0.00 |
+   | United States | 24.5 | 24.50 (2017) | +0.00 |
+   | South Africa | 10.2 | 10.20 (2017) | +0.00 |
+   deaths_cancer: countries where |printed - T| > 2 points: 0 
+   deaths_cardiovascular (T source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk))
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | 31.8 | 31.80 (2017) | +0.00 |
+   | Australia | 30.5 | 30.50 (2017) | +0.00 |
+   | Belgium | 29.6 | 29.60 (2017) | +0.00 |
+   | Brazil | 28.8 | 28.80 (2017) | +0.00 |
+   | Canada | 28.9 | 28.90 (2017) | +0.00 |
+   | Chile | 26.6 | 26.60 (2017) | +0.00 |
+   | China | 41.9 | 41.90 (2017) | +0.00 |
+   | Colombia | 29.0 | 29.00 (2017) | +0.00 |
+   | Germany | 33.4 | 37.60 (2017) | -4.20 **>2pp** |
+   | Spain | 29.7 | 29.70 (2017) | +0.00 |
+   | France | 26.9 | 26.90 (2017) | +0.00 |
+   | United Kingdom | 29.0 | 29.00 (2017) | +0.00 |
+   | Hong Kong SAR China | 20.6 | 20.60 () | +0.00 |
+   | Hungary | 46.9 | 46.90 (2017) | +0.00 |
+   | India | 26.6 | 26.60 (2017) | +0.00 |
+   | Italy | 34.8 | 34.80 (2017) | +0.00 |
+   | Japan | 26.8 | 26.80 (2017) | +0.00 |
+   | South Korea | 22.3 | 22.30 (2017) | +0.00 |
+   | Mexico | 22.7 | 22.70 (2017) | +0.00 |
+   | Malaysia | 34.7 | 34.70 (2017) | +0.00 |
+   | Netherlands | 26.7 | 26.70 (2017) | +0.00 |
+   | Peru | 19.6 | 19.60 (2017) | +0.00 |
+   | Philippines | 32.6 | 32.60 (2017) | +0.00 |
+   | Poland | 42.8 | 42.80 (2017) | +0.00 |
+   | Romania | 55.5 | 55.50 (2017) | +0.00 |
+   | Russia | 54.5 | 54.50 (2017) | +0.00 |
+   | Saudi Arabia | 37.6 | 33.40 (2017) | +4.20 **>2pp** |
+   | Singapore | 31.1 | 31.10 (2017) | +0.00 |
+   | Sweden | 37.2 | 37.20 (2017) | +0.00 |
+   | Turkey | 36.4 | 36.40 (2017) | +0.00 |
+   | United States | 31.6 | 31.60 (2017) | +0.00 |
+   | South Africa | 16.1 | 16.10 (2017) | +0.00 |
+   deaths_cardiovascular: countries where |printed - T| > 2 points: 2 ['Germany', 'Saudi Arabia']
+   deaths_hiv_sti (T source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk))
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | 0.6 | 0.60 (2017) | +0.00 |
+   | Australia | 0.1 | 0.10 (2017) | +0.00 |
+   | Belgium | 0.1 | 0.10 (2017) | +0.00 |
+   | Brazil | 1.3 | 1.30 (2017) | +0.00 |
+   | Canada | 0.1 | 0.10 (2017) | +0.00 |
+   | Chile | 0.5 | 0.50 (2017) | +0.00 |
+   | China | 0.4 | 0.40 (2017) | +0.00 |
+   | Colombia | 1.2 | 1.20 (2017) | +0.00 |
+   | Germany | 0.1 | 0.10 (2017) | +0.00 |
+   | Spain | 0.2 | 0.20 (2017) | +0.00 |
+   | France | 0.1 | 0.10 (2017) | +0.00 |
+   | United Kingdom | 0.1 | 0.10 (2017) | +0.00 |
+   | Hong Kong SAR China | 0.0 | missing () | n/a |
+   | Hungary | 0.0 | missing () | n/a |
+   | India | 0.7 | 0.70 (2017) | +0.00 |
+   | Italy | 0.1 | 0.10 (2017) | +0.00 |
+   | Japan | 0.0 | missing () | n/a |
+   | South Korea | 0.1 | 0.10 (2017) | +0.00 |
+   | Mexico | 0.9 | 0.90 (2017) | +0.00 |
+   | Malaysia | 1.0 | 1.00 (2017) | +0.00 |
+   | Netherlands | 0.0 | missing () | n/a |
+   | Peru | 1.9 | 1.90 (2017) | +0.00 |
+   | Philippines | 0.9 | 0.90 (2017) | +0.00 |
+   | Poland | 0.0 | missing () | n/a |
+   | Romania | 0.1 | 0.10 (2017) | +0.00 |
+   | Russia | 1.1 | 1.10 (2017) | +0.00 |
+   | Singapore | 0.2 | 0.20 (2017) | +0.00 |
+   | Sweden | 0.0 | missing () | n/a |
+   | Turkey | 0.1 | 0.10 (2017) | +0.00 |
+   | United States | 0.3 | 0.30 (2017) | +0.00 |
+   | South Africa | 28.8 | 28.80 (2017) | +0.00 |
+   deaths_hiv_sti: countries where |printed - T| > 2 points: 0 
+   deaths_neurological (T source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk))
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | 6.8 | 6.80 (2017) | +0.00 |
+   | Australia | 12.4 | 12.40 (2017) | +0.00 |
+   | Belgium | 11.7 | 11.70 (2017) | +0.00 |
+   | Brazil | 6.8 | 6.80 (2017) | +0.00 |
+   | Canada | 11.4 | 11.40 (2017) | +0.00 |
+   | Chile | 9.2 | 9.20 (2017) | +0.00 |
+   | China | 5.6 | 5.60 (2017) | +0.00 |
+   | Colombia | 7.7 | 7.70 (2017) | +0.00 |
+   | Germany | 11.0 | 11.00 (2017) | +0.00 |
+   | Spain | 14.5 | 14.50 (2017) | +0.00 |
+   | France | 14.5 | 14.50 (2017) | +0.00 |
+   | United Kingdom | 12.7 | 12.70 (2017) | +0.00 |
+   | Hong Kong SAR China | 3.8 | 3.80 () | +0.00 |
+   | Hungary | 6.8 | 6.80 (2017) | +0.00 |
+   | India | 2.7 | 2.70 (2017) | +0.00 |
+   | Italy | 13.7 | 13.70 (2017) | +0.00 |
+   | Japan | 16.0 | 16.00 (2017) | +0.00 |
+   | South Korea | 12.2 | 12.20 (2017) | +0.00 |
+   | Mexico | 5.8 | 5.80 (2017) | +0.00 |
+   | Malaysia | 4.4 | 4.40 (2017) | +0.00 |
+   | Netherlands | 12.0 | 12.00 (2017) | +0.00 |
+   | Peru | 8.4 | 8.40 (2017) | +0.00 |
+   | Philippines | 2.9 | 2.90 (2017) | +0.00 |
+   | Poland | 8.7 | 8.70 (2017) | +0.00 |
+   | Romania | 6.6 | 6.60 (2017) | +0.00 |
+   | Russia | 5.3 | 5.30 (2017) | +0.00 |
+   | Saudi Arabia | 4.7 | 4.70 (2017) | +0.00 |
+   | Singapore | 9.4 | 9.40 (2017) | +0.00 |
+   | Sweden | 12.7 | 12.70 (2017) | +0.00 |
+   | Turkey | 7.8 | 7.80 (2017) | +0.00 |
+   | United States | 10.8 | 10.80 (2017) | +0.00 |
+   | South Africa | 3.0 | 3.00 (2017) | +0.00 |
+   deaths_neurological: countries where |printed - T| > 2 points: 0 
+   deaths_suicide (T source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk))
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | 1.5 | 1.50 (2017) | +0.00 |
+   | Australia | 1.8 | 1.80 (2017) | +0.00 |
+   | Belgium | 2.0 | 2.00 (2017) | +0.00 |
+   | Brazil | 1.1 | 1.10 (2017) | +0.00 |
+   | Canada | 1.7 | 1.70 (2017) | +0.00 |
+   | Chile | 1.8 | 1.80 (2017) | +0.00 |
+   | China | 1.2 | 1.20 (2017) | +0.00 |
+   | Colombia | 1.2 | 1.20 (2017) | +0.00 |
+   | Germany | 1.3 | 1.30 (2017) | +0.00 |
+   | Spain | 0.9 | 0.90 (2017) | +0.00 |
+   | France | 1.9 | 1.90 (2017) | +0.00 |
+   | United Kingdom | 1.0 | 1.00 (2017) | +0.00 |
+   | Hong Kong SAR China | 1.8 | 1.80 () | +0.00 |
+   | Hungary | 1.7 | 1.70 (2017) | +0.00 |
+   | India | 2.1 | 2.10 (2017) | +0.00 |
+   | Italy | 0.7 | 0.70 (2017) | +0.00 |
+   | Japan | 2.1 | 2.10 (2017) | +0.00 |
+   | South Korea | 5.1 | 5.10 (2017) | +0.00 |
+   | Mexico | 1.1 | 1.10 (2017) | +0.00 |
+   | Malaysia | 1.4 | 1.40 (2017) | +0.00 |
+   | Netherlands | 1.4 | 1.40 (2017) | +0.00 |
+   | Peru | 0.7 | 0.70 (2017) | +0.00 |
+   | Philippines | 0.8 | 0.80 (2017) | +0.00 |
+   | Poland | 1.7 | 1.70 (2017) | +0.00 |
+   | Romania | 0.9 | 0.90 (2017) | +0.00 |
+   | Russia | 2.4 | 2.40 (2017) | +0.00 |
+   | Saudi Arabia | 1.1 | 1.10 (2017) | +0.00 |
+   | Singapore | 2.5 | 2.50 (2017) | +0.00 |
+   | Sweden | 1.5 | 1.50 (2017) | +0.00 |
+   | Turkey | 0.7 | 0.70 (2017) | +0.00 |
+   | United States | 1.7 | 1.70 (2017) | +0.00 |
+   | South Africa | 1.3 | 1.30 (2017) | +0.00 |
+   deaths_suicide: countries where |printed - T| > 2 points: 0 
+   deaths_violence (T source: IHME Global Burden of Disease Study 2017, share of all deaths by cause, as printed by Ipsos (technical note p53; Hong Kong from healthyhk.gov.hk))
+   | country | Ipsos printed | T used (year) | printed - T |
+   |---|---|---|---|
+   | Argentina | 0.8 | 0.80 (2017) | +0.00 |
+   | Australia | 0.2 | 0.20 (2017) | +0.00 |
+   | Belgium | 0.1 | 0.10 (2017) | +0.00 |
+   | Brazil | 4.7 | 4.70 (2017) | +0.00 |
+   | Canada | 0.2 | 0.20 (2017) | +0.00 |
+   | Chile | 0.7 | 0.70 (2017) | +0.00 |
+   | China | 0.1 | 0.10 (2017) | +0.00 |
+   | Colombia | 6.4 | 6.40 (2017) | +0.00 |
+   | Germany | 0.1 | 0.10 (2017) | +0.00 |
+   | Spain | 0.1 | 0.10 (2017) | +0.00 |
+   | France | 0.1 | 0.10 (2017) | +0.00 |
+   | United Kingdom | 0.1 | 0.10 (2017) | +0.00 |
+   | Hong Kong SAR China | 0.1 | 0.10 () | +0.00 |
+   | Hungary | 0.1 | 0.10 (2017) | +0.00 |
+   | India | 0.4 | 0.40 (2017) | +0.00 |
+   | Italy | 0.1 | 0.10 (2017) | +0.00 |
+   | Japan | 0.1 | 0.10 (2017) | +0.00 |
+   | South Korea | 0.2 | 0.20 (2017) | +0.00 |
+   | Mexico | 6.1 | 6.10 (2017) | +0.00 |
+   | Malaysia | 0.4 | 0.40 (2017) | +0.00 |
+   | Netherlands | 0.1 | 0.10 (2017) | +0.00 |
+   | Peru | 0.8 | 0.80 (2017) | +0.00 |
+   | Philippines | 2.4 | 2.40 (2017) | +0.00 |
+   | Poland | 0.2 | 0.20 (2017) | +0.00 |
+   | Romania | 0.2 | 0.20 (2017) | +0.00 |
+   | Russia | 1.2 | 1.20 (2017) | +0.00 |
+   | Singapore | 0.1 | 0.10 (2017) | +0.00 |
+   | Sweden | 0.1 | 0.10 (2017) | +0.00 |
+   | Turkey | 0.4 | 0.40 (2017) | +0.00 |
+   | United States | 0.7 | 0.70 (2017) | +0.00 |
+   | South Africa | 3.3 | 3.30 (2017) | +0.00 |
+   deaths_violence: countries where |printed - T| > 2 points: 0 
+   T is the printed GBD 2017 figure itself (fallback after the Our World in Data pull was refused, decision 2026-11-22), so printed and used differ only where the printed actual is swapped between two adjacent rows (cardiovascular, Saudi Arabia and Germany) or is a rounded 0.0 left blank.
+5. definition_match per item: {('immigrant_share', 'yes'): 28, ('immigrant_share', 'approximate'): 2, ('muslim_share', 'yes'): 30, ('wealth_top1', 'approximate'): 30, ('deaths_cancer', 'yes'): 31, ('deaths_cancer', 'approximate'): 1, ('deaths_cardiovascular', 'yes'): 31, ('deaths_cardiovascular', 'approximate'): 1, ('deaths_hiv_sti', 'yes'): 30, ('deaths_hiv_sti', 'approximate'): 1, ('deaths_neurological', 'yes'): 31, ('deaths_neurological', 'approximate'): 1, ('deaths_suicide', 'yes'): 31, ('deaths_suicide', 'approximate'): 1, ('deaths_violence', 'yes'): 30, ('deaths_violence', 'approximate'): 1}. 'approximate' = wealth_top1 (households in question, adults in WID), immigrant_share India/Indonesia (citizenship-based stock), and every Hong Kong row of ipsos_2020 (actual from healthyhk.gov.hk, not GBD).
+6. Sum of Ipsos 'approximately' per-country samples (one item per wave; Ipsos rounds per-country n):
+   ipsos_2024 (immigrant_share, 30 countries): 22000 from 30 stated n (0 not_stated) vs 22,989 interviews stated on p38.
+   ipsos_2020 (deaths_cancer, 32 countries): 21000 from 29 stated n (3 not_stated) vs 16,000 interviews stated on p53.
+7. countries.csv: 36 rows; web_presence missing for: none; income groups: {'Upper middle income': 12, 'High income': 23, 'Lower middle income': 1}; pairs.csv countries without a countries.csv row: none.
 ```
 <!-- validation:end -->
