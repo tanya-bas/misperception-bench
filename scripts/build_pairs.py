@@ -50,9 +50,14 @@ Truth columns (rule adopted 2026-11-22):
                                         of these two adjacent rows are swapped relative to Ipsos's own printed
                                         difference column (and to Destatis for Germany); t_value is the other
                                         row's printed figure, t_value_ipsos stays as printed (SWAPPED_2020)
+                  national_vr_2017      ipsos_2020 HIV/STI rows printed as "0.0" (Hong Kong, Hungary, Japan,
+                                        Netherlands, Poland, Sweden): t_value is the 2017 national vital-
+                                        registration share read from data/validation/truth_crosscheck_2020.csv
+                                        (Eurostat hlth_cd_aro, Japan MHLW, Hong Kong Department of Health);
+                                        HIV deaths only, STI deaths not separately reported (decision 2026-11-22)
                   source_unrounded_pending
-                                        ipsos_2020 rows printed as "0.0" (six HIV/STI rows): t_value is blank,
-                                        never 0 or 0.5, until an unrounded GBD figure is obtained
+                                        no longer produced: a rounded-zero row without a national override
+                                        would stop the build
                   as_printed / missing  no longer produced by any item; kept as the fallback for items
                                         without a primary-source rule
 Run: python3 -I scripts/build_pairs.py
@@ -150,6 +155,7 @@ ITEMS_2020 = {
 # t_value takes the other row's printed figure; t_value_ipsos stays as printed. Decision 2026-11-22.
 SWAPPED_2020 = {("deaths_cardiovascular", "Saudi Arabia"): "33.4", ("deaths_cardiovascular", "Germany"): "37.6"}
 SWAP_NOTE = "printed actual (t_value_ipsos) is swapped with the adjacent row on p14 according to Ipsos's own printed difference column; t_value is the figure the difference implies (decision 2026-11-22)"
+HIV_NOTE = "HIV deaths only; STI deaths not separately reported in the national tables (Hong Kong includes STI)"
 HK_NOTE = "Ipsos's technical note (p53) sources Hong Kong's actual from healthyhk.gov.hk rather than GBD 2017, so the cause definition is the Hong Kong government's, not GBD's"
 
 # Country metadata from the technical note (p53), names as printed in the 2020 tables. Lists quoted in data/README.md.
@@ -227,7 +233,34 @@ def truth(item, country, raw, pew, wdi, wid):
     return {**base, "t_value": float(raw), "t_flag": "as_printed"}
 
 
-def truth_2020(item, country, raw):
+NATIONAL_VR_2017 = None
+
+
+def national_vr_2017():
+    """2017 national vital-registration HIV death shares for the six ipsos_2020 HIV/STI rows printed as 0.0, read from
+    data/validation/truth_crosscheck_2020.csv: the deaths_hiv_sti candidates with source_year 2017 that are not WHO
+    Global Health Estimates (Eurostat hlth_cd_aro for Hungary, Netherlands, Poland and Sweden; Japan MHLW vital
+    statistics; Hong Kong Department of Health registered deaths). Decision 2026-11-22."""
+    global NATIONAL_VR_2017
+    if NATIONAL_VR_2017 is None:
+        path = os.path.join(D, "validation", "truth_crosscheck_2020.csv")
+        with open(path, encoding="utf-8") as f:
+            cands = [r for r in csv.DictReader(f)
+                     if r["item_id"] == "deaths_hiv_sti" and r["source_year"] == "2017"
+                     and not r["source_name"].startswith("WHO Global Health Estimates")]
+        table = {}
+        for r in cands:
+            if r["country_iso3"] in table:
+                sys.exit(f"truth_crosscheck_2020.csv: more than one 2017 national candidate for {r['country_iso3']}")
+            table[r["country_iso3"]] = r
+        expected = {"HKG", "HUN", "JPN", "NLD", "POL", "SWE"}
+        if set(table) != expected:
+            sys.exit(f"truth_crosscheck_2020.csv: national 2017 candidates found for {sorted(table)}, expected {sorted(expected)}")
+        NATIONAL_VR_2017 = table
+    return NATIONAL_VR_2017
+
+
+def truth_2020(item, country, iso3, raw):
     """Truth columns for one 2020 pair: the printed GBD 2017 figure, blank where it is a rounded zero."""
     raw = raw.strip()
     base = {"t_value_ipsos": raw, "t_unrounded_source": "", "t_unrounded_url": "", "t_unrounded_year": "",
@@ -236,7 +269,12 @@ def truth_2020(item, country, raw):
     if (item, country) in SWAPPED_2020:
         return {**base, "t_value": float(SWAPPED_2020[(item, country)]), "t_flag": flag + "_swap_corrected"}
     if raw.endswith("*") or float(raw) == 0:  # "0.0" or "0.0*" (= more than 0 but less than 0.05): no placeholder
-        return {**base, "t_value": "", "t_flag": "source_unrounded_pending", "t_reference_year": ""}
+        if item == "deaths_hiv_sti" and iso3 in national_vr_2017():
+            c = national_vr_2017()[iso3]
+            return {**base, "t_value": float(c["candidate_value"]), "t_flag": "national_vr_2017",
+                    "t_unrounded_source": c["source_name"], "t_unrounded_url": c["source_url"],
+                    "t_unrounded_year": c["source_year"], "t_reference_year": "2017"}
+        sys.exit(f"{item} / {country}: printed rounded zero and no national override (rule: no row without a truth value)")
     return {**base, "t_value": float(raw), "t_flag": flag}
 
 
@@ -293,12 +331,16 @@ def rows_2020(wdi):
         if wdi[iso3]["country_name_ipsos"] not in (country, {"United Kingdom": "Great Britain", "Turkey": "Türkiye"}.get(country)):
             sys.exit(f"2020 {country}: countries.csv row for {iso3} is named {wdi[iso3]['country_name_ipsos']}")
         meta = ITEMS_2020[item]
-        t = truth_2020(item, country, r["t_raw"])
+        t = truth_2020(item, country, iso3, r["t_raw"])
         defn_match, defn_note = meta["definition_match"], meta["definition_note"]
         if (item, country) in SWAPPED_2020:
             defn_note = defn_note + "; " + SWAP_NOTE
         if country == "Hong Kong SAR China":
             defn_match, defn_note = "approximate", HK_NOTE
+        t_source = T_SOURCE_2020
+        if t["t_flag"] == "national_vr_2017":
+            t_source = t["t_unrounded_source"]
+            defn_match, defn_note = "approximate", HIV_NOTE
         rows.append({
             "wave": WAVE_2020, "source_id": SOURCE_ID_2020,
             "country_name_ipsos": country, "country_iso3": iso3, "item_id": item,
@@ -306,7 +348,7 @@ def rows_2020(wdi):
             "t_value_ipsos": t["t_value_ipsos"], "t_value": t["t_value"], "t_flag": t["t_flag"],
             "t_unrounded_source": t["t_unrounded_source"], "t_unrounded_url": t["t_unrounded_url"],
             "t_unrounded_year": t["t_unrounded_year"],
-            "t_source": T_SOURCE_2020, "t_reference_year": t["t_reference_year"],
+            "t_source": t_source, "t_reference_year": t["t_reference_year"],
             "definition_match": defn_match, "definition_note": defn_note,
             "question_wording": meta["wording"],
             "source_page": r["page"],
