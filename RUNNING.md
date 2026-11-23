@@ -99,25 +99,31 @@ memory_check:  What did the Ipsos Perils of Perception 2024 survey find was the 
 
 ## Runtime estimate
 
-Not measured yet. The model downloads could not complete from this session: Hugging Face served the
-weight shards at about 0.1 MB/s and then stalled (no bytes for over a minute with both the default
-client and the Xet client, 2026-11-22 afternoon), so no model has been loaded and no smoke test has run.
+Measured 2026-11-22 on an Apple M4 Max (64 GB), one model loaded at a time, batched generation,
+1,800 cells per model (90 pairs x 4 prompts x 5 samples):
 
-To measure, from a terminal with a working connection:
+| model | mean s/call | tokens/s (median) | wall time for 1,800 cells |
+|---|---|---|---|
+| qwen3.5-9b | 0.11 | 171 | about 3 minutes |
+| qwen3.8-27b | 0.39 | 55 | about 12 minutes |
+| gpt-oss-20b | 0.44 | 255 | about 13 minutes |
 
-```
-.venv/bin/hf download mlx-community/Qwen3.5-9B-4bit                         # watch the progress bar
-.venv/bin/python run.py --smoke                                               # 24 cells, prints raw replies and tokens/s
-.venv/bin/python run.py --models qwen3.5-9b  --n 1 --limit 20 --results results/timing.jsonl
-.venv/bin/python run.py --models qwen3.8-27b --n 1 --limit 20 --results results/timing.jsonl
-.venv/bin/python run.py --models gpt-oss-20b --n 1 --limit 20 --results results/timing.jsonl
-.venv/bin/python timing.py --results results/timing.jsonl                     # mean s/call x 1,780 cells per model
-```
+gpt-oss-20b emits a reasoning channel at low effort (a few hundred tokens per cell), which is why its
+per-call time matches the 27B despite far fewer active parameters.
 
-Expectation, to be replaced by the measurement: with batched generation on a 64 GB Apple Silicon
-machine, 4-bit 9B to 27B models produce short answers at tens of tokens per second per sequence,
-so 1,780 cells of about 10 output tokens each should take well under an hour per Qwen model;
-gpt-oss-20b at low reasoning effort emits a few hundred tokens per cell and will dominate the run.
+## Preliminary results
+
+The first three-model run (2026-11-22) is frozen under `results/v0/` (raw replies plus a README with
+the exact settings). Derived outputs, regenerated from the live `results/results.jsonl`:
+
+* `results/metrics.md`: every hypothesis metric per model (`metrics.py`), including the flattening
+  slope of the simulated public on the real public added on 2026-11-22.
+* `results/<model_id>_pairs.md`: per-pair medians for each prompt type (`scripts/pairs_table.py`).
+
+Parser note: on 2026-11-22 `parse.py` was changed to fold typographic apostrophes and to classify
+declines such as "I'm sorry, but I don't have that specific figure" as `refusal` rather than
+`unparseable`. Stored statuses in a results file are rewritten with `scripts/reparse_results.py`;
+`metrics.py` reads the stored status.
 
 ## What is not here yet
 
