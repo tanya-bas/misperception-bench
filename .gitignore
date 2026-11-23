@@ -2,3 +2,9 @@
 data/raw/
 __pycache__/
 .DS_Store
+.venv/
+results/cache/
+results/*.jsonl
+# results/v0/results.jsonl is the frozen preliminary-results snapshot and is tracked (pattern above matches only results/*.jsonl)
+results/openrouter_models_all.json
+.claude/
