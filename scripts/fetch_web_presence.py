@@ -1,4 +1,4 @@
-"""Fetch the web-presence covariate for each Ipsos 2024 country (network step; run once).
+"""Fetch the web-presence covariate for each Ipsos country (2024 wave, the six added by the 2020 wave and the two added by Earth Day 2022; network step; resumable).
 
 Two measures, both written to data/raw/web_presence.json with the fetch date:
   1. wikidata_p17_count : number of Wikidata items whose 'country' (P17) is this country.
@@ -17,7 +17,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "raw", "web_presence.json")
 UA = "misperception-bench/0.1 (research dataset build; contact: repo owner)"
 
-# Ipsos 2024 country -> (ISO3, Wikidata QID, English search phrase)
+# Ipsos country -> (ISO3, Wikidata QID, English search phrase)
 COUNTRIES = {
     "Argentina": ("ARG", "Q414", "Argentina"), "Australia": ("AUS", "Q408", "Australia"),
     "Belgium": ("BEL", "Q31", "Belgium"), "Brazil": ("BRA", "Q155", "Brazil"),
@@ -34,6 +34,12 @@ COUNTRIES = {
     "South Korea": ("KOR", "Q884", "South Korea"), "Spain": ("ESP", "Q29", "Spain"),
     "Sweden": ("SWE", "Q34", "Sweden"), "Thailand": ("THA", "Q869", "Thailand"),
     "Türkiye": ("TUR", "Q43", "Turkey"), "United States": ("USA", "Q30", "United States"),
+    # added for the Ipsos Perils of Perception 2020 (causes of death) wave, 2026-11-22
+    "China": ("CHN", "Q148", "China"), "Hong Kong": ("HKG", "Q8646", "Hong Kong"),
+    "Philippines": ("PHL", "Q928", "Philippines"), "Romania": ("ROU", "Q218", "Romania"),
+    "Russia": ("RUS", "Q159", "Russia"), "Saudi Arabia": ("SAU", "Q851", "Saudi Arabia"),
+    # added for the Ipsos Earth Day 2022 wave, 2026-11-22
+    "Switzerland": ("CHE", "Q39", "Switzerland"), "Norway": ("NOR", "Q20", "Norway"),
 }
 
 

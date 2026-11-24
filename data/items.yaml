@@ -1,14 +1,18 @@
-# Item dictionary for the v0 dataset (Ipsos Perils of Perception 2024 only).
+# Item dictionary for the dataset: Ipsos Perils of Perception 2024 (four items) and Ipsos Perils of
+# Perception 2020, causes of death (six items; wave ipsos_2020).
 # scale:      percent = a 0-100 share; categorical = fixed answer options
 # transform:  logit = analyse on the log-odds scale (H2b compression, H1a variance ratio);
 #             none  = categorical, analysed as agreement with public majority vs truth
-# wording is verbatim from the 2024 report page cited. The report prints each wording once per item.
+# wording is verbatim from the report page cited (wording_2024 / wording_2020). The 2024 report prints each
+# wording once per item; the 2020 deck prints the question stem on every cause page.
 items:
   - item_id: wealth_top1
     name: Share of total household wealth owned by the richest 1% of households
     scale: percent
     transform: logit
     wording_2024: "What percentage of your country's total household wealth do you think is owned by the top 1% of richest households?"
+    plain_wording: "What percentage of {country}'s total household wealth is owned by the top 1% of richest households?"
+    official_source_name: "the World Inequality Database"
     report_page: 13
     t_source: World Inequality Database, top 1% share of net personal wealth, 2024 (WID 2026 release via Our World in Data mirror)
     t_source_cited_by_ipsos: World Inequality Database
@@ -26,6 +30,8 @@ items:
     scale: percent
     transform: logit
     wording_2024: "What percentage of your country's population do you think immigrants (i.e., people born in another country) represent?"
+    plain_wording: "What percentage of {country}'s population do immigrants (i.e., people born in another country) represent?"
+    official_source_name: "the World Bank's World Development Indicators"
     report_page: 16
     t_source: World Bank WDI SM.POP.TOTL.ZS (UN DESA International Migrant Stock)
     t_source_cited_by_ipsos: UN International Migrant Stock
@@ -42,6 +48,8 @@ items:
     scale: percent
     transform: logit
     wording_2024: "In your country, out of 100 people, how many do you think are Muslim?"
+    plain_wording: "In {country}, out of 100 people, how many are Muslim?"
+    official_source_name: "the Pew Research Center"
     report_page: 20
     t_source: Pew Research Center, Religious Composition of the World's Population 2010-2020 (June 2025), 2020 estimate
     t_source_cited_by_ipsos: Pew Research
@@ -59,10 +67,183 @@ items:
     transform: none
     wording_2024: "Do you think the homicide rate in your country is higher, lower, or about the same as in 2000?"
     report_page: 22
-    t_source: UN Office on Drugs and Crime
+    t_source: UNODC intentional homicide victims per 100,000: 2000 baseline from the World Bank WDI copy (VC.IHR.PSRC.P5; nearest later year where 2000 is missing), latest year from the UNODC 2026 release (data_cts_intentional_homicide.xlsx); values in data/validation/truth_crosscheck_homicide.csv
+    t_source_cited_by_ipsos: UN Office on Drugs and Crime (Ipsos text p11: "about the same or lower in all countries except Mexico")
+    truth_rule: lower if the latest rate is at least 10 percent below the 2000 rate, higher if at least 10 percent above, else same
     t_definition_note: >
-      Ipsos's text (p11): majorities in 25 of 30 countries say higher; "it is actually about the
-      same or lower in all countries except Mexico". Stored in pairs_categorical.csv with the
-      public's answer distribution and the actual direction; approximate per-100k change read
-      from the p23-24 scatter is included only as a flagged convenience column.
+      Stored in pairs_categorical.csv with the public's answer distribution, the UNODC rates and years,
+      the percentage change and actual_direction from the 10 percent rule (decision 2026-11-22). Ipsos's
+      own coarse direction (p11: majorities in 25 of 30 countries say higher; actually "about the same or
+      lower" everywhere except Mexico) is kept as ipsos_actual_direction; under the UNODC series it is
+      wrong for Chile (+91 percent since 2003) and Peru (+56 percent since 2011), and Canada (+12) and
+      Sweden (-20) move from "same" to higher and lower. Series caveats are in truth_note (Thailand's
+      series ends in 2011; Belgium's 2000 baseline may sit on a series break; Peru's baseline is 2011;
+      Singapore's latest values rest on very small counts). The approximate per-100k change read from
+      the p23-24 scatter remains only as a flagged convenience column.
     salience_apriori: high
+  # ---- Ipsos Perils of Perception 2020: causes of death (fieldwork 22 Nov - 6 Dec 2019; published Feb 2020) ----
+  # Question stem as printed on every cause page: "Q. Out of every 100 deaths in [COUNTRY] – about many are a
+  # result of ...?". The deck omits "how" on every page (an Ipsos typo; the stem the project brief gives reads
+  # "about how many") and keeps the "[COUNTRY]" placeholder; both are kept verbatim here and in pairs.csv.
+  # H is Ipsos's "Avg. guess" (a mean). Ipsos printed an "Actual" that its technical note (p53) sources from the
+  # IHME Global Burden of Disease Study 2017 (Hong Kong: healthyhk.gov.hk); that printed figure is kept in
+  # t_value_ipsos and the GBD cause group it corresponds to is given as gbd_cause. T (t_value) is the WHO Global
+  # Health Estimates 2023 release, 2019 share of all deaths by cause (closest pre-COVID year to the fieldwork),
+  # for the 31 countries WHO covers, read from data/validation/truth_crosscheck_2020.csv with the WHO cause given
+  # as who_cause (t_flag = who_ghe2023_y2019; decision 2026-11-22). Hong Kong SAR China is not a WHO reporting
+  # entity: it keeps the printed health-department figure (t_flag = ipsos_printed_healthyhk) and, for the HIV/STI
+  # row printed as 0.0, the 2017 national registered-deaths share (t_flag = national_vr_2017). definition_match
+  # compares the WHO cause with the question wording.
+  - item_id: deaths_cancer
+    name: Share of all deaths caused by cancer
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of cancer?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of cancer?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of cancer?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
+    report_page: 13
+    t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
+    t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: Neoplasms
+    who_cause: Malignant neoplasms (GHE code 610)
+    definition_match: approximate
+    t_definition_note: >
+      question says cancer; T is WHO 'Malignant neoplasms' (GHE code 610) over all causes, while the GBD 'Neoplasms' group behind Ipsos's printed figure also counts non-malignant neoplasms, so WHO is slightly lower Decision 2026-11-22.
+    salience_apriori: high
+  - item_id: deaths_cardiovascular
+    name: Share of all deaths caused by cardiovascular diseases
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of cardiovascular diseases such as heart disease, strokes or heart failure?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of cardiovascular diseases such as heart disease, strokes or heart failure?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of cardiovascular diseases such as heart disease, strokes or heart failure?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
+    report_page: 14
+    t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
+    t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: Cardiovascular diseases
+    who_cause: Cardiovascular diseases (GHE code 1100)
+    definition_match: yes
+    t_definition_note: >
+      WHO 'Cardiovascular diseases' (GHE code 1100) over all causes; same scope as the question and the GBD group Ipsos printed The printed actuals for Saudi Arabia and Germany (adjacent rows on p14) are swapped relative to Ipsos's own printed difference column; t_value_ipsos keeps them as printed, and T now comes from WHO for both. Decision 2026-11-22.
+    salience_apriori: high
+  - item_id: deaths_neurological
+    name: Share of all deaths caused by neurological disorders
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of neurological disorders such as dementia or Parkinson’s disease?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of neurological disorders such as dementia or Parkinson’s disease?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of neurological disorders such as dementia or Parkinson’s disease?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
+    report_page: 15
+    t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
+    t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: Neurological disorders
+    who_cause: Neurological conditions (GHE code 940)
+    definition_match: approximate
+    t_definition_note: >
+      WHO 'Neurological conditions' (GHE code 940) over all causes; WHO and GBD assign dementia deaths differently, so the WHO share is much lower than the printed GBD 2017 figure in ageing countries (Japan 6.3 vs 16.0) China's guess is printed as "6" (no decimal). Decision 2026-11-22.
+    salience_apriori: medium
+  - item_id: deaths_hiv_sti
+    name: Share of all deaths caused by HIV/AIDS or sexually transmitted infections
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of HIV/AIDS or sexually transmitted infections (STIs)?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of HIV/AIDS or sexually transmitted infections (STIs)?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of HIV/AIDS or sexually transmitted infections (STIs)?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
+    report_page: 16
+    t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
+    t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: HIV/AIDS and sexually transmitted infections
+    who_cause: HIV/AIDS (GHE code 100) + STDs excluding HIV (GHE code 40)
+    definition_match: yes
+    t_definition_note: >
+      WHO 'HIV/AIDS' (GHE code 100) plus 'STDs excluding HIV' (code 40) over all causes; same scope as the question; for Hungary, Japan, Netherlands, Poland and Sweden this supersedes the 2017 national HIV-only figure, retained in validation/truth_crosscheck_2020.csv Saudi Arabia is not shown on this page (31 countries). Six countries are printed as "0.0" (Hong Kong, Hungary, Japan, Netherlands, Poland, Sweden); Hong Kong's T is the 2017 national registered-deaths share (national_vr_2017), the other five take the WHO value. Decision 2026-11-22.
+    salience_apriori: high
+  - item_id: deaths_violence
+    name: Share of all deaths caused by interpersonal violence
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of interpersonal violence such as homicide/murder?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of interpersonal violence such as homicide/murder?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of interpersonal violence such as homicide/murder?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
+    report_page: 18
+    t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
+    t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: Interpersonal violence
+    who_cause: Interpersonal violence (GHE code 1620)
+    definition_match: yes
+    t_definition_note: >
+      WHO 'Interpersonal violence' (GHE code 1620) over all causes; same scope as the question and GBD Saudi Arabia is not shown on this page (31 countries). Decision 2026-11-22.
+    salience_apriori: high
+  - item_id: deaths_suicide
+    name: Share of all deaths caused by suicide
+    scale: percent
+    transform: logit
+    wording_2020: "Out of every 100 deaths in [COUNTRY] – about many are a result of suicide?"
+    plain_wording: "Out of every 100 deaths in {country}, about how many are a result of suicide?"
+    quoted_wording: "Out of every 100 deaths in [COUNTRY], about how many are a result of suicide?"
+    # quoted_wording: the stem respondents saw, with [COUNTRY] substituted at run time and "how" restored
+    # (the deck prints "about many" on every page; wording_2020 keeps the deck text verbatim).
+    official_source_name: "the World Health Organization's Global Health Estimates"
+    # Hong Kong is not a WHO reporting entity; its truth is the Ipsos-printed Department of Health figure.
+    report_page: 23
+    t_source: WHO Global Health Estimates 2023 release, deaths by cause, 2019, share of all deaths
+    t_source_hong_kong: Ipsos-printed figure from healthyhk.gov.hk (t_flag ipsos_printed_healthyhk); HIV/STI row from Hong Kong Department of Health registered deaths 2017 (t_flag national_vr_2017)
+    t_source_cited_by_ipsos: IHME Global Burden of Disease Study 2017
+    gbd_cause: Self-harm
+    who_cause: Self-harm (GHE code 1610)
+    definition_match: yes
+    t_definition_note: >
+      WHO 'Self-harm' (GHE code 1610) over all causes; same scope as the question and GBD Decision 2026-11-22.
+    salience_apriori: high
+
+# Causes in the 2020 deck that are NOT items (decisions 2026-11-22, details in data/README.md):
+excluded_2020:
+  - cause: terrorism and conflict
+    page: 19
+    gbd_cause: Conflict and terrorism
+    reason: the page prints 32 country labels and difference bars but only 30 guess/actual rows, so values cannot be attributed to countries; printed values kept in transcription/ipsos_2020_defective_pages.csv
+  - cause: substance use disorders such as drug or alcohol addiction
+    page: 21
+    gbd_cause: Substance use disorders (alcohol use disorders + drug use disorders)
+    reason: the page prints 31 country labels and difference bars but only 30 guess/actual rows; same treatment as p19
+  - cause: transport injuries such as road accidents
+    page: 25
+    gbd_cause: Transport injuries
+    reason: the guess/actual column repeats the suicide values of p23 for 30 of the 32 rows and its mean does not match the deck's own all-country transport average (p6), so the page is corrupted; printed values kept in transcription/ipsos_2020_defective_pages.csv
+  - cause: lower respiratory infections such as pneumonia; chronic respiratory diseases such as asthma; diabetes and kidney diseases; digestive diseases; accidental deaths such as drowning
+    page: 5-6
+    reason: only all-country averages are printed, no per-country table
+
+# Waves: the year and survey name the memory_check prompt uses ("Ipsos Perils of Perception {year}").
+waves:
+  - wave: ipsos_2024
+    year: 2024
+    survey_name: Ipsos Perils of Perception 2024
+  - wave: ipsos_2020
+    year: 2020
+    survey_name: Ipsos Perils of Perception 2020

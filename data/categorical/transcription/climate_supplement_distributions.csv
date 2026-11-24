@@ -1,0 +1,381 @@
+country_iso3,panel,option,pct,pdf_page,figure,n_country_full_sample,pass1_layout_tokens,pass1_result,pass2_raw_tokens,pass2_result,resolution
+AUS,A,None,14,6,Figure 1,1978,14 7 16 33 30,ok,14 7 16 33 30,ok,both passes
+AUS,A,A little,7,6,Figure 1,1978,14 7 16 33 30,ok,14 7 16 33 30,ok,both passes
+AUS,A,Some,16,6,Figure 1,1978,14 7 16 33 30,ok,14 7 16 33 30,ok,both passes
+AUS,A,A lot,33,6,Figure 1,1978,14 7 16 33 30,ok,14 7 16 33 30,ok,both passes
+AUS,A,Most,30,6,Figure 1,1978,14 7 16 33 30,ok,14 7 16 33 30,ok,both passes
+AUS,B,No,52,6,Figure 1,1978,52 48,ok,52 48,ok,both passes
+AUS,B,Yes,48,6,Figure 1,1978,52 48,ok,52 48,ok,both passes
+AUS,D_droughts,Very likely,48,6,Figure 1,1978,48 36 9 7,ok,48 36 9 7,ok,both passes
+AUS,D_droughts,Somewhat likely,36,6,Figure 1,1978,48 36 9 7,ok,48 36 9 7,ok,both passes
+AUS,D_droughts,Somewhat unlikely,9,6,Figure 1,1978,48 36 9 7,ok,48 36 9 7,ok,both passes
+AUS,D_droughts,Very unlikely,7,6,Figure 1,1978,48 36 9 7,ok,48 36 9 7,ok,both passes
+AUS,D_sea,Very likely,50,6,Figure 1,1978,50 34 11 6,ok,50 34 11 6,ok,both passes
+AUS,D_sea,Somewhat likely,34,6,Figure 1,1978,50 34 11 6,ok,50 34 11 6,ok,both passes
+AUS,D_sea,Somewhat unlikely,11,6,Figure 1,1978,50 34 11 6,ok,50 34 11 6,ok,both passes
+AUS,D_sea,Very unlikely,6,6,Figure 1,1978,50 34 11 6,ok,50 34 11 6,ok,both passes
+AUS,D_volcanic,Very likely,21,6,Figure 1,1978,21 37 25 17,ok,21 37 25 17,ok,both passes
+AUS,D_volcanic,Somewhat likely,37,6,Figure 1,1978,21 37 25 17,ok,21 37 25 17,ok,both passes
+AUS,D_volcanic,Somewhat unlikely,25,6,Figure 1,1978,21 37 25 17,ok,21 37 25 17,ok,both passes
+AUS,D_volcanic,Very unlikely,17,6,Figure 1,1978,21 37 25 17,ok,21 37 25 17,ok,both passes
+BRA,A,None,5,23,Figure 14,1860,5 4 7 30 54,ok,5 4 7 30 54,ok,both passes
+BRA,A,A little,4,23,Figure 14,1860,5 4 7 30 54,ok,5 4 7 30 54,ok,both passes
+BRA,A,Some,7,23,Figure 14,1860,5 4 7 30 54,ok,5 4 7 30 54,ok,both passes
+BRA,A,A lot,30,23,Figure 14,1860,5 4 7 30 54,ok,5 4 7 30 54,ok,both passes
+BRA,A,Most,54,23,Figure 14,1860,5 4 7 30 54,ok,5 4 7 30 54,ok,both passes
+BRA,B,No,28,23,Figure 14,1860,28 72,ok,28 72,ok,both passes
+BRA,B,Yes,72,23,Figure 14,1860,28 72,ok,28 72,ok,both passes
+BRA,D_droughts,Very likely,64,23,Figure 14,1860,64 17 6 13,ok,64 17 6 13,ok,both passes
+BRA,D_droughts,Somewhat likely,17,23,Figure 14,1860,64 17 6 13,ok,64 17 6 13,ok,both passes
+BRA,D_droughts,Somewhat unlikely,6,23,Figure 14,1860,64 17 6 13,ok,64 17 6 13,ok,both passes
+BRA,D_droughts,Very unlikely,13,23,Figure 14,1860,64 17 6 13,ok,64 17 6 13,ok,both passes
+BRA,D_sea,Very likely,56,23,Figure 14,1860,56 22 8 14,ok,56 22 8 14,ok,both passes
+BRA,D_sea,Somewhat likely,22,23,Figure 14,1860,56 22 8 14,ok,56 22 8 14,ok,both passes
+BRA,D_sea,Somewhat unlikely,8,23,Figure 14,1860,56 22 8 14,ok,56 22 8 14,ok,both passes
+BRA,D_sea,Very unlikely,14,23,Figure 14,1860,56 22 8 14,ok,56 22 8 14,ok,both passes
+BRA,D_volcanic,Very likely,41,23,Figure 14,1860,41 27 17 15,ok,41 27 17 15,ok,both passes
+BRA,D_volcanic,Somewhat likely,27,23,Figure 14,1860,41 27 17 15,ok,41 27 17 15,ok,both passes
+BRA,D_volcanic,Somewhat unlikely,17,23,Figure 14,1860,41 27 17 15,ok,41 27 17 15,ok,both passes
+BRA,D_volcanic,Very unlikely,15,23,Figure 14,1860,41 27 17 15,ok,41 27 17 15,ok,both passes
+CAN,A,None,10,40,Figure 27,2022,10 6 15 39 29,ok,10 6 15 39 29,ok,both passes
+CAN,A,A little,6,40,Figure 27,2022,10 6 15 39 29,ok,10 6 15 39 29,ok,both passes
+CAN,A,Some,15,40,Figure 27,2022,10 6 15 39 29,ok,10 6 15 39 29,ok,both passes
+CAN,A,A lot,39,40,Figure 27,2022,10 6 15 39 29,ok,10 6 15 39 29,ok,both passes
+CAN,A,Most,29,40,Figure 27,2022,10 6 15 39 29,ok,10 6 15 39 29,ok,both passes
+CAN,B,No,53,40,Figure 27,2022,53 47,ok,53 47,ok,both passes
+CAN,B,Yes,47,40,Figure 27,2022,53 47,ok,53 47,ok,both passes
+CAN,D_droughts,Very likely,58,40,Figure 27,2022,58 32 6 4,ok,58 32 6 4,ok,both passes
+CAN,D_droughts,Somewhat likely,32,40,Figure 27,2022,58 32 6 4,ok,58 32 6 4,ok,both passes
+CAN,D_droughts,Somewhat unlikely,6,40,Figure 27,2022,58 32 6 4,ok,58 32 6 4,ok,both passes
+CAN,D_droughts,Very unlikely,4,40,Figure 27,2022,58 32 6 4,ok,58 32 6 4,ok,both passes
+CAN,D_sea,Very likely,59,40,Figure 27,2022,59 26 10 6,ok,59 26 10 6,ok,both passes
+CAN,D_sea,Somewhat likely,26,40,Figure 27,2022,59 26 10 6,ok,59 26 10 6,ok,both passes
+CAN,D_sea,Somewhat unlikely,10,40,Figure 27,2022,59 26 10 6,ok,59 26 10 6,ok,both passes
+CAN,D_sea,Very unlikely,6,40,Figure 27,2022,59 26 10 6,ok,59 26 10 6,ok,both passes
+CAN,D_volcanic,Very likely,26,40,Figure 27,2022,26 37 24 13,ok,26 37 24 13,ok,both passes
+CAN,D_volcanic,Somewhat likely,37,40,Figure 27,2022,26 37 24 13,ok,26 37 24 13,ok,both passes
+CAN,D_volcanic,Somewhat unlikely,24,40,Figure 27,2022,26 37 24 13,ok,26 37 24 13,ok,both passes
+CAN,D_volcanic,Very unlikely,13,40,Figure 27,2022,26 37 24 13,ok,26 37 24 13,ok,both passes
+CHN,A,None,4,56,Figure 40,1717,41 21 56 19,split '41' -> 4 1,4 1 21 56 19,ok,both passes
+CHN,A,A little,1,56,Figure 40,1717,41 21 56 19,split '41' -> 4 1,4 1 21 56 19,ok,both passes
+CHN,A,Some,21,56,Figure 40,1717,41 21 56 19,split '41' -> 4 1,4 1 21 56 19,ok,both passes
+CHN,A,A lot,56,56,Figure 40,1717,41 21 56 19,split '41' -> 4 1,4 1 21 56 19,ok,both passes
+CHN,A,Most,19,56,Figure 40,1717,41 21 56 19,split '41' -> 4 1,4 1 21 56 19,ok,both passes
+CHN,B,No,15,56,Figure 40,1717,15 85,ok,15 85,ok,both passes
+CHN,B,Yes,85,56,Figure 40,1717,15 85,ok,15 85,ok,both passes
+CHN,D_droughts,Very likely,35,56,Figure 40,1717,35 54 9 2,ok,35 54 9 2,ok,both passes
+CHN,D_droughts,Somewhat likely,54,56,Figure 40,1717,35 54 9 2,ok,35 54 9 2,ok,both passes
+CHN,D_droughts,Somewhat unlikely,9,56,Figure 40,1717,35 54 9 2,ok,35 54 9 2,ok,both passes
+CHN,D_droughts,Very unlikely,2,56,Figure 40,1717,35 54 9 2,ok,35 54 9 2,ok,both passes
+CHN,D_sea,Very likely,40,56,Figure 40,1717,40 49 10 2,ok,40 49 10 2,ok,both passes
+CHN,D_sea,Somewhat likely,49,56,Figure 40,1717,40 49 10 2,ok,40 49 10 2,ok,both passes
+CHN,D_sea,Somewhat unlikely,10,56,Figure 40,1717,40 49 10 2,ok,40 49 10 2,ok,both passes
+CHN,D_sea,Very unlikely,2,56,Figure 40,1717,40 49 10 2,ok,40 49 10 2,ok,both passes
+CHN,D_volcanic,Very likely,38,56,Figure 40,1717,38 41 17 4,ok,38 41 17 4,ok,both passes
+CHN,D_volcanic,Somewhat likely,41,56,Figure 40,1717,38 41 17 4,ok,38 41 17 4,ok,both passes
+CHN,D_volcanic,Somewhat unlikely,17,56,Figure 40,1717,38 41 17 4,ok,38 41 17 4,ok,both passes
+CHN,D_volcanic,Very unlikely,4,56,Figure 40,1717,38 41 17 4,ok,38 41 17 4,ok,both passes
+DNK,A,None,9,73,Figure 53,2013,9 6 22 42 22,ok,9 6 22 42 22,ok,both passes
+DNK,A,A little,6,73,Figure 53,2013,9 6 22 42 22,ok,9 6 22 42 22,ok,both passes
+DNK,A,Some,22,73,Figure 53,2013,9 6 22 42 22,ok,9 6 22 42 22,ok,both passes
+DNK,A,A lot,42,73,Figure 53,2013,9 6 22 42 22,ok,9 6 22 42 22,ok,both passes
+DNK,A,Most,22,73,Figure 53,2013,9 6 22 42 22,ok,9 6 22 42 22,ok,both passes
+DNK,B,No,64,73,Figure 53,2013,64 36,ok,64 36,ok,both passes
+DNK,B,Yes,36,73,Figure 53,2013,64 36,ok,64 36,ok,both passes
+DNK,D_droughts,Very likely,46,73,Figure 53,2013,46 42 8 4,ok,46 42 8 4,ok,both passes
+DNK,D_droughts,Somewhat likely,42,73,Figure 53,2013,46 42 8 4,ok,46 42 8 4,ok,both passes
+DNK,D_droughts,Somewhat unlikely,8,73,Figure 53,2013,46 42 8 4,ok,46 42 8 4,ok,both passes
+DNK,D_droughts,Very unlikely,4,73,Figure 53,2013,46 42 8 4,ok,46 42 8 4,ok,both passes
+DNK,D_sea,Very likely,54,73,Figure 53,2013,54 39 52,split '52' -> 5 2,54 39 52,split '52' -> 5 2,both passes
+DNK,D_sea,Somewhat likely,39,73,Figure 53,2013,54 39 52,split '52' -> 5 2,54 39 52,split '52' -> 5 2,both passes
+DNK,D_sea,Somewhat unlikely,5,73,Figure 53,2013,54 39 52,split '52' -> 5 2,54 39 52,split '52' -> 5 2,both passes
+DNK,D_sea,Very unlikely,2,73,Figure 53,2013,54 39 52,split '52' -> 5 2,54 39 52,split '52' -> 5 2,both passes
+DNK,D_volcanic,Very likely,9,73,Figure 53,2013,9 28 40 23,ok,9 28 40 23,ok,both passes
+DNK,D_volcanic,Somewhat likely,28,73,Figure 53,2013,9 28 40 23,ok,9 28 40 23,ok,both passes
+DNK,D_volcanic,Somewhat unlikely,40,73,Figure 53,2013,9 28 40 23,ok,9 28 40 23,ok,both passes
+DNK,D_volcanic,Very unlikely,23,73,Figure 53,2013,9 28 40 23,ok,9 28 40 23,ok,both passes
+FRA,A,None,14,90,Figure 66,2006,14 11 19 27 30,ok,14 11 19 27 30,ok,both passes
+FRA,A,A little,11,90,Figure 66,2006,14 11 19 27 30,ok,14 11 19 27 30,ok,both passes
+FRA,A,Some,19,90,Figure 66,2006,14 11 19 27 30,ok,14 11 19 27 30,ok,both passes
+FRA,A,A lot,27,90,Figure 66,2006,14 11 19 27 30,ok,14 11 19 27 30,ok,both passes
+FRA,A,Most,30,90,Figure 66,2006,14 11 19 27 30,ok,14 11 19 27 30,ok,both passes
+FRA,B,No,54,90,Figure 66,2006,54 46,ok,54 46,ok,both passes
+FRA,B,Yes,46,90,Figure 66,2006,54 46,ok,54 46,ok,both passes
+FRA,D_droughts,Very likely,53,90,Figure 66,2006,53 33 8 7,ok,53 33 8 7,ok,both passes
+FRA,D_droughts,Somewhat likely,33,90,Figure 66,2006,53 33 8 7,ok,53 33 8 7,ok,both passes
+FRA,D_droughts,Somewhat unlikely,8,90,Figure 66,2006,53 33 8 7,ok,53 33 8 7,ok,both passes
+FRA,D_droughts,Very unlikely,7,90,Figure 66,2006,53 33 8 7,ok,53 33 8 7,ok,both passes
+FRA,D_sea,Very likely,49,90,Figure 66,2006,49 34 10 7,ok,49 34 10 7,ok,both passes
+FRA,D_sea,Somewhat likely,34,90,Figure 66,2006,49 34 10 7,ok,49 34 10 7,ok,both passes
+FRA,D_sea,Somewhat unlikely,10,90,Figure 66,2006,49 34 10 7,ok,49 34 10 7,ok,both passes
+FRA,D_sea,Very unlikely,7,90,Figure 66,2006,49 34 10 7,ok,49 34 10 7,ok,both passes
+FRA,D_volcanic,Very likely,21,90,Figure 66,2006,21 42 24 13,ok,21 42 24 13,ok,both passes
+FRA,D_volcanic,Somewhat likely,42,90,Figure 66,2006,21 42 24 13,ok,21 42 24 13,ok,both passes
+FRA,D_volcanic,Somewhat unlikely,24,90,Figure 66,2006,21 42 24 13,ok,21 42 24 13,ok,both passes
+FRA,D_volcanic,Very unlikely,13,90,Figure 66,2006,21 42 24 13,ok,21 42 24 13,ok,both passes
+DEU,A,None,11,107,Figure 79,2006,11 4 11 39 34,ok,11 4 11 39 34,ok,both passes
+DEU,A,A little,4,107,Figure 79,2006,11 4 11 39 34,ok,11 4 11 39 34,ok,both passes
+DEU,A,Some,11,107,Figure 79,2006,11 4 11 39 34,ok,11 4 11 39 34,ok,both passes
+DEU,A,A lot,39,107,Figure 79,2006,11 4 11 39 34,ok,11 4 11 39 34,ok,both passes
+DEU,A,Most,34,107,Figure 79,2006,11 4 11 39 34,ok,11 4 11 39 34,ok,both passes
+DEU,B,No,70,107,Figure 79,2006,70 30,ok,70 30,ok,both passes
+DEU,B,Yes,30,107,Figure 79,2006,70 30,ok,70 30,ok,both passes
+DEU,D_droughts,Very likely,52,107,Figure 79,2006,52 36 6 5,ok,52 36 6 5,ok,both passes
+DEU,D_droughts,Somewhat likely,36,107,Figure 79,2006,52 36 6 5,ok,52 36 6 5,ok,both passes
+DEU,D_droughts,Somewhat unlikely,6,107,Figure 79,2006,52 36 6 5,ok,52 36 6 5,ok,both passes
+DEU,D_droughts,Very unlikely,5,107,Figure 79,2006,52 36 6 5,ok,52 36 6 5,ok,both passes
+DEU,D_sea,Very likely,53,107,Figure 79,2006,53 35 7 5,ok,53 35 7 5,ok,both passes
+DEU,D_sea,Somewhat likely,35,107,Figure 79,2006,53 35 7 5,ok,53 35 7 5,ok,both passes
+DEU,D_sea,Somewhat unlikely,7,107,Figure 79,2006,53 35 7 5,ok,53 35 7 5,ok,both passes
+DEU,D_sea,Very unlikely,5,107,Figure 79,2006,53 35 7 5,ok,53 35 7 5,ok,both passes
+DEU,D_volcanic,Very likely,12,107,Figure 79,2006,12 30 39 19,ok,12 30 39 19,ok,both passes
+DEU,D_volcanic,Somewhat likely,30,107,Figure 79,2006,12 30 39 19,ok,12 30 39 19,ok,both passes
+DEU,D_volcanic,Somewhat unlikely,39,107,Figure 79,2006,12 30 39 19,ok,12 30 39 19,ok,both passes
+DEU,D_volcanic,Very unlikely,19,107,Figure 79,2006,12 30 39 19,ok,12 30 39 19,ok,both passes
+IND,A,None,4,124,Figure 92,2472,4 5 11 44 36,ok,4 5 11 44 36,ok,both passes
+IND,A,A little,5,124,Figure 92,2472,4 5 11 44 36,ok,4 5 11 44 36,ok,both passes
+IND,A,Some,11,124,Figure 92,2472,4 5 11 44 36,ok,4 5 11 44 36,ok,both passes
+IND,A,A lot,44,124,Figure 92,2472,4 5 11 44 36,ok,4 5 11 44 36,ok,both passes
+IND,A,Most,36,124,Figure 92,2472,4 5 11 44 36,ok,4 5 11 44 36,ok,both passes
+IND,B,No,16,124,Figure 92,2472,16 84,ok,16 84,ok,both passes
+IND,B,Yes,84,124,Figure 92,2472,16 84,ok,16 84,ok,both passes
+IND,D_droughts,Very likely,55,124,Figure 92,2472,55 29 9 8,ok,55 29 9 8,ok,both passes
+IND,D_droughts,Somewhat likely,29,124,Figure 92,2472,55 29 9 8,ok,55 29 9 8,ok,both passes
+IND,D_droughts,Somewhat unlikely,9,124,Figure 92,2472,55 29 9 8,ok,55 29 9 8,ok,both passes
+IND,D_droughts,Very unlikely,8,124,Figure 92,2472,55 29 9 8,ok,55 29 9 8,ok,both passes
+IND,D_sea,Very likely,53,124,Figure 92,2472,53 33 9 6,ok,53 33 9 6,ok,both passes
+IND,D_sea,Somewhat likely,33,124,Figure 92,2472,53 33 9 6,ok,53 33 9 6,ok,both passes
+IND,D_sea,Somewhat unlikely,9,124,Figure 92,2472,53 33 9 6,ok,53 33 9 6,ok,both passes
+IND,D_sea,Very unlikely,6,124,Figure 92,2472,53 33 9 6,ok,53 33 9 6,ok,both passes
+IND,D_volcanic,Very likely,40,124,Figure 92,2472,40 40 14 6,ok,40 40 14 6,ok,both passes
+IND,D_volcanic,Somewhat likely,40,124,Figure 92,2472,40 40 14 6,ok,40 40 14 6,ok,both passes
+IND,D_volcanic,Somewhat unlikely,14,124,Figure 92,2472,40 40 14 6,ok,40 40 14 6,ok,both passes
+IND,D_volcanic,Very unlikely,6,124,Figure 92,2472,40 40 14 6,ok,40 40 14 6,ok,both passes
+IDN,A,None,1,141,Figure 105,2488,14 15 36 45,ambiguous: split '14' -> 1 4; split '15' -> 1 5,14 15 36 45,ambiguous: split '14' -> 1 4; split '15' -> 1 5,override: page 141 rendered: the 'None' sliver is labelled 1 and 'A little' 4; the text layer merges them into '14'
+IDN,A,A little,4,141,Figure 105,2488,14 15 36 45,ambiguous: split '14' -> 1 4; split '15' -> 1 5,14 15 36 45,ambiguous: split '14' -> 1 4; split '15' -> 1 5,override: page 141 rendered: the 'None' sliver is labelled 1 and 'A little' 4; the text layer merges them into '14'
+IDN,A,Some,15,141,Figure 105,2488,14 15 36 45,ambiguous: split '14' -> 1 4; split '15' -> 1 5,14 15 36 45,ambiguous: split '14' -> 1 4; split '15' -> 1 5,override: page 141 rendered: the 'None' sliver is labelled 1 and 'A little' 4; the text layer merges them into '14'
+IDN,A,A lot,36,141,Figure 105,2488,14 15 36 45,ambiguous: split '14' -> 1 4; split '15' -> 1 5,14 15 36 45,ambiguous: split '14' -> 1 4; split '15' -> 1 5,override: page 141 rendered: the 'None' sliver is labelled 1 and 'A little' 4; the text layer merges them into '14'
+IDN,A,Most,45,141,Figure 105,2488,14 15 36 45,ambiguous: split '14' -> 1 4; split '15' -> 1 5,14 15 36 45,ambiguous: split '14' -> 1 4; split '15' -> 1 5,override: page 141 rendered: the 'None' sliver is labelled 1 and 'A little' 4; the text layer merges them into '14'
+IDN,B,No,13,141,Figure 105,2488,13 87,ok,13 87,ok,both passes
+IDN,B,Yes,87,141,Figure 105,2488,13 87,ok,13 87,ok,both passes
+IDN,D_droughts,Very likely,74,141,Figure 105,2488,74 19 33,split '33' -> 3 3,74 19 33,split '33' -> 3 3,both passes
+IDN,D_droughts,Somewhat likely,19,141,Figure 105,2488,74 19 33,split '33' -> 3 3,74 19 33,split '33' -> 3 3,both passes
+IDN,D_droughts,Somewhat unlikely,3,141,Figure 105,2488,74 19 33,split '33' -> 3 3,74 19 33,split '33' -> 3 3,both passes
+IDN,D_droughts,Very unlikely,3,141,Figure 105,2488,74 19 33,split '33' -> 3 3,74 19 33,split '33' -> 3 3,both passes
+IDN,D_sea,Very likely,62,141,Figure 105,2488,62 31 52,split '52' -> 5 2,62 31 5 2,ok,both passes
+IDN,D_sea,Somewhat likely,31,141,Figure 105,2488,62 31 52,split '52' -> 5 2,62 31 5 2,ok,both passes
+IDN,D_sea,Somewhat unlikely,5,141,Figure 105,2488,62 31 52,split '52' -> 5 2,62 31 5 2,ok,both passes
+IDN,D_sea,Very unlikely,2,141,Figure 105,2488,62 31 52,split '52' -> 5 2,62 31 5 2,ok,both passes
+IDN,D_volcanic,Very likely,40,141,Figure 105,2488,40 41 16 3,ok,40 41 16 3,ok,both passes
+IDN,D_volcanic,Somewhat likely,41,141,Figure 105,2488,40 41 16 3,ok,40 41 16 3,ok,both passes
+IDN,D_volcanic,Somewhat unlikely,16,141,Figure 105,2488,40 41 16 3,ok,40 41 16 3,ok,both passes
+IDN,D_volcanic,Very unlikely,3,141,Figure 105,2488,40 41 16 3,ok,40 41 16 3,ok,both passes
+ITA,A,None,5,158,Figure 118,2088,5 1 9 41 43,ok,5 1 9 41 43,ok,both passes
+ITA,A,A little,1,158,Figure 118,2088,5 1 9 41 43,ok,5 1 9 41 43,ok,both passes
+ITA,A,Some,9,158,Figure 118,2088,5 1 9 41 43,ok,5 1 9 41 43,ok,both passes
+ITA,A,A lot,41,158,Figure 118,2088,5 1 9 41 43,ok,5 1 9 41 43,ok,both passes
+ITA,A,Most,43,158,Figure 118,2088,5 1 9 41 43,ok,5 1 9 41 43,ok,both passes
+ITA,B,No,52,158,Figure 118,2088,52 48,ok,52 48,ok,both passes
+ITA,B,Yes,48,158,Figure 118,2088,52 48,ok,52 48,ok,both passes
+ITA,D_droughts,Very likely,62,158,Figure 118,2088,62 29 54,split '54' -> 5 4,62 29 5 4,ok,both passes
+ITA,D_droughts,Somewhat likely,29,158,Figure 118,2088,62 29 54,split '54' -> 5 4,62 29 5 4,ok,both passes
+ITA,D_droughts,Somewhat unlikely,5,158,Figure 118,2088,62 29 54,split '54' -> 5 4,62 29 5 4,ok,both passes
+ITA,D_droughts,Very unlikely,4,158,Figure 118,2088,62 29 54,split '54' -> 5 4,62 29 5 4,ok,both passes
+ITA,D_sea,Very likely,62,158,Figure 118,2088,62 28 6 5,ok,62 28 6 5,ok,both passes
+ITA,D_sea,Somewhat likely,28,158,Figure 118,2088,62 28 6 5,ok,62 28 6 5,ok,both passes
+ITA,D_sea,Somewhat unlikely,6,158,Figure 118,2088,62 28 6 5,ok,62 28 6 5,ok,both passes
+ITA,D_sea,Very unlikely,5,158,Figure 118,2088,62 28 6 5,ok,62 28 6 5,ok,both passes
+ITA,D_volcanic,Very likely,18,158,Figure 118,2088,18 33 29 19,ok,18 33 29 19,ok,both passes
+ITA,D_volcanic,Somewhat likely,33,158,Figure 118,2088,18 33 29 19,ok,18 33 29 19,ok,both passes
+ITA,D_volcanic,Somewhat unlikely,29,158,Figure 118,2088,18 33 29 19,ok,18 33 29 19,ok,both passes
+ITA,D_volcanic,Very unlikely,19,158,Figure 118,2088,18 33 29 19,ok,18 33 29 19,ok,both passes
+JPN,A,None,9,175,Figure 131,1990,9 5 20 42 23,ok,9 5 20 42 23,ok,both passes
+JPN,A,A little,5,175,Figure 131,1990,9 5 20 42 23,ok,9 5 20 42 23,ok,both passes
+JPN,A,Some,20,175,Figure 131,1990,9 5 20 42 23,ok,9 5 20 42 23,ok,both passes
+JPN,A,A lot,42,175,Figure 131,1990,9 5 20 42 23,ok,9 5 20 42 23,ok,both passes
+JPN,A,Most,23,175,Figure 131,1990,9 5 20 42 23,ok,9 5 20 42 23,ok,both passes
+JPN,B,No,59,175,Figure 131,1990,59 41,ok,59 41,ok,both passes
+JPN,B,Yes,41,175,Figure 131,1990,59 41,ok,59 41,ok,both passes
+JPN,D_droughts,Very likely,45,175,Figure 131,1990,45 45 6 4,ok,45 45 6 4,ok,both passes
+JPN,D_droughts,Somewhat likely,45,175,Figure 131,1990,45 45 6 4,ok,45 45 6 4,ok,both passes
+JPN,D_droughts,Somewhat unlikely,6,175,Figure 131,1990,45 45 6 4,ok,45 45 6 4,ok,both passes
+JPN,D_droughts,Very unlikely,4,175,Figure 131,1990,45 45 6 4,ok,45 45 6 4,ok,both passes
+JPN,D_sea,Very likely,61,175,Figure 131,1990,61 30 54,split '54' -> 5 4,61 30 5 4,ok,both passes
+JPN,D_sea,Somewhat likely,30,175,Figure 131,1990,61 30 54,split '54' -> 5 4,61 30 5 4,ok,both passes
+JPN,D_sea,Somewhat unlikely,5,175,Figure 131,1990,61 30 54,split '54' -> 5 4,61 30 5 4,ok,both passes
+JPN,D_sea,Very unlikely,4,175,Figure 131,1990,61 30 54,split '54' -> 5 4,61 30 5 4,ok,both passes
+JPN,D_volcanic,Very likely,12,175,Figure 131,1990,12 36 36 16,ok,12 36 36 16,ok,both passes
+JPN,D_volcanic,Somewhat likely,36,175,Figure 131,1990,12 36 36 16,ok,12 36 36 16,ok,both passes
+JPN,D_volcanic,Somewhat unlikely,36,175,Figure 131,1990,12 36 36 16,ok,12 36 36 16,ok,both passes
+JPN,D_volcanic,Very unlikely,16,175,Figure 131,1990,12 36 36 16,ok,12 36 36 16,ok,both passes
+MEX,A,None,2,192,Figure 144,2045,23 7 41 46,split '23' -> 2 3,2 3 7 41 46,ok,both passes
+MEX,A,A little,3,192,Figure 144,2045,23 7 41 46,split '23' -> 2 3,2 3 7 41 46,ok,both passes
+MEX,A,Some,7,192,Figure 144,2045,23 7 41 46,split '23' -> 2 3,2 3 7 41 46,ok,both passes
+MEX,A,A lot,41,192,Figure 144,2045,23 7 41 46,split '23' -> 2 3,2 3 7 41 46,ok,both passes
+MEX,A,Most,46,192,Figure 144,2045,23 7 41 46,split '23' -> 2 3,2 3 7 41 46,ok,both passes
+MEX,B,No,37,192,Figure 144,2045,37 63,ok,37 63,ok,both passes
+MEX,B,Yes,63,192,Figure 144,2045,37 63,ok,37 63,ok,both passes
+MEX,D_droughts,Very likely,55,192,Figure 144,2045,55 25 7 14,ok,55 25 7 14,ok,both passes
+MEX,D_droughts,Somewhat likely,25,192,Figure 144,2045,55 25 7 14,ok,55 25 7 14,ok,both passes
+MEX,D_droughts,Somewhat unlikely,7,192,Figure 144,2045,55 25 7 14,ok,55 25 7 14,ok,both passes
+MEX,D_droughts,Very unlikely,14,192,Figure 144,2045,55 25 7 14,ok,55 25 7 14,ok,both passes
+MEX,D_sea,Very likely,54,192,Figure 144,2045,54 28 9 8,ok,54 28 9 8,ok,both passes
+MEX,D_sea,Somewhat likely,28,192,Figure 144,2045,54 28 9 8,ok,54 28 9 8,ok,both passes
+MEX,D_sea,Somewhat unlikely,9,192,Figure 144,2045,54 28 9 8,ok,54 28 9 8,ok,both passes
+MEX,D_sea,Very unlikely,8,192,Figure 144,2045,54 28 9 8,ok,54 28 9 8,ok,both passes
+MEX,D_volcanic,Very likely,30,192,Figure 144,2045,30 38 20 12,ok,30 38 20 12,ok,both passes
+MEX,D_volcanic,Somewhat likely,38,192,Figure 144,2045,30 38 20 12,ok,30 38 20 12,ok,both passes
+MEX,D_volcanic,Somewhat unlikely,20,192,Figure 144,2045,30 38 20 12,ok,30 38 20 12,ok,both passes
+MEX,D_volcanic,Very unlikely,12,192,Figure 144,2045,30 38 20 12,ok,30 38 20 12,ok,both passes
+POL,A,None,6,209,Figure 157,2053,6 3 16 38 36,ok,6 3 16 38 36,ok,both passes
+POL,A,A little,3,209,Figure 157,2053,6 3 16 38 36,ok,6 3 16 38 36,ok,both passes
+POL,A,Some,16,209,Figure 157,2053,6 3 16 38 36,ok,6 3 16 38 36,ok,both passes
+POL,A,A lot,38,209,Figure 157,2053,6 3 16 38 36,ok,6 3 16 38 36,ok,both passes
+POL,A,Most,36,209,Figure 157,2053,6 3 16 38 36,ok,6 3 16 38 36,ok,both passes
+POL,B,No,40,209,Figure 157,2053,40 60,ok,40 60,ok,both passes
+POL,B,Yes,60,209,Figure 157,2053,40 60,ok,40 60,ok,both passes
+POL,D_droughts,Very likely,47,209,Figure 157,2053,47 42 6 5,ok,47 42 6 5,ok,both passes
+POL,D_droughts,Somewhat likely,42,209,Figure 157,2053,47 42 6 5,ok,47 42 6 5,ok,both passes
+POL,D_droughts,Somewhat unlikely,6,209,Figure 157,2053,47 42 6 5,ok,47 42 6 5,ok,both passes
+POL,D_droughts,Very unlikely,5,209,Figure 157,2053,47 42 6 5,ok,47 42 6 5,ok,both passes
+POL,D_sea,Very likely,47,209,Figure 157,2053,47 40 8 6,ok,47 40 8 6,ok,both passes
+POL,D_sea,Somewhat likely,40,209,Figure 157,2053,47 40 8 6,ok,47 40 8 6,ok,both passes
+POL,D_sea,Somewhat unlikely,8,209,Figure 157,2053,47 40 8 6,ok,47 40 8 6,ok,both passes
+POL,D_sea,Very unlikely,6,209,Figure 157,2053,47 40 8 6,ok,47 40 8 6,ok,both passes
+POL,D_volcanic,Very likely,23,209,Figure 157,2053,23 46 21 10,ok,23 46 21 10,ok,both passes
+POL,D_volcanic,Somewhat likely,46,209,Figure 157,2053,23 46 21 10,ok,23 46 21 10,ok,both passes
+POL,D_volcanic,Somewhat unlikely,21,209,Figure 157,2053,23 46 21 10,ok,23 46 21 10,ok,both passes
+POL,D_volcanic,Very unlikely,10,209,Figure 157,2053,23 46 21 10,ok,23 46 21 10,ok,both passes
+ZAF,A,None,6,226,Figure 170,2003,6 2 11 46 35,ok,6 2 11 46 35,ok,both passes
+ZAF,A,A little,2,226,Figure 170,2003,6 2 11 46 35,ok,6 2 11 46 35,ok,both passes
+ZAF,A,Some,11,226,Figure 170,2003,6 2 11 46 35,ok,6 2 11 46 35,ok,both passes
+ZAF,A,A lot,46,226,Figure 170,2003,6 2 11 46 35,ok,6 2 11 46 35,ok,both passes
+ZAF,A,Most,35,226,Figure 170,2003,6 2 11 46 35,ok,6 2 11 46 35,ok,both passes
+ZAF,B,No,33,226,Figure 170,2003,33 67,ok,33 67,ok,both passes
+ZAF,B,Yes,67,226,Figure 170,2003,33 67,ok,33 67,ok,both passes
+ZAF,D_droughts,Very likely,70,226,Figure 170,2003,70 20 5 5,ok,70 20 5 5,ok,both passes
+ZAF,D_droughts,Somewhat likely,20,226,Figure 170,2003,70 20 5 5,ok,70 20 5 5,ok,both passes
+ZAF,D_droughts,Somewhat unlikely,5,226,Figure 170,2003,70 20 5 5,ok,70 20 5 5,ok,both passes
+ZAF,D_droughts,Very unlikely,5,226,Figure 170,2003,70 20 5 5,ok,70 20 5 5,ok,both passes
+ZAF,D_sea,Very likely,64,226,Figure 170,2003,64 23 7 6,ok,64 23 7 6,ok,both passes
+ZAF,D_sea,Somewhat likely,23,226,Figure 170,2003,64 23 7 6,ok,64 23 7 6,ok,both passes
+ZAF,D_sea,Somewhat unlikely,7,226,Figure 170,2003,64 23 7 6,ok,64 23 7 6,ok,both passes
+ZAF,D_sea,Very unlikely,6,226,Figure 170,2003,64 23 7 6,ok,64 23 7 6,ok,both passes
+ZAF,D_volcanic,Very likely,43,226,Figure 170,2003,43 33 15 10,ok,43 33 15 10,ok,both passes
+ZAF,D_volcanic,Somewhat likely,33,226,Figure 170,2003,43 33 15 10,ok,43 33 15 10,ok,both passes
+ZAF,D_volcanic,Somewhat unlikely,15,226,Figure 170,2003,43 33 15 10,ok,43 33 15 10,ok,both passes
+ZAF,D_volcanic,Very unlikely,10,226,Figure 170,2003,43 33 15 10,ok,43 33 15 10,ok,both passes
+KOR,A,None,7,243,Figure 183,1932,7 3 10 49 32,ok,7 3 10 49 32,ok,both passes
+KOR,A,A little,3,243,Figure 183,1932,7 3 10 49 32,ok,7 3 10 49 32,ok,both passes
+KOR,A,Some,10,243,Figure 183,1932,7 3 10 49 32,ok,7 3 10 49 32,ok,both passes
+KOR,A,A lot,49,243,Figure 183,1932,7 3 10 49 32,ok,7 3 10 49 32,ok,both passes
+KOR,A,Most,32,243,Figure 183,1932,7 3 10 49 32,ok,7 3 10 49 32,ok,both passes
+KOR,B,No,34,243,Figure 183,1932,34 66,ok,34 66,ok,both passes
+KOR,B,Yes,66,243,Figure 183,1932,34 66,ok,34 66,ok,both passes
+KOR,D_droughts,Very likely,61,243,Figure 183,1932,61 29 5 5,ok,61 29 5 5,ok,both passes
+KOR,D_droughts,Somewhat likely,29,243,Figure 183,1932,61 29 5 5,ok,61 29 5 5,ok,both passes
+KOR,D_droughts,Somewhat unlikely,5,243,Figure 183,1932,61 29 5 5,ok,61 29 5 5,ok,both passes
+KOR,D_droughts,Very unlikely,5,243,Figure 183,1932,61 29 5 5,ok,61 29 5 5,ok,both passes
+KOR,D_sea,Very likely,66,243,Figure 183,1932,66 24 5 5,ok,66 24 5 5,ok,both passes
+KOR,D_sea,Somewhat likely,24,243,Figure 183,1932,66 24 5 5,ok,66 24 5 5,ok,both passes
+KOR,D_sea,Somewhat unlikely,5,243,Figure 183,1932,66 24 5 5,ok,66 24 5 5,ok,both passes
+KOR,D_sea,Very unlikely,5,243,Figure 183,1932,66 24 5 5,ok,66 24 5 5,ok,both passes
+KOR,D_volcanic,Very likely,23,243,Figure 183,1932,23 47 24 5,ok,23 47 24 5,ok,both passes
+KOR,D_volcanic,Somewhat likely,47,243,Figure 183,1932,23 47 24 5,ok,23 47 24 5,ok,both passes
+KOR,D_volcanic,Somewhat unlikely,24,243,Figure 183,1932,23 47 24 5,ok,23 47 24 5,ok,both passes
+KOR,D_volcanic,Very unlikely,5,243,Figure 183,1932,23 47 24 5,ok,23 47 24 5,ok,both passes
+ESP,A,None,7,260,Figure 196,2268,7 1 12 42 38,ok,7 1 12 42 38,ok,both passes
+ESP,A,A little,1,260,Figure 196,2268,7 1 12 42 38,ok,7 1 12 42 38,ok,both passes
+ESP,A,Some,12,260,Figure 196,2268,7 1 12 42 38,ok,7 1 12 42 38,ok,both passes
+ESP,A,A lot,42,260,Figure 196,2268,7 1 12 42 38,ok,7 1 12 42 38,ok,both passes
+ESP,A,Most,38,260,Figure 196,2268,7 1 12 42 38,ok,7 1 12 42 38,ok,both passes
+ESP,B,No,55,260,Figure 196,2268,55 45,ok,55 45,ok,both passes
+ESP,B,Yes,45,260,Figure 196,2268,55 45,ok,55 45,ok,both passes
+ESP,D_droughts,Very likely,49,260,Figure 196,2268,49 38 7 6,ok,49 38 7 6,ok,both passes
+ESP,D_droughts,Somewhat likely,38,260,Figure 196,2268,49 38 7 6,ok,49 38 7 6,ok,both passes
+ESP,D_droughts,Somewhat unlikely,7,260,Figure 196,2268,49 38 7 6,ok,49 38 7 6,ok,both passes
+ESP,D_droughts,Very unlikely,6,260,Figure 196,2268,49 38 7 6,ok,49 38 7 6,ok,both passes
+ESP,D_sea,Very likely,52,260,Figure 196,2268,52 34 8 6,ok,52 34 8 6,ok,both passes
+ESP,D_sea,Somewhat likely,34,260,Figure 196,2268,52 34 8 6,ok,52 34 8 6,ok,both passes
+ESP,D_sea,Somewhat unlikely,8,260,Figure 196,2268,52 34 8 6,ok,52 34 8 6,ok,both passes
+ESP,D_sea,Very unlikely,6,260,Figure 196,2268,52 34 8 6,ok,52 34 8 6,ok,both passes
+ESP,D_volcanic,Very likely,27,260,Figure 196,2268,27 32 25 16,ok,27 32 25 16,ok,both passes
+ESP,D_volcanic,Somewhat likely,32,260,Figure 196,2268,27 32 25 16,ok,27 32 25 16,ok,both passes
+ESP,D_volcanic,Somewhat unlikely,25,260,Figure 196,2268,27 32 25 16,ok,27 32 25 16,ok,both passes
+ESP,D_volcanic,Very unlikely,16,260,Figure 196,2268,27 32 25 16,ok,27 32 25 16,ok,both passes
+TUR,A,None,4,277,Figure 209,1932,4 4 10 49 34,ok,4 4 10 49 34,ok,both passes
+TUR,A,A little,4,277,Figure 209,1932,4 4 10 49 34,ok,4 4 10 49 34,ok,both passes
+TUR,A,Some,10,277,Figure 209,1932,4 4 10 49 34,ok,4 4 10 49 34,ok,both passes
+TUR,A,A lot,49,277,Figure 209,1932,4 4 10 49 34,ok,4 4 10 49 34,ok,both passes
+TUR,A,Most,34,277,Figure 209,1932,4 4 10 49 34,ok,4 4 10 49 34,ok,both passes
+TUR,B,No,38,277,Figure 209,1932,38 62,ok,38 62,ok,both passes
+TUR,B,Yes,62,277,Figure 209,1932,38 62,ok,38 62,ok,both passes
+TUR,D_droughts,Very likely,72,277,Figure 209,1932,72 19 54,split '54' -> 5 4,72 19 5 4,ok,both passes
+TUR,D_droughts,Somewhat likely,19,277,Figure 209,1932,72 19 54,split '54' -> 5 4,72 19 5 4,ok,both passes
+TUR,D_droughts,Somewhat unlikely,5,277,Figure 209,1932,72 19 54,split '54' -> 5 4,72 19 5 4,ok,both passes
+TUR,D_droughts,Very unlikely,4,277,Figure 209,1932,72 19 54,split '54' -> 5 4,72 19 5 4,ok,both passes
+TUR,D_sea,Very likely,58,277,Figure 209,1932,58 26 10 6,ok,58 26 10 6,ok,both passes
+TUR,D_sea,Somewhat likely,26,277,Figure 209,1932,58 26 10 6,ok,58 26 10 6,ok,both passes
+TUR,D_sea,Somewhat unlikely,10,277,Figure 209,1932,58 26 10 6,ok,58 26 10 6,ok,both passes
+TUR,D_sea,Very unlikely,6,277,Figure 209,1932,58 26 10 6,ok,58 26 10 6,ok,both passes
+TUR,D_volcanic,Very likely,49,277,Figure 209,1932,49 30 16 5,ok,49 30 16 5,ok,both passes
+TUR,D_volcanic,Somewhat likely,30,277,Figure 209,1932,49 30 16 5,ok,49 30 16 5,ok,both passes
+TUR,D_volcanic,Somewhat unlikely,16,277,Figure 209,1932,49 30 16 5,ok,49 30 16 5,ok,both passes
+TUR,D_volcanic,Very unlikely,5,277,Figure 209,1932,49 30 16 5,ok,49 30 16 5,ok,both passes
+UKR,A,None,9,294,Figure 222,1564,9 3 13 48 28,ok,9 3 13 48 28,ok,both passes
+UKR,A,A little,3,294,Figure 222,1564,9 3 13 48 28,ok,9 3 13 48 28,ok,both passes
+UKR,A,Some,13,294,Figure 222,1564,9 3 13 48 28,ok,9 3 13 48 28,ok,both passes
+UKR,A,A lot,48,294,Figure 222,1564,9 3 13 48 28,ok,9 3 13 48 28,ok,both passes
+UKR,A,Most,28,294,Figure 222,1564,9 3 13 48 28,ok,9 3 13 48 28,ok,both passes
+UKR,B,No,44,294,Figure 222,1564,44 56,ok,44 56,ok,both passes
+UKR,B,Yes,56,294,Figure 222,1564,44 56,ok,44 56,ok,both passes
+UKR,D_droughts,Very likely,52,294,Figure 222,1564,52 34 7 7,ok,52 34 7 7,ok,both passes
+UKR,D_droughts,Somewhat likely,34,294,Figure 222,1564,52 34 7 7,ok,52 34 7 7,ok,both passes
+UKR,D_droughts,Somewhat unlikely,7,294,Figure 222,1564,52 34 7 7,ok,52 34 7 7,ok,both passes
+UKR,D_droughts,Very unlikely,7,294,Figure 222,1564,52 34 7 7,ok,52 34 7 7,ok,both passes
+UKR,D_sea,Very likely,41,294,Figure 222,1564,41 38 13 8,ok,41 38 13 8,ok,both passes
+UKR,D_sea,Somewhat likely,38,294,Figure 222,1564,41 38 13 8,ok,41 38 13 8,ok,both passes
+UKR,D_sea,Somewhat unlikely,13,294,Figure 222,1564,41 38 13 8,ok,41 38 13 8,ok,both passes
+UKR,D_sea,Very unlikely,8,294,Figure 222,1564,41 38 13 8,ok,41 38 13 8,ok,both passes
+UKR,D_volcanic,Very likely,27,294,Figure 222,1564,27 38 22 12,ok,27 38 22 12,ok,both passes
+UKR,D_volcanic,Somewhat likely,38,294,Figure 222,1564,27 38 22 12,ok,27 38 22 12,ok,both passes
+UKR,D_volcanic,Somewhat unlikely,22,294,Figure 222,1564,27 38 22 12,ok,27 38 22 12,ok,both passes
+UKR,D_volcanic,Very unlikely,12,294,Figure 222,1564,27 38 22 12,ok,27 38 22 12,ok,both passes
+GBR,A,None,7,311,Figure 235,2025,7 5 18 38 31,ok,7 5 18 38 31,ok,both passes
+GBR,A,A little,5,311,Figure 235,2025,7 5 18 38 31,ok,7 5 18 38 31,ok,both passes
+GBR,A,Some,18,311,Figure 235,2025,7 5 18 38 31,ok,7 5 18 38 31,ok,both passes
+GBR,A,A lot,38,311,Figure 235,2025,7 5 18 38 31,ok,7 5 18 38 31,ok,both passes
+GBR,A,Most,31,311,Figure 235,2025,7 5 18 38 31,ok,7 5 18 38 31,ok,both passes
+GBR,B,No,55,311,Figure 235,2025,55 45,ok,55 45,ok,both passes
+GBR,B,Yes,45,311,Figure 235,2025,55 45,ok,55 45,ok,both passes
+GBR,D_droughts,Very likely,53,311,Figure 235,2025,53 34 8 4,ok,53 34 8 4,ok,both passes
+GBR,D_droughts,Somewhat likely,34,311,Figure 235,2025,53 34 8 4,ok,53 34 8 4,ok,both passes
+GBR,D_droughts,Somewhat unlikely,8,311,Figure 235,2025,53 34 8 4,ok,53 34 8 4,ok,both passes
+GBR,D_droughts,Very unlikely,4,311,Figure 235,2025,53 34 8 4,ok,53 34 8 4,ok,both passes
+GBR,D_sea,Very likely,59,311,Figure 235,2025,59 32 7 3,ok,59 32 7 3,ok,both passes
+GBR,D_sea,Somewhat likely,32,311,Figure 235,2025,59 32 7 3,ok,59 32 7 3,ok,both passes
+GBR,D_sea,Somewhat unlikely,7,311,Figure 235,2025,59 32 7 3,ok,59 32 7 3,ok,both passes
+GBR,D_sea,Very unlikely,3,311,Figure 235,2025,59 32 7 3,ok,59 32 7 3,ok,both passes
+GBR,D_volcanic,Very likely,24,311,Figure 235,2025,24 36 24 16,ok,24 36 24 16,ok,both passes
+GBR,D_volcanic,Somewhat likely,36,311,Figure 235,2025,24 36 24 16,ok,24 36 24 16,ok,both passes
+GBR,D_volcanic,Somewhat unlikely,24,311,Figure 235,2025,24 36 24 16,ok,24 36 24 16,ok,both passes
+GBR,D_volcanic,Very unlikely,16,311,Figure 235,2025,24 36 24 16,ok,24 36 24 16,ok,both passes
+USA,A,None,13,328,Figure 248,2218,13 6 17 36 28,ok,13 6 17 36 28,ok,both passes
+USA,A,A little,6,328,Figure 248,2218,13 6 17 36 28,ok,13 6 17 36 28,ok,both passes
+USA,A,Some,17,328,Figure 248,2218,13 6 17 36 28,ok,13 6 17 36 28,ok,both passes
+USA,A,A lot,36,328,Figure 248,2218,13 6 17 36 28,ok,13 6 17 36 28,ok,both passes
+USA,A,Most,28,328,Figure 248,2218,13 6 17 36 28,ok,13 6 17 36 28,ok,both passes
+USA,B,No,46,328,Figure 248,2218,46 54,ok,46 54,ok,both passes
+USA,B,Yes,54,328,Figure 248,2218,46 54,ok,46 54,ok,both passes
+USA,D_droughts,Very likely,43,328,Figure 248,2218,43 35 13 9,ok,43 35 13 9,ok,both passes
+USA,D_droughts,Somewhat likely,35,328,Figure 248,2218,43 35 13 9,ok,43 35 13 9,ok,both passes
+USA,D_droughts,Somewhat unlikely,13,328,Figure 248,2218,43 35 13 9,ok,43 35 13 9,ok,both passes
+USA,D_droughts,Very unlikely,9,328,Figure 248,2218,43 35 13 9,ok,43 35 13 9,ok,both passes
+USA,D_sea,Very likely,50,328,Figure 248,2218,50 28 13 9,ok,50 28 13 9,ok,both passes
+USA,D_sea,Somewhat likely,28,328,Figure 248,2218,50 28 13 9,ok,50 28 13 9,ok,both passes
+USA,D_sea,Somewhat unlikely,13,328,Figure 248,2218,50 28 13 9,ok,50 28 13 9,ok,both passes
+USA,D_sea,Very unlikely,9,328,Figure 248,2218,50 28 13 9,ok,50 28 13 9,ok,both passes
+USA,D_volcanic,Very likely,26,328,Figure 248,2218,26 31 25 17,ok,26 31 25 17,ok,both passes
+USA,D_volcanic,Somewhat likely,31,328,Figure 248,2218,26 31 25 17,ok,26 31 25 17,ok,both passes
+USA,D_volcanic,Somewhat unlikely,25,328,Figure 248,2218,26 31 25 17,ok,26 31 25 17,ok,both passes
+USA,D_volcanic,Very unlikely,17,328,Figure 248,2218,26 31 25 17,ok,26 31 25 17,ok,both passes

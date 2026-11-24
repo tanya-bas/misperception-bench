@@ -1,4 +1,5 @@
-"""Build data/countries.csv: one row per Ipsos 2024 country with the covariates used as
+"""Build data/countries.csv: one row per Ipsos country (the 30 of the 2024 wave, the 6 only in the 2020
+causes-of-death wave) with the covariates used as
 moderators in H1a and as an independent check on Ipsos's immigrant-share truth value.
 
 Inputs (cached API dumps in data/raw/, re-fetchable with the curl lines in data/README.md):
@@ -21,7 +22,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "data")
 WB = os.path.join(D, "raw", "worldbank")
 
-# Ipsos name -> (ISO3, World Bank name variant, main language, Ipsos representative flag from p38;
+# Ipsos name -> (ISO3, World Bank name variant, main language, Ipsos representative flag from the 2024 report p38
+# (2020 technical note p53 for the six countries only in the 2020 wave; the per-wave flag is in pairs.csv and differs
+# for Singapore, representative in 2020 but urban/affluent in 2024);
 # Ireland and New Zealand are named on neither p38 list and are treated as representative by author decision 2026-11-22)
 COUNTRIES = {
     "Argentina": ("ARG", "Argentina", "Spanish", "yes"), "Australia": ("AUS", "Australia", "English", "yes"),
@@ -39,6 +42,14 @@ COUNTRIES = {
     "South Korea": ("KOR", "Korea, Rep.", "Korean", "yes"), "Spain": ("ESP", "Spain", "Spanish", "yes"),
     "Sweden": ("SWE", "Sweden", "Swedish", "yes"), "Thailand": ("THA", "Thailand", "Thai", "no_urban_educated_affluent"),
     "Türkiye": ("TUR", "Turkiye", "Turkish", "no_urban_educated_affluent"), "United States": ("USA", "United States", "English", "yes"),
+    # Added 2026-11-22 for the Ipsos Perils of Perception 2020 (causes of death) wave; names as printed in that deck,
+    # representative flag from its technical note (p53). Appended after the 2024 rows so those stay unchanged.
+    "China": ("CHN", "China", "Mandarin Chinese", "no_urban_educated_affluent"),
+    "Hong Kong SAR China": ("HKG", "Hong Kong SAR, China", "Cantonese/English", "yes"),
+    "Philippines": ("PHL", "Philippines", "Filipino/English", "no_urban_educated_affluent"),
+    "Romania": ("ROU", "Romania", "Romanian", "no_urban_educated_affluent"),
+    "Russia": ("RUS", "Russian Federation", "Russian", "no_urban_educated_affluent"),
+    "Saudi Arabia": ("SAU", "Saudi Arabia", "Arabic", "no_urban_educated_affluent"),
 }
 
 

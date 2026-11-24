@@ -1,0 +1,7 @@
+Imagine a representative survey of adults in {country} asked:
+
+"{question}"
+
+What would the average answer be?
+
+Reply with a single number from 0 to 100 and nothing else.

@@ -14,6 +14,9 @@ Per model (cell = median of the parsed samples for one pair x prompt type):
   H3          knowing vs saying: mean |M_official - T| vs mean |M_public - H| (points), and where M_plain sits on the
               H-T segment, s = (M_plain - T) / (H - T), median over pairs with |H - T| >= 3
   memory      share of pairs where the memory_check answer is within 2 (and 5) points of H, plus corr(M_memory, H)
+  distributions (if results/distributions.jsonl exists) mean entropy in bits and share of bimodal cells per prompt type
+Items come from data/pairs.csv (every percent item with a truth value, both waves). Scopes: pooled, per wave
+(wave:<id>), per item. The summary table keeps the three 2024 items and adds per-wave pooled columns.
 Log-odds use p = value/100 clipped to [CLIP, 1-CLIP]; CLIP = 0.0005 (0.05%), so Pew's 0.004% Muslim share
 in Colombia is floored rather than sent to -infinity. Bootstraps resample pairs (or countries) with replacement.
 Run: python3 metrics.py [--results results/results.jsonl] [--out results/metrics.md] [--boot 1000]
@@ -26,9 +29,11 @@ from collections import defaultdict
 
 import numpy as np
 
+import distributions
+
 ROOT = os.path.dirname(os.path.abspath(__file__))
 CLIP = 0.0005
-ITEMS = ["wealth_top1", "immigrant_share", "muslim_share"]
+V0_ITEMS = ["wealth_top1", "immigrant_share", "muslim_share"]  # fixed summary-table columns
 
 
 def logit(v):
@@ -75,30 +80,50 @@ def demean_by_group(x, groups):
 def load_pairs(path):
     out = {}
     for r in csv.DictReader(open(path, encoding="utf-8")):
-        if r["item_id"] not in ITEMS or r["t_flag"] == "missing" or r["t_value"] == "":
+        if r["t_flag"] == "missing" or r["t_value"] == "":
             continue
-        out[(r["item_id"], r["country_iso3"])] = {"H": float(r["h_mean"]), "T": float(r["t_value"]), "country": r["country_name_ipsos"]}
+        out[(r["item_id"], r["country_iso3"])] = {"H": float(r["h_mean"]), "T": float(r["t_value"]), "country": r["country_name_ipsos"], "wave": r["wave"]}
     return out
 
 
-def load_results(path):
+def load_results(path, variant="v1"):
     cells = defaultdict(list)   # (model, item, iso3, prompt) -> parsed ok values
     status = defaultdict(lambda: defaultdict(int))  # (model, prompt) -> status -> count
+    dist_keys = {}              # (model, item, iso3, prompt) -> key into distributions.jsonl
     for line in open(path, encoding="utf-8"):
         try:
             r = json.loads(line)
         except ValueError:
             continue  # a run in progress may leave a partial last line
+        if r.get("track", "numeric") != "numeric" or r.get("prompt_variant", "v1") != variant:
+            continue
         k = (r["model_id"], r["item_id"], r["country_iso3"], r["prompt_type"])
         status[(r["model_id"], r["prompt_type"])][r["parse_status"]] += 1
         if r["parse_status"] == "ok":
             cells[k].append(float(r["parsed_value"]))
-    return cells, status
+        if r.get("prompt_sha256"):
+            dist_keys[k] = r["model_id"] + ":" + r["prompt_sha256"]
+    return cells, status, dist_keys
 
 
-def model_metrics(model, cells, status, pairs, rng, reps):
+def scopes_for(pairs, items):
+    waves = sorted({p["wave"] for p in pairs.values()})
+    return ["pooled"] + ["wave:%s" % w for w in waves] + items
+
+
+def in_scope(scope, k, pairs):
+    if scope == "pooled":
+        return True
+    if scope.startswith("wave:"):
+        return pairs[k]["wave"] == scope[5:]
+    return k[0] == scope
+
+
+def model_metrics(model, cells, status, pairs, items, rng, reps, dists=None, dist_keys=None):
     """Return (markdown lines, summary dict) for one model."""
     L = ["## %s" % model, ""]
+    ITEMS = items
+    SCOPES = scopes_for(pairs, items)
     # cell medians and SDs
     med = {}
     sd = defaultdict(list)
@@ -188,14 +213,28 @@ def model_metrics(model, cells, status, pairs, rng, reps):
         corr = float(np.corrcoef(h_d, mp_d)[0, 1]) if np.std(mp_d) > 0 else float("nan")
         L.append("| pooled (item FE) | %d | %s | [%s, %s] | 0 | %s | | |" % (len(pooled_keys), fmt(b), fmt(ci[0]), fmt(ci[1]), fmt(corr)))
         summary["flat_pooled"] = b
+        for w in sorted({pairs[k]["wave"] for k in pooled_keys}):
+            wk = [k for k in pooled_keys if pairs[k]["wave"] == w]
+            if len(wk) < 5:
+                continue
+            g = [k[0] for k in wk]
+            mpw = logit([med[(k[0], k[1], "public_guess")] for k in wk]); hw = logit([pairs[k]["H"] for k in wk])
+            bw, _ = ols(demean_by_group(hw, g), demean_by_group(mpw, g))
+
+            def wave_slope(idx, mpw=mpw, hw=hw, g=g):
+                gg = [g[i] for i in idx]
+                return ols(demean_by_group(hw[idx], gg), demean_by_group(mpw[idx], gg))[0]
+            ciw = boot(wave_slope, len(wk), rng, reps)
+            L.append("| pooled %s (item FE) | %d | %s | [%s, %s] | 0 | | | |" % (w, len(wk), fmt(bw), fmt(ciw[0]), fmt(ciw[1])))
+            summary["flat_pooled_" + w] = bw
     L.append("")
 
     # H2a lambda and H2b compression on the plain prompt
     L += ["### H2a inheritance (lambda) and H2b compression, plain prompt, logit scale", "",
           "| scope | pairs | lambda | 95% CI | model slope on logit T | intercept | human slope on logit T | human intercept |",
           "|---|---|---|---|---|---|---|---|"]
-    for scope in ["pooled"] + ITEMS:
-        keys = [k for k in pairs if (scope == "pooled" or k[0] == scope) and (k[0], k[1], "plain") in med]
+    for scope in SCOPES:
+        keys = [k for k in pairs if in_scope(scope, k, pairs) and (k[0], k[1], "plain") in med]
         if len(keys) < 5:
             continue
         mp = logit([med[(k[0], k[1], "plain")] for k in keys])
@@ -210,12 +249,15 @@ def model_metrics(model, cells, status, pairs, rng, reps):
             summary["lambda"] = lam
             summary["slope_model"] = bm
             summary["slope_human"] = bh
+        elif scope.startswith("wave:"):
+            summary["lambda_" + scope[5:]] = lam
+            summary["slope_model_" + scope[5:]] = bm
     L.append("")
 
     # H3 knowing vs saying (percent points)
     L += ["### H3 knowing vs saying (percent points)", "", "| item | pairs | mean abs(M_official - T) | mean abs(M_public - H) | mean abs(M_plain - T) | mean abs(M_plain - H) | median position s of M_plain on H-T |", "|---|---|---|---|---|---|---|"]
-    for scope in ["pooled"] + ITEMS:
-        keys = [k for k in pairs if (scope == "pooled" or k[0] == scope) and all((k[0], k[1], p) in med for p in ["plain", "official", "public_guess"])]
+    for scope in SCOPES:
+        keys = [k for k in pairs if in_scope(scope, k, pairs) and all((k[0], k[1], p) in med for p in ["plain", "official", "public_guess"])]
         if len(keys) < 5:
             continue
         H = np.array([pairs[k]["H"] for k in keys]); T = np.array([pairs[k]["T"] for k in keys])
@@ -231,8 +273,8 @@ def model_metrics(model, cells, status, pairs, rng, reps):
 
     # memory check
     L += ["### Memorization check (memory_check prompt vs Ipsos H)", "", "| item | pairs | within 2 pts | within 5 pts | corr(M_memory, H) |", "|---|---|---|---|---|"]
-    for scope in ["pooled"] + ITEMS:
-        keys = [k for k in pairs if (scope == "pooled" or k[0] == scope) and (k[0], k[1], "memory_check") in med]
+    for scope in SCOPES:
+        keys = [k for k in pairs if in_scope(scope, k, pairs) and (k[0], k[1], "memory_check") in med]
         if len(keys) < 5:
             continue
         H = np.array([pairs[k]["H"] for k in keys]); Mm = np.array([med[(k[0], k[1], "memory_check")] for k in keys])
@@ -242,6 +284,24 @@ def model_metrics(model, cells, status, pairs, rng, reps):
         if scope == "pooled":
             summary["memory_within2"] = w2
     L.append("")
+
+    if dists and dist_keys:
+        L += ["### Answer distributions (from results/distributions.jsonl)", "",
+              "| prompt | cells with a distribution | mean entropy (bits) | bimodal cells | mean mass outside 0-100 |", "|---|---|---|---|---|"]
+        for pt in ["plain", "official", "public_guess", "memory_check"]:
+            ents, bim, outs, n = [], 0, [], 0
+            for (mm, i, iso, p), key in dist_keys.items():
+                if mm != model or p != pt or key not in dists:
+                    continue
+                e = dists[key]; n += 1
+                if e.get("entropy_bits") is not None:
+                    ents.append(e["entropy_bits"])
+                bim += bool(e.get("bimodal")); outs.append(e.get("mass_outside", 0.0))
+            if n:
+                L.append("| %s | %d | %s | %.0f%% | %s |" % (pt, n, fmt(float(np.mean(ents))) if ents else "n/a", 100.0 * bim / n, fmt(float(np.mean(outs)), 3)))
+                summary["entropy_" + pt] = float(np.mean(ents)) if ents else None
+                summary["bimodal_" + pt] = bim / n
+        L.append("")
     return L, summary
 
 
@@ -250,31 +310,42 @@ def main():
     ap.add_argument("--results", default=os.path.join(ROOT, "results", "results.jsonl"))
     ap.add_argument("--pairs", default=os.path.join(ROOT, "data", "pairs.csv"))
     ap.add_argument("--out", default=os.path.join(ROOT, "results", "metrics.md"))
+    ap.add_argument("--distributions", default=os.path.join(ROOT, "results", "distributions.jsonl"))
+    ap.add_argument("--variant", default="v1", help="public_guess prompt variant to analyse (v1, v2, v3)")
     ap.add_argument("--boot", type=int, default=1000)
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
     rng = np.random.default_rng(args.seed)
     pairs = load_pairs(args.pairs)
-    cells, status = load_results(args.results)
+    cells, status, dist_keys = load_results(args.results, args.variant)
+    dists = distributions.load_entries(args.distributions)
+    present = {k[1] for k in cells}
+    items = [i for i in V0_ITEMS if i in present] + sorted(i for i in present if i not in V0_ITEMS and any(k[0] == i for k in pairs))
+    pairs = {k: v for k, v in pairs.items() if k[0] in items}
     models = sorted({k[0] for k in cells})
-    lines = ["# v0 metrics", "", "Source: `%s` (%d pairs with truth). Cell value = median of parsed samples. Log-odds clip = %g." % (os.path.relpath(args.results, ROOT), len(pairs), CLIP), "",
+    lines = ["# Numeric track metrics", "", "Source: `%s` (%d pairs with truth, items: %s; public_guess variant %s). Cell value = median of parsed samples. Log-odds clip = %g." % (os.path.relpath(args.results, ROOT), len(pairs), ", ".join(items), args.variant, CLIP), "",
              "Flattening (\"flatten slope\" columns): slope of logit(M_public) on logit(H) across countries. A slope below 1 means the "
              "model's simulated public varies less across countries than the real public. The H1a variance ratio can exceed 1 even "
              "when answers are flat, because the model tracks a truth that varies more across countries than human guesses do; the "
              "slope is the direct flattening measure. The pooled slope demeans within item (item fixed effects).", ""]
     summaries = []
     for m in models:
-        L, s = model_metrics(m, cells, status, pairs, rng, args.boot)
+        L, s = model_metrics(m, cells, status, pairs, items, rng, args.boot, dists, dist_keys)
         lines += L
         summaries.append(s)
-    head = ["| model | VR wealth | VR immigrants | VR Muslim | flatten slope wealth | flatten slope immigrants | flatten slope Muslim | flatten slope pooled | lambda | model slope | human slope | abs(M_official - T) | abs(M_public - H) | s(M_plain) | memory within 2 |",
-            "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    waves = sorted({v["wave"] for v in pairs.values()})
+    wave_cols = "".join(" lambda %s | flatten pooled %s |" % (w, w) for w in waves)
+    head = ["| model | VR wealth | VR immigrants | VR Muslim | flatten slope wealth | flatten slope immigrants | flatten slope Muslim | flatten slope pooled |%s lambda | model slope | human slope | abs(M_official - T) | abs(M_public - H) | s(M_plain) | memory within 2 | entropy plain (bits) | bimodal plain | bimodal public |" % wave_cols,
+            "|---|---|---|---|---|---|---|---|" + "---|---|" * len(waves) + "---|---|---|---|---|---|---|---|---|---|"]
     for s in summaries:
-        head.append("| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |" % (
+        wave_vals = "".join(" %s | %s |" % (fmt(s.get("lambda_" + w)), fmt(s.get("flat_pooled_" + w))) for w in waves)
+        head.append("| %s | %s | %s | %s | %s | %s | %s | %s |%s %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |" % (
             s["model"], fmt(s.get("VR_wealth_top1")), fmt(s.get("VR_immigrant_share")), fmt(s.get("VR_muslim_share")),
-            fmt(s.get("flat_wealth_top1")), fmt(s.get("flat_immigrant_share")), fmt(s.get("flat_muslim_share")), fmt(s.get("flat_pooled")),
+            fmt(s.get("flat_wealth_top1")), fmt(s.get("flat_immigrant_share")), fmt(s.get("flat_muslim_share")), fmt(s.get("flat_pooled")), wave_vals,
             fmt(s.get("lambda")), fmt(s.get("slope_model")), fmt(s.get("slope_human")), fmt(s.get("official_err"), 1), fmt(s.get("public_err"), 1), fmt(s.get("s_plain")),
-            "n/a" if s.get("memory_within2") is None else "%.0f%%" % (100 * s["memory_within2"])))
+            "n/a" if s.get("memory_within2") is None else "%.0f%%" % (100 * s["memory_within2"]),
+            fmt(s.get("entropy_plain")), "n/a" if s.get("bimodal_plain") is None else "%.0f%%" % (100 * s["bimodal_plain"]),
+            "n/a" if s.get("bimodal_public_guess") is None else "%.0f%%" % (100 * s["bimodal_public_guess"])))
     lines = lines[:6] + ["## Summary", ""] + head + [""] + lines[6:]
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     open(args.out, "w", encoding="utf-8").write("\n".join(lines) + "\n")

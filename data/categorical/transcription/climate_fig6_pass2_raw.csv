@@ -1,0 +1,309 @@
+item_id,fig6_row_label,column,pct_correct,pdf_page,extraction
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",HIGH_INCOME_AVG,70,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",AUS,63,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",CAN,69,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",DNK,63,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",FRA,57,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",DEU,73,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",ITA,84,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",JPN,65,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",POL,75,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",KOR,80,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",ESP,80,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",GBR,70,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",USA,63,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",MIDDLE_INCOME_AVG,81,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",BRA,84,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",CHN,74,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",IND,80,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",IDN,81,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",MEX,87,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",ZAF,81,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",TUR,82,16,pdftotext -raw
+clim_cc_real_anthropogenic,"CC exists, is anthropogenic",UKR,76,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,HIGH_INCOME_AVG,53,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,AUS,52,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,CAN,53,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,DNK,64,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,FRA,54,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,DEU,70,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,ITA,52,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,JPN,59,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,POL,40,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,KOR,34,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,ESP,55,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,GBR,55,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,USA,46,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,MIDDLE_INCOME_AVG,27,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,BRA,28,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,CHN,15,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,IND,16,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,IDN,13,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,MEX,37,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,ZAF,33,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,TUR,38,16,pdftotext -raw
+clim_halving_insufficient,Cutting emissions by half insufficient to stop global warming,UKR,44,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,HIGH_INCOME_AVG,80,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,AUS,81,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,CAN,81,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,DNK,86,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,FRA,73,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,DEU,85,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,ITA,82,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,JPN,73,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,POL,78,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,KOR,85,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,ESP,74,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,GBR,85,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,USA,76,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,MIDDLE_INCOME_AVG,58,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,BRA,65,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,CHN,49,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,IND,50,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,IDN,53,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,MEX,55,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,ZAF,74,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,TUR,60,16,pdftotext -raw
+clim_rank_food_beef_highest,GHG footprint of beef/meat is higher than chicken or pasta,UKR,58,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,HIGH_INCOME_AVG,64,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,AUS,67,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,CAN,62,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,DNK,73,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,FRA,51,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,DEU,57,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,ITA,66,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,JPN,73,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,POL,71,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,KOR,72,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,ESP,50,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,GBR,71,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,USA,60,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,MIDDLE_INCOME_AVG,47,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,BRA,42,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,CHN,51,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,IND,45,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,IDN,53,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,MEX,42,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,ZAF,54,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,TUR,32,16,pdftotext -raw
+clim_rank_power_nuclear_lowest,GHG footprint of nuclear is lower than gas or coal,UKR,58,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,HIGH_INCOME_AVG,55,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,AUS,56,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,CAN,57,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,DNK,71,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,FRA,63,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,DEU,74,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,ITA,52,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,JPN,38,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,POL,55,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,KOR,30,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,ESP,61,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,GBR,65,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,USA,41,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,MIDDLE_INCOME_AVG,29,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,BRA,25,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,CHN,36,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,IND,24,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,IDN,18,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,MEX,36,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,ZAF,38,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,TUR,32,16,pdftotext -raw
+clim_rank_transport_plane_highest,GHG footprint of plane is higher than car or train/bus,UKR,28,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,HIGH_INCOME_AVG,71,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,AUS,71,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,CAN,69,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,DNK,67,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,FRA,62,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,DEU,69,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,ITA,81,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,JPN,83,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,POL,65,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,KOR,86,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,ESP,73,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,GBR,69,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,USA,61,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,MIDDLE_INCOME_AVG,58,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,BRA,64,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,CHN,34,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,IND,56,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,IDN,44,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,MEX,69,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,ZAF,62,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,TUR,72,16,pdftotext -raw
+clim_rank_region_total_china_highest,Total emissions of China are higher than other regions,UKR,62,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,HIGH_INCOME_AVG,49,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,AUS,38,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,CAN,48,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,DNK,64,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,FRA,49,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,DEU,59,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,ITA,61,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,JPN,35,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,POL,53,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,KOR,27,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,ESP,52,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,GBR,46,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,USA,55,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,MIDDLE_INCOME_AVG,44,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,BRA,53,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,CHN,34,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,IND,42,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,IDN,33,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,MEX,49,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,ZAF,44,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,TUR,55,16,pdftotext -raw
+clim_rank_region_percapita_us_highest,Per capita emissions of the US are higher than other regions,UKR,45,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,HIGH_INCOME_AVG,85,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,AUS,80,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,CAN,75,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,DNK,89,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,FRA,85,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,DEU,91,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,ITA,92,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,JPN,93,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,POL,89,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,KOR,91,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,ESP,85,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,GBR,81,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,USA,77,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,MIDDLE_INCOME_AVG,76,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,BRA,84,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,CHN,70,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,IND,82,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,IDN,77,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,MEX,75,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,ZAF,71,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,TUR,63,16,pdftotext -raw
+clim_gas_hydrogen_not_ghg,Hydrogen is not a greenhouse gas,UKR,87,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,HIGH_INCOME_AVG,83,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,AUS,68,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,CAN,77,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,DNK,93,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,FRA,79,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,DEU,86,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,ITA,88,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,JPN,95,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,POL,88,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,KOR,77,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,ESP,88,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,GBR,85,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,USA,77,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,MIDDLE_INCOME_AVG,75,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,BRA,79,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,CHN,86,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,IND,82,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,IDN,82,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,MEX,72,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,ZAF,71,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,TUR,49,16,pdftotext -raw
+clim_gas_co2_ghg,CO2 is a greenhouse gas,UKR,77,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,HIGH_INCOME_AVG,66,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,AUS,71,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,CAN,60,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,DNK,75,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,FRA,53,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,DEU,46,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,ITA,69,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,JPN,83,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,POL,71,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,KOR,54,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,ESP,70,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,GBR,71,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,USA,66,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,MIDDLE_INCOME_AVG,68,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,BRA,65,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,CHN,61,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,IND,78,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,IDN,80,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,MEX,60,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,ZAF,73,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,TUR,55,16,pdftotext -raw
+clim_gas_particulate_not_ghg,Particulate matter is not a greenhouse gas,UKR,64,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,HIGH_INCOME_AVG,60,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,AUS,77,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,CAN,72,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,DNK,62,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,FRA,46,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,DEU,63,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,ITA,36,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,JPN,41,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,POL,48,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,KOR,68,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,ESP,68,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,GBR,75,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,USA,64,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,MIDDLE_INCOME_AVG,51,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,BRA,57,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,CHN,42,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,IND,42,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,IDN,34,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,MEX,60,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,ZAF,61,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,TUR,71,16,pdftotext -raw
+clim_gas_methane_ghg,Methane is a greenhouse gas,UKR,48,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,HIGH_INCOME_AVG,87,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,AUS,84,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,CAN,90,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,DNK,88,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,FRA,85,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,DEU,88,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,ITA,91,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,JPN,90,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,POL,89,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,KOR,90,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,ESP,86,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,GBR,87,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,USA,77,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,MIDDLE_INCOME_AVG,86,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,BRA,81,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,CHN,89,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,IND,84,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,IDN,93,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,MEX,79,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,ZAF,89,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,TUR,91,16,pdftotext -raw
+clim_droughts_likely,Severe droughts and heatwaves are likely,UKR,86,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,HIGH_INCOME_AVG,86,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,AUS,83,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,CAN,84,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,DNK,93,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,FRA,83,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,DEU,87,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,ITA,90,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,JPN,91,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,POL,86,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,KOR,90,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,ESP,85,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,GBR,90,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,USA,78,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,MIDDLE_INCOME_AVG,84,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,BRA,77,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,CHN,87,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,IND,84,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,IDN,92,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,MEX,82,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,ZAF,86,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,TUR,82,16,pdftotext -raw
+clim_sea_level_likely,Sea-level rise is likely,UKR,78,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,HIGH_INCOME_AVG,44,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,AUS,42,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,CAN,37,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,DNK,63,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,FRA,38,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,DEU,59,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,ITA,49,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,JPN,52,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,POL,31,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,KOR,31,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,ESP,41,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,GBR,41,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,USA,43,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,MIDDLE_INCOME_AVG,26,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,BRA,33,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,CHN,23,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,IND,21,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,IDN,19,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,MEX,33,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,ZAF,26,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,TUR,22,16,pdftotext -raw
+clim_volcanic_unlikely,More frequent volcanic eruptions are unlikely,UKR,36,16,pdftotext -raw

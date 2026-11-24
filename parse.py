@@ -10,6 +10,15 @@ models still add "%", words, ranges or a sentence of reasoning. Rules, in order:
      the answer last): "about 25", "25%", "25.5" -> 25 / 25 / 25.5, status "ok"
   5. number outside [0, 100] -> status "out_of_range" (value kept for inspection)
 Returns (value_or_None, status, note). Run `python3 parse.py` for the self-test.
+
+parse_option(text, choices) does the same for the categorical track, where the reply should be the
+letter of one option: choices is a list of (letter, option, label). Rules, in order:
+  1. a bare letter ("B", "b)", "(B)", "B.", "B. Lebanon") -> that option, status "ok"
+  2. otherwise the option text or its label found in the reply (case-insensitive; True/False
+     also match "true"/"false" as whole words) -> that option; several matches -> the earliest
+     one, note "multiple matches"
+  3. nothing matched -> "refusal" if a decline phrase is present, else "unparseable"
+Returns (option_or_None, status, note).
 """
 import re
 
@@ -67,6 +76,40 @@ def _check(val, note):
     return val, "out_of_range", note
 
 
+
+LETTER_RE = re.compile(r"^\s*\(?([A-Ha-h])\)?[\s.:)\-]*(?:$|[A-Za-z\u201c\"'])")
+
+
+def parse_option(text, choices):
+    """Return (option, status, note) for a categorical reply; choices = [(letter, option, label), ...]."""
+    if text is None:
+        return None, "unparseable", "empty"
+    t = _normalize(text).strip()
+    if not t:
+        return None, "unparseable", "empty"
+    low = t.lower()
+    m = LETTER_RE.match(t)
+    if m:
+        letter = m.group(1).upper()
+        for L, opt, _ in choices:
+            if L == letter:
+                return opt, "ok", "letter"
+    hits = []  # (position, option)
+    for L, opt, label in choices:
+        for cand in {opt, label}:
+            pat = r"\b%s\b" % re.escape(cand.lower()) if cand.lower() in ("true", "false", "yes", "no", "higher", "lower") else re.escape(cand.lower())
+            mm = re.search(pat, low)
+            if mm:
+                hits.append((mm.start(), opt))
+    if hits:
+        hits.sort()
+        uniq = []
+        for pos, opt in hits:
+            if opt not in uniq:
+                uniq.append(opt)
+        return uniq[0], "ok", ("text match" if len(uniq) == 1 else "multiple matches, earliest kept")
+    return None, ("refusal" if any(h in low for h in REFUSAL_HINTS) else "unparseable"), "no option matched"
+
 if __name__ == "__main__":
     cases = [
         ("25", (25.0, "ok")), ("25%", (25.0, "ok")), ("About 25.", (25.0, "ok")), ("25.5", (25.5, "ok")),
@@ -89,5 +132,21 @@ if __name__ == "__main__":
         ok = got_s == s and (got_v == v or (got_v is not None and v is not None and abs(got_v - v) < 1e-9))
         bad += not ok
         print(("PASS" if ok else "FAIL"), repr(text), "->", got_v, got_s, note)
-    print("%d/%d passed" % (len(cases) - bad, len(cases)))
+    choices = [("A", "True", "True"), ("B", "False", "False")]
+    choices3 = [("A", "Germany", "Germany"), ("B", "Lebanon", "Lebanon"), ("C", "Sweden", "Sweden")]
+    choices_lab = [("A", "Plane ranked 1 (most)", "The plane emits the most"), ("B", "Plane not ranked 1", "The plane does not emit the most")]
+    ocases = [
+        ("B", choices, ("False", "ok")), ("b)", choices, ("False", "ok")), ("(A)", choices, ("True", "ok")), ("A.", choices, ("True", "ok")),
+        ("B. Lebanon", choices3, ("Lebanon", "ok")), ("Lebanon", choices3, ("Lebanon", "ok")),
+        ("The statement is false.", choices, ("False", "ok")), ("It is false, not true.", choices, ("False", "ok")),
+        ("The plane emits the most", choices_lab, ("Plane ranked 1 (most)", "ok")),
+        ("I'm sorry, but I can't help with that.", choices3, (None, "refusal")), ("", choices, (None, "unparseable")),
+        ("Sure thing!", choices3, (None, "unparseable")), ("C", choices, (None, "unparseable")),
+    ]
+    for text, ch, (v, st) in ocases:
+        got_v, got_s, note = parse_option(text, ch)
+        ok = got_s == st and got_v == v
+        bad += not ok
+        print(("PASS" if ok else "FAIL"), "option", repr(text), "->", got_v, got_s, note)
+    print("%d/%d passed" % (len(cases) + len(ocases) - bad, len(cases) + len(ocases)))
     raise SystemExit(1 if bad else 0)

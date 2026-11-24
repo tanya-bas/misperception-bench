@@ -1,0 +1,9 @@
+{
+  "_comment": "Per-source metadata for the categorical prompts. official_source_name is a short, non-leaking name for the official prompt (the truth_source column in the data cites the fact itself, so it cannot be shown to the model). survey_name and year feed the memory_check prompt.",
+  "eb516_volume_a": {"survey_name": "Special Eurobarometer 516 survey", "year": "2021", "official_source_name": "the scientific consensus"},
+  "eb522_volume_a": {"survey_name": "Special Eurobarometer 522 survey", "year": "2022", "official_source_name": "the World Health Organization"},
+  "eb104_volume_a": {"survey_name": "Standard Eurobarometer 104 survey", "year": "autumn 2025", "official_source_name": "the European Union's official institutional facts"},
+  "climate_attitudes_nber30265": {"survey_name": "international climate attitudes survey by Dechezleprêtre, Fabre, Kruse, Planterose, Sánchez Chico and Stantcheva", "year": "2021-2022", "official_source_name": "the IPCC and standard greenhouse-gas emissions accounting"},
+  "gapminder_refugee_2023_report": {"survey_name": "Gapminder Refugee Misconception Study", "year": "2023", "official_source_name": "UNHCR statistics"},
+  "ipsos_homicide_2024": {"survey_name": "Ipsos Perils of Perception 2024 survey", "year": "2024", "official_source_name": "the UN Office on Drugs and Crime homicide statistics"}
+}
